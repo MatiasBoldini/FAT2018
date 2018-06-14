@@ -3,126 +3,73 @@
 {% block imports %}
 {% endblock imports %}
 {% block title %}
-Perfil doctor
+Perfil profesor
 {% endblock title %}  
 {% block body %}
 <div class="row">
-    <div class="col s2">
-        <div class="card-panel pink lighten-3">
-            <p>
-             
-            </p>
-            <center >
-                <button class="btn waves-effect waves-light blue darken-1 text-darken-2" onclick=""> <i class=" small material-icons right">add</i>  Agregar clase</button>
-            </center>
-        
-        </div >
-        <div class="card-panel teal darken-3 " id="card_form "></div>
-        <div id="card" class="card-panel teal darken-3 ">
-            <div class="row">
-            <div class=" input-field col s12"> 
-                <label for="classname"> nombre de la clase </label>
-                <input id="classname" type="text" class="validate"> 
+    <div class="col s3">
+        <div class="row">
+            <div class="col s12">
+                <div class="card-panel pink lighten-3">
+                    <center>
+                        <button class="btn btn-flat" onclick="load_form()">Nueva clase</button>
+                    </center>
+                </div>
             </div>
         </div>
-            <div class="row">
-            <div class="input-field col s12">
-                    <textarea id="textarea2" class="materialize-textarea" data-length="256"></textarea>
-                    <label for="textarea2">descripcion</label>      
-            </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <select multiple>
-                      <option value="" disabled selected>seleccione los dias de clase</option>
-                      <option value="1">LUNES</option>
-                      <option value="2">MARTES</option>
-                      <option value="3">MIERCOLES</option>
-                      <option value="3">JUEVES</option>
-                      <option value="3">VIERNES</option>
-                    </select>
-                    <label>Dias de clase</label>
-                  </div>                            
-                </div>
-                <div class="row">   
-                    <div class=" input-field col s12"> 
-                        <label for="class_starthour"> hora de inicio de la clase  dia </label> 
-                        <input id="class_starthour" type="text" class="timepicker">
-                    </div>
-                    <div class=" input-field col s12"> 
-                        <label for="class_starthour"> hora de inicio de la clase viernes </label> 
-                        <input id="class_starthour" type="text" class="timepicker">
-                    </div>
-                </div>
-  
-            <div class="row">
-                    <div class="input-field col s6">
-                        <label for="classplace">numero de salon </label>
-                        <input id="classplace" type="number" class="validate"> 
-                    </div>
-                    <div class="input-field col s6">
-                        <label for="classname"> duracion (min)</label>
-                        <input id="classname" type="number" class="validate"> 
-                    </div>
-                    </div>
-        
-        
-        
-        
-            </div>
+        <div class="row">
+            <div class="col s12" id="card_form"><!-- classroom form loads here --></div>
+        </div>
     </div>
-    <div class="col s10">
-       <div class="row">
-       <div class="card col s10 offset-s1 blue-grey darken-1">
-            <div class="row ">
-            <div class=" card-panel white col s12">
-                <div class=" col s8">
-                <span class=" card-title center"> Programacion </span>
-            </div>
-            <div class="col s4">
-                    <label>
-                        <button  class="btn waves-effect waves-light green teal lighten-1 text-darken-2"> <i class=" small material-icons right">  edit</i> modificar clase</button>
-                        <button  class="btn waves-effect waves-light red teal lighten-1 text-darken-2"><i class=" small material-icons right">  delete</i> Eliminar clase</button>
-
-                          </label>
-            </div>
-            </div>
-           </div>
-            <div class="row col s10 offset-s1">
-                <div class="card-panel blue-grey lighten-3" >
-                    <p>
-                        en esta clase enseñaremos las bases para aprender a programar en diferentes lenguajes entre los que se encuentran python, java, etc
-                    </p>
-                
+    <div class="col s9">
+    {% for enrolment in duties %}
+        <div class="row">
+            <div class="card col s10 offset-s1 blue-grey darken-1">
+                <div class="row">
+                    <div class=" card-panel white col s12">
+                        <div class=" col s8">
+                            <span class=" card-title center">{{ enrolment.classroom.name }}</span>
+                        </div>
+                        <div class="col s4">
+                            <label>
+                                <button  class="btn waves-effect waves-light green teal lighten-1 text-darken-2"> <i class=" small material-icons right">  edit</i> modificar clase</button>
+                                <button  class="btn waves-effect waves-light red teal lighten-1 text-darken-2"><i class=" small material-icons right">  delete</i> Eliminar clase</button>
+                            </label>
+                        </div>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="card-panel blue-grey lighten-3">
+                        <p>{{ enrolment.classroom.description }}</p>
+                    </div>
                 </div>   
-            <div class="row">
-
-            </div>
-            <div class="row">
-                <div class="card-panel grey"> 
-                    <span>viernes</span>
-                    <span> 15:30</span>
+                <div class="row">
+                    <div class="card-panel grey"> 
+                        <span>{{ enrolment.classroom.get_next_day.get_day_display }}</span>
+                        <span>{{ enrolment.classroom.get_next_day.start_hour}}</span>
+                    </div>
                 </div>
             </div>
-            
         </div>
+    {% endfor %}
     </div>
-    
 </div>
-</div>
-
 <script> 
-$(document).ready(function() {
-  $('input#input_text, textarea#textarea2').characterCounter();
-});
-$(document).ready(function(){
-$('.datepicker').datepicker();
-});
+function load_form(){
+    $.ajax({
+        url:"{% url 'load_form_classroom' %}",
+        success:function(result){
+            $("#card_form").html(result);
+        },
+        error:function(request, status, error){
+            alert(request.responseText)
+        }
+    });
+}
 
 $(document).ready(function(){
-$('.timepicker').timepicker();
+    $('.datepicker').datepicker();
+    $('.timepicker').timepicker();
 });
-
 </script>
 {% endblock body %}  

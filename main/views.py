@@ -13,4 +13,35 @@ from django.utils.dateparse import parse_time
 # Create your views here.
 
 def profile(request):
-    return render(request, 'profile_for_teacher.html')
+    results = {}
+    person = Person.objects.get(user=request.user)
+    results['duties'] = person.get_duties()
+    if person.user_type == 0:
+        print("jubilado")
+    elif person.user_type == 1:
+        return render(request, 'profile_for_doctor.html', results)
+    elif person.user_type == 2:
+        return render(request, 'profile_for_teacher.html', results)
+    elif person.user_type == 3:
+        print("admin")
+    else:
+        print("hacker")
+
+@require_POST
+def new_classroom(request):
+    form = ClassRoomForm(request.POST)
+    print("in view")
+    print(form)
+    if form.is_valid():
+        print("is valid")
+    return HttpResponse("Salio")
+
+def load_form_classroom(request):
+    results = {}
+    results['form'] = ClassRoomForm()
+    return render(request, 'profile_for_teacher_parts/new_classroom.html', results)
+
+def load_form_classroom_day(request):
+    results = {}
+    results['form_day'] = ClassDayForm()
+    return render(request, 'profile_for_teacher_parts/new_day.html', results)
