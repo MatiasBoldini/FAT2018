@@ -27,21 +27,24 @@ def profile(request):
     else:
         print("hacker")
 
-@require_POST
-def new_classroom(request):
-    form = ClassRoomForm(request.POST)
-    print("in view")
-    print(form)
-    if form.is_valid():
-        print("is valid")
-    return HttpResponse("Salio")
-
 def load_form_classroom(request):
     results = {}
     results['form'] = ClassRoomForm()
-    return render(request, 'profile_for_teacher_parts/new_classroom.html', results)
+    return render(request, 'profile_for_teacher_parts/new_classroom_form.html', results)
 
 def load_form_classroom_day(request):
     results = {}
     results['form_day'] = ClassDayForm()
-    return render(request, 'profile_for_teacher_parts/new_day.html', results)
+    return render(request, 'profile_for_teacher_parts/new_day_form.html', results)
+
+def send_form_classroom(request):
+    data = {'name': request.POST.get('name'), 'description': request.POST.get('name'), 'duration': request.POST.get('name')}
+    form = ClassRoomForm(initial=data)
+    print(form.is_valid())
+    if form.is_valid():
+        cr = Classroom(data)
+        cr.save()
+    return HttpResponse(form)
+
+def send_form_classroom_day(request):
+    pass

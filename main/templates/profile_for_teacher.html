@@ -9,16 +9,13 @@ Perfil profesor
 <div class="row">
     <div class="col s3">
         <div class="row">
-            <div class="col s12">
+            <div id="classroom_form" class="col s12">
                 <div class="card-panel pink lighten-3">
                     <center>
-                        <button class="btn btn-flat" onclick="load_form()">Nueva clase</button>
+                        <button class="btn btn-flat" onclick="load_solo('{% url 'load_form_classroom' %}', 'classroom_form')">Nueva clase</button>
                     </center>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col s12" id="card_form"><!-- classroom form loads here --></div>
         </div>
     </div>
     <div class="col s9">
@@ -54,22 +51,4 @@ Perfil profesor
     {% endfor %}
     </div>
 </div>
-<script> 
-function load_form(){
-    $.ajax({
-        url:"{% url 'load_form_classroom' %}",
-        success:function(result){
-            $("#card_form").html(result);
-        },
-        error:function(request, status, error){
-            alert(request.responseText)
-        }
-    });
-}
-
-$(document).ready(function(){
-    $('.datepicker').datepicker();
-    $('.timepicker').timepicker();
-});
-</script>
 {% endblock body %}  
