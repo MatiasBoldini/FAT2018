@@ -38,13 +38,18 @@ def load_form_classroom_day(request):
     return render(request, 'profile_for_teacher_parts/new_day_form.html', results)
 
 def send_form_classroom(request):
-    data = {'name': request.POST.get('name'), 'description': request.POST.get('name'), 'duration': request.POST.get('name')}
-    form = ClassRoomForm(initial=data)
-    print(form.is_valid())
+    data = {'name': request.POST.get('name'), 'description': request.POST.get('description'), 'duration': request.POST.get('duration')}
+    form = ClassRoomForm(data=data)
     if form.is_valid():
-        cr = Classroom(data)
+        cr = Classroom(name=data['name'], description=data['description'], duration=data['duration'])
         cr.save()
-    return HttpResponse(form)
+    return HttpResponse(cr.id)
 
 def send_form_classroom_day(request):
-    pass
+    data = {'day': request.POST.get('day'), 'start_hour': request.POST.get('start_hour')}
+    form = ClassDayForm(data=data)
+    classroom = Classroom.objects.get(id=request.POST.get('id'))
+    if form.is_valid():
+        cd = Classroom_day(day=data['day'], start_hour=data['start_hour'], classroom=classroom)
+        cd.save()
+    return HttpResponse("well done!")

@@ -33,14 +33,6 @@ class ClassRoomForm(forms.Form):
     description = forms.CharField(label='Descripcion',max_length=256)
     duration = forms.TimeField(label='Duracion de cada turno Aprox.')
 
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        min_time = datetime.time(0, 20)# sacar de una clase definida por el admin 
-        max_time = datetime.time(0, 50)# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        duration = cleaned_data.get("duration")
-        if duration < min_time or duration > max_time:
-            self.add_error('duration', 'no cumple con el tiempo requerido')
-
 class ClassDayForm(forms.Form):
     day = forms.ChoiceField(choices=DAYS_CHOICES, label='Dia')
     start_hour = forms.IntegerField(label='Hora de inicio')
