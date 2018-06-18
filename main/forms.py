@@ -31,11 +31,11 @@ class WorkDayForm(forms.Form):
 class ClassRoomForm(forms.Form):
     name = forms.CharField(label ='Nombre de la clase', max_length=20)
     description = forms.CharField(label='Descripcion',max_length=256)
-    duration = forms.TimeField(label='Duracion de cada turno Aprox.')
+    duration = forms.TimeField(label='Duracion de cada clase Aprox.')
 
 class ClassDayForm(forms.Form):
     day = forms.ChoiceField(choices=DAYS_CHOICES, label='Dia')
-    start_hour = forms.IntegerField(label='Hora de inicio')
+    start_hour = forms.TimeField(label='Hora de inicio')
 
     # falta funcion de clean
 

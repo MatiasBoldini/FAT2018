@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from .models import *
 import datetime
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_POST, require_GET
 from django.utils import six
 from django.utils.dateparse import parse_time
@@ -38,18 +38,28 @@ def load_form_classroom_day(request):
     return render(request, 'profile_for_teacher_parts/new_day_form.html', results)
 
 def send_form_classroom(request):
-    data = {'name': request.POST.get('name'), 'description': request.POST.get('description'), 'duration': request.POST.get('duration')}
-    form = ClassRoomForm(data=data)
-    if form.is_valid():
-        cr = Classroom(name=data['name'], description=data['description'], duration=data['duration'])
-        cr.save()
-    return HttpResponse(cr.id)
+    if request.method == "POST":
+        p = Person.objects.get(user=request.user)
+        if p.user_type == 2 or 3:
+            data = {'name': request.POST.get('name'), 'description': request.POST.get('description'), 'duration': request.POST.get('duration')}
+            form = ClassRoomForm(data=data)
+            if form.is_valid():
+                cr = Classroom(name=data['name'], description=data['description'], duration=data['duration'])
+                cr.save()
+                em = Enrolment_teacher(person=p, classroom=cr)
+                em.save()
+            return JsonResponse({"id" : cr.id})
+    return redirect(profile)
 
 def send_form_classroom_day(request):
-    data = {'day': request.POST.get('day'), 'start_hour': request.POST.get('start_hour')}
-    form = ClassDayForm(data=data)
-    classroom = Classroom.objects.get(id=request.POST.get('id'))
-    if form.is_valid():
-        cd = Classroom_day(day=data['day'], start_hour=data['start_hour'], classroom=classroom)
-        cd.save()
-    return HttpResponse("well done!")
+    if request.method == "POST":
+        data = {'day': request.POST.get('day'), 'start_hour': request.POST.get('start_hour')}
+        form = ClassDayForm(data=data)
+        print(form)
+        print(form.is_valid())
+        if form.is_valid():
+            classroom = Classroom.objects.get(id=request.POST.get('id'))
+            cd = Classroom_day(day=data['day'], start_hour=data['start_hour'], classroom=classroom)
+            cd.save()
+        return HttpResponse("well done!")
+    return redirect(profile)
