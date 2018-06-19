@@ -1,0 +1,30 @@
+<div class="card-panel">
+    <form id="classroom_data">
+    {% csrf_token %}
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" type="text" required>
+                <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="{{ form.description.id_for_label }}" name="{{ form.description.html_name }}" type="text" required>
+                <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="{{ form.duration.id_for_label }}" type="text" name="{{ form.duration.html_name }}" class="timepicker" required>
+                <label for="{{ form.duration.id_for_label }}">{{ form.duration.label }}</label>
+            </div>
+        </div>
+    </form>
+    <div id="days_data"></div>
+    <div class="row">
+        <center>
+            <button class="btn btn-flat" onclick="load_chain('{% url 'load_form_classroom_day' %}', 'days_data')">Nuevo dia</button>
+            <button class="btn btn-flat" onclick="send_chain('classroom_data', '{% url 'send_form_classroom' %}', 'days_data', '{% url 'send_form_classroom_day' %}')">Enviar</button>
+        </center>
+    </div>
+</div>
