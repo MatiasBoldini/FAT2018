@@ -29,7 +29,7 @@ Perfil profesor
                         </div>
                         <div class="col s4">
                             <label>
-                                <button class="btn waves-effect waves-light green teal lighten-1 text-darken-2"> <i class="small material-icons right">edit</i>modificar clase</button>
+                                <button class="btn waves-effect waves-light green teal lighten-1 text-darken-2" onclick="load_form_data('{% url 'load_classroom_data' %}', 'classroom_form', '{{ enrolment.classroom.id }}')"><i class="small material-icons right">edit</i>modificar clase</button>
                                 <button class="btn waves-effect waves-light red teal lighten-1 text-darken-2" onclick="remove('{% url 'remove_classroom' %}', '{{ enrolment.classroom.id }}')"><i class="small material-icons right">delete</i>Eliminar clase</button>
                             </label>
                         </div>

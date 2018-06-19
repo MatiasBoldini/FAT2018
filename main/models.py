@@ -82,26 +82,21 @@ class Classroom_place(models.Model):
     capacity = models.IntegerField()
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
 
-class RelationParticipe(models.Model):
+class Appointment(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    work_day = models.ForeignKey(Work_day, on_delete=models.CASCADE)
+    time_attendance = models.TimeField()
+    authorized = models.BooleanField(default=False)
 
-    class Meta:
-        abstract = True
-
-class Enrolment(RelationParticipe):
+class Enrolment(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
 
-class Appointment(RelationParticipe):
-    work_day = models.ForeignKey(Work_day, on_delete=models.CASCADE)
-    time_attendance = models.TimeField()
-    authorized = models.BooleanField(default=False)
-
 class Enrolment_teacher(Enrolment):
-    pass
+    person = models.OneToOneField(Person, on_delete=models.CASCADE)
 
 
 class Enrolment_student(Enrolment):
-    pass
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)

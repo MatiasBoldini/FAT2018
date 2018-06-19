@@ -82,3 +82,38 @@ function load_chain(url, place){
 function load_solo(url, place){
     load_part(url, $("#"+place));
 };
+
+function load_form_data(url, element_id, id){
+    $.ajax({
+        url: url,
+        data : {
+            'id':id
+        },
+        success: function(results){
+            $("#"+element_id).html(results);
+            load_materialize();
+        },
+        error: function(request, status, error){
+            alert(request.responseText);
+        }
+    });
+};
+
+function load_chain_data(url, element_id, id){
+    var new_div = document.createElement('div');
+    new_div.className = 'row chain';
+    $('#' + element_id).append(new_div); 
+    $.ajax({
+        url: url,
+        data : {
+            'id':id
+        },
+        success: function(results){
+            $('.chain').last().html(results);
+            load_materialize();
+        },
+        error: function(request, status, error){
+            alert(request.responseText);
+        }
+    });
+}
