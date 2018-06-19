@@ -23,15 +23,12 @@ class Person(models.Model):
     def get_duties(self):
         if self.user_type == 0:
             result = None
-            print("retired duties")
         elif self.user_type == 1:
-            print("doctor duties")
             result = Work_day.objects.filter(doctor=self)
         elif self.user_type == 2:
             result = Enrolment_teacher.objects.filter(person=self)
         elif self.user_type == 3:
             result = None
-            print("admin duties")
         else:
             result = None
             print("Error: {} has a user type incorrect plase modify it".format(user.first_name))
@@ -58,6 +55,7 @@ class Classroom(models.Model):
     
     def get_classroom_days(self):
         results = Classroom_day.objects.filter(classroom=self).order_by('day')
+        print(results)
         return results
 
     def get_classroom_place(self):
@@ -82,26 +80,21 @@ class Classroom_place(models.Model):
     capacity = models.IntegerField()
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
 
-class RelationParticipe(models.Model):
+class Appointment(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    work_day = models.ForeignKey(Work_day, on_delete=models.CASCADE)
+    time_attendance = models.TimeField()
+    authorized = models.BooleanField(default=False)
 
-    class Meta:
-        abstract = True
-
-class Enrolment(RelationParticipe):
+class Enrolment(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
 
-class Appointment(RelationParticipe):
-    work_day = models.ForeignKey(Work_day, on_delete=models.CASCADE)
-    time_attendance = models.TimeField()
-    authorized = models.BooleanField(default=False)
-
 class Enrolment_teacher(Enrolment):
-    pass
+    person = models.OneToOneField(Person, on_delete=models.CASCADE)
 
 
 class Enrolment_student(Enrolment):
-    pass
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)

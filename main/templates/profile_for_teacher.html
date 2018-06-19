@@ -23,13 +23,13 @@ Perfil profesor
         <div id="{{ enrolment.classroom.id }}" class="row">
             <div class="card col s10 offset-s1 blue-grey darken-1">
                 <div class="row">
-                    <div class=" card-panel white col s12">
+                    <div class=" card-panel grey col s12">
                         <div class=" col s8">
                             <span class=" card-title center">{{ enrolment.classroom.name }}</span>
                         </div>
                         <div class="col s4">
                             <label>
-                                <button class="btn waves-effect waves-light green teal lighten-1 text-darken-2"> <i class="small material-icons right">edit</i>modificar clase</button>
+                                <button class="btn waves-effect waves-light green teal lighten-1 text-darken-2" onclick="load_form_data('{% url 'load_classroom_data' %}', 'classroom_form', '{{ enrolment.classroom.id }}')"><i class="small material-icons right">edit</i>modificar clase</button>
                                 <button class="btn waves-effect waves-light red teal lighten-1 text-darken-2" onclick="remove('{% url 'remove_classroom' %}', '{{ enrolment.classroom.id }}')"><i class="small material-icons right">delete</i>Eliminar clase</button>
                             </label>
                         </div>

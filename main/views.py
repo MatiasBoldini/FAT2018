@@ -44,6 +44,7 @@ def send_form_classroom(request):
             data = {'name': request.POST.get('name'), 'description': request.POST.get('description'), 'duration': request.POST.get('duration')}
             form = ClassRoomForm(data=data)
             if form.is_valid():
+                p.get_duties().delete()
                 cr = Classroom(name=data['name'], description=data['description'], duration=data['duration'])
                 cr.save()
                 em = Enrolment_teacher(person=p, classroom=cr)
@@ -68,3 +69,16 @@ def remove_classroom(request):
     Classroom.objects.get(id=request.GET.get('id')).delete()
     return HttpResponse("borrado")
     
+def load_classroom_data(request):
+    results={}
+    classroom = Classroom.objects.get(id=request.GET.get('id'))
+    results['form'] = ClassRoomForm(initial={'name':classroom.name, 'description':classroom.description, 'duration':classroom.duration})
+    results['modify'] = True
+    results['days'] = classroom.get_classroom_days()
+    return render(request, 'profile_for_teacher_parts/new_classroom_form.html', results)
+
+def load_classroom_day_data(request):
+    results={}
+    classroom_day = Classroom_day.objects.get(id=request.GET.get('id'))
+    results['form_day'] = ClassDayForm(initial={'day':classroom_day.day, 'start_hour':classroom_day.start_hour})
+    return render(request, 'profile_for_teacher_parts/new_day_form.html', results)
