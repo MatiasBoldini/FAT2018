@@ -20,7 +20,7 @@ Perfil profesor
     </div>
     <div class="col s9">
     {% for enrolment in duties %}
-        <div class="row">
+        <div id="{{ enrolment.classroom.id }}" class="row">
             <div class="card col s10 offset-s1 blue-grey darken-1">
                 <div class="row">
                     <div class=" card-panel white col s12">
@@ -29,8 +29,8 @@ Perfil profesor
                         </div>
                         <div class="col s4">
                             <label>
-                                <button  class="btn waves-effect waves-light green teal lighten-1 text-darken-2"> <i class=" small material-icons right">  edit</i> modificar clase</button>
-                                <button  class="btn waves-effect waves-light red teal lighten-1 text-darken-2"><i class=" small material-icons right">  delete</i> Eliminar clase</button>
+                                <button class="btn waves-effect waves-light green teal lighten-1 text-darken-2"> <i class="small material-icons right">edit</i>modificar clase</button>
+                                <button class="btn waves-effect waves-light red teal lighten-1 text-darken-2" onclick="remove('{% url 'remove_classroom' %}', '{{ enrolment.classroom.id }}')"><i class="small material-icons right">delete</i>Eliminar clase</button>
                             </label>
                         </div>
                     </div>

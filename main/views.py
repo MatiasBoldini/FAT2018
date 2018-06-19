@@ -63,3 +63,8 @@ def send_form_classroom_day(request):
             cd.save()
         return HttpResponse("well done!")
     return redirect(profile)
+
+def remove_classroom(request):
+    Classroom.objects.get(id=request.GET.get('id')).delete()
+    return HttpResponse("borrado")
+    

@@ -57,7 +57,7 @@ class Classroom(models.Model):
     duration = models.TimeField()
     
     def get_classroom_days(self):
-        results = Classroom_day.objects.filter(classroom=self)
+        results = Classroom_day.objects.filter(classroom=self).order_by('day')
         return results
 
     def get_classroom_place(self):

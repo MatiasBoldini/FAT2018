@@ -32,13 +32,27 @@ function send_solo(url, element_id){
     window.location.replace(url)
 };
 
+function remove(url, id){
+    $.ajax({
+        url: url,
+        data:{
+            'id': id
+        },
+        success: function(results){
+            $("#"+id).remove()
+        },
+        error: function(request, status, error){
+            alert(request.responseText);
+        }
+    });
+};
+
 function send_chain(first_element_id, first_url, chain_element_id, chain_url){
     var data_classroom = get_data($("#"+first_element_id)[0]);
     var classroom_id = send_form(first_url, data_classroom, false)["responseJSON"]["id"];
     var vector = $("#"+chain_element_id).find("form");
-    for(a=0; a < vector.length; a++){
+    for(a=0; a <= vector.length; a++){
         var data = get_data(vector[a]);
-        console.log(data);
         data["id"] = classroom_id;
         send_form(chain_url, data, true);
     }
