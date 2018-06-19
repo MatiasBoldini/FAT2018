@@ -4,19 +4,19 @@
         <div class="row">
             <div class="input-field col s12">
                 {{ form.name }}
-                <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+                <label class="active" for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
                 {{ form.description }}
-                <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+                <label class="active" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
                 <input id="{{ form.duration.id_for_label }}" type="text" name="{{ form.duration.html_name }}" class="timepicker" required {% if form.duration.value %}value="{{ form.duration.value }}"{% endif %}>
-                <label for="{{ form.duration.id_for_label }}">{{ form.duration.label }}</label>
+                <label class="active" for="{{ form.duration.id_for_label }}">{{ form.duration.label }}</label>
             </div>
         </div>
     </form>
@@ -31,7 +31,7 @@
 <script>
     {% if modify %}
         {% for day in days %}
-            load_chain_data('{% url 'load_form_classroom_day' %}', 'days_data', '{{ day.id }}')
+            load_chain_data('{% url 'load_classroom_day_data' %}', 'days_data', '{{ day.id }}');
         {% endfor %}
     {% endif %} 
 </script>

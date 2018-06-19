@@ -108,6 +108,7 @@ function load_chain_data(url, element_id, id){
         data : {
             'id':id
         },
+        async: false,
         success: function(results){
             $('.chain').last().html(results);
             load_materialize();
