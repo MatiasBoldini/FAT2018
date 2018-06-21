@@ -22,6 +22,17 @@ def profile(request):
     elif person.user_type == 2:
         return render(request, 'profile_for_teacher.html', results)
     elif person.user_type == 3:
+        results['retireds'] = Person.objects.filter(user_type=0)
+        results['doctors'] = Person.objects.filter(user_type=1)
+        results['teachers'] = Person.objects.filter(user_type=2)
+        results['classrooms'] = Classroom.objects.all()
+        results['appointments'] = Appointment.objects.all()
+        results['person_requests'] = Person_request.objects.all()
+        results['classroom_requests'] = Classroom_request.objects.all()
+        results['enrolment_teacher_requests'] = Enrolment_teacher_request.objects.all()
+        results['enrolment_student_requests'] = Enrolment_student_request.objects.all()
+        results['work_day_requests'] = Work_day_request.objects.all()
+        results['appointment_requests'] = Appointment.objects.filter(person__isnull=False, authorized=False)
         return render(request, 'profile_for_admin.html', results)
     else:
         print("hacker")
