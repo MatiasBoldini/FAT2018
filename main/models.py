@@ -17,7 +17,7 @@ class Person(models.Model):
         elif self.user_type == 2:
             results['enrolments'] = Enrolment_teacher.objects.filter(person=self)
         else:
-            print("Error: {} has a user type incorrect plase modify it".format(user.first_name))
+            print("Error: {} has a user type incorrect plase modify it".format(self.user.first_name))
         return results
 
     def delete_duties(self):

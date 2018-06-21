@@ -22,7 +22,7 @@ def profile(request):
     elif person.user_type == 2:
         return render(request, 'profile_for_teacher.html', results)
     elif person.user_type == 3:
-        print("admin")
+        return render(request, 'profile_for_admin.html', results)
     else:
         print("hacker")
 
