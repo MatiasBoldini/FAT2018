@@ -26,7 +26,7 @@ def profile(request):
         results['doctors'] = Person.objects.filter(user_type=1)
         results['teachers'] = Person.objects.filter(user_type=2)
         results['classrooms'] = Classroom.objects.all()
-        results['appointments'] = Appointment.objects.all()
+        results['appointments'] = Appointment.objects.filter(person__isnull=False, authorized=True)
         results['person_requests'] = Person_request.objects.all()
         results['classroom_requests'] = Classroom_request.objects.all()
         results['enrolment_teacher_requests'] = Enrolment_teacher_request.objects.all()
