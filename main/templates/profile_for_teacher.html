@@ -27,12 +27,6 @@ Perfil profesor
                         <div class=" col s8">
                             <span class=" card-title center">{{ enrolment.classroom.name }}</span>
                         </div>
-                        <div class="col s4">
-                            <label>
-                                <button class="btn waves-effect waves-light green teal lighten-1 text-darken-2"> <i class="small material-icons right">edit</i>modificar clase</button>
-                                <button class="btn waves-effect waves-light red teal lighten-1 text-darken-2" onclick="remove('{% url 'remove_classroom' %}', '{{ enrolment.classroom.id }}')"><i class="small material-icons right">delete</i>Eliminar clase</button>
-                            </label>
-                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -44,11 +38,76 @@ Perfil profesor
                     <div class="card-panel grey"> 
                         <span>{{ enrolment.classroom.get_next_day.get_day_display }}</span>
                         <span>{{ enrolment.classroom.get_next_day.start_hour}}</span>
+                        <a class=" btn-flat waves-effect  modal-trigger center-align " href="#modal3"> ver alumnos</a>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col s12 m12 l12 xl12 ">
+                        <button style=""  class="btn-flat waves-effect waves-light  modal-trigger col s12 blue-grey  text-darken-2"  href="#modal1"> modificar clase</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 m12 l12 xl12 center-align">
+                        <button  style="" class="btn-flat waves-effect waves-light col s12  text-darken-2 blue-grey modal-trigger z-depth-5"  href="#modal2"> Eliminar clase </button>
+                    </div>
+                </div>
+            
+            
+            
             </div>
         </div>
+        
+        <div id="modal2" class="modal ">
+    <div class="modal-content">
+      <h4>Confirmacion</h4>
+      <p>Esta seguro que desea eliminar la clase {{ enrolment.classroom.name }} si hace esto la clase no volvera a estar disponible nunca mas 
+         y todos los alumnos seran desmatriculados</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat" onclick="remove('{% url 'remove_classroom' %}', '{{ enrolment.classroom.id }}')"> Aceptar</a>
+    </div>
+  </div>
+        
+        <div id="modal3" class="modal">
+    <div class="modal-content">
+           <table>
+        <thead>
+          <tr>
+              <th> Nombre Completo</th>
+              <th> Mail</th>
+              <th> DNI </th>
+              <th>mas opciones</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>Roberto Almada</td>
+            <td> no tiene</td>
+            <td> 1255453</td>
+            <td> <button class="btn-flat"> ver mas </button></td>  
+          </tr>
+         
+        </tbody>
+      </table>
+            
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close waves-effect waves-green btn-flat">cerrar</a>
+    </div>
+  </div>
+        
     {% endfor %}
     </div>
 </div>
+
+
 {% endblock body %}  
+
+<!-- desde aca empiezan los modals -->
+
+
+
+        
+<!-- aca terminan -->

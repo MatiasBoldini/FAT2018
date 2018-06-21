@@ -1,6 +1,7 @@
 function load_materialize(){
     $('.timepicker').timepicker({'twelveHour':false, 'defaultTime': '00:00'});
     $('select').formSelect();
+    $('.modal').modal();
 };
 
 function get_data(form){

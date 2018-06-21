@@ -3,13 +3,13 @@
     {% csrf_token %}
         <div class="row">
             <div class="input-field col s12">
-                <input id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}" type="text" required>
+                <input id="{{ form.name.id_for_label }}" name="{{ form.name.html_name }}"  type="text" required>
                 <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input id="{{ form.description.id_for_label }}" name="{{ form.description.html_name }}" type="text" required>
+                <input id="{{ form.description.id_for_label }}" name="{{ form.description.html_name }}" class="materialize-textarea  " type="text"  required data-length="{{ form.description.max_length }}">
                 <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
             </div>
         </div>
@@ -28,3 +28,12 @@
         </center>
     </div>
 </div>
+<script>
+$(document).ready(function() {
+    $('textarea#{{ form.description.id_for_label }}').characterCounter();
+});
+    
+  $('{{ form.description.id_for_label }}').val('New Text');
+  M.textareaAutoResize($('#{{ form.description.id_for_label }}'));  
+    
+</script>
