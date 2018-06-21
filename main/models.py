@@ -146,3 +146,7 @@ class Enrolment_teacher_record(models.Model):
 class Enrolment_student_record(models.Model):
     classroom = models.ForeignKey(Classroom_record, on_delete=models.CASCADE)
     person = models.ForeignKey(Person_record, on_delete=models.CASCADE)
+
+class Notification(models.Model):
+    person = models.ForeignKey(Person, on_delete=models.CASCADE)
+    message = models.TextField(max_length=256)
