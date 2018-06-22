@@ -88,3 +88,15 @@ def load_classroom_day_data(request):
     classroom_day = Classroom_day.objects.get(id=request.GET.get('id'))
     results['form_day'] = ClassDayForm(initial={'day':classroom_day.day, 'start_hour':classroom_day.start_hour})
     return render(request, 'profile_for_teacher_parts/new_day_form.html', results)
+
+def person_requests(request):
+    if request.method == "POST":
+        person_id = request.POST.get("id")
+        person_request = Person_request.objects.get(id=person_id)
+        if int(request.POST.get('approved')):
+            new_person = Person(user=person_request.user, user_type=person_request.user_type)
+            new_person.save()
+        else:
+            person_request.user.delete()
+        person_request.delete()
+    return redirect(profile)

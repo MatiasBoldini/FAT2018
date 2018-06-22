@@ -10,4 +10,5 @@ urlpatterns = [
     path('remove_classroom', remove_classroom, name='remove_classroom'),
     path('load_classroom_data', load_classroom_data, name='load_classroom_data'),
     path('load_classroom_day_data', load_classroom_day_data, name='load_classroom_day_data'),
+    path('person_requests', person_requests, name='person_requests'),
 ]
