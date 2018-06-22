@@ -1,0 +1,98 @@
+{% extends 'mainBase.html' %}
+{% load static %}
+{% block imports %}
+{% endblock imports %}
+{% block title %}
+Perfil profesor
+{% endblock title %}  
+{% block body %}
+<div class="row">       
+    <div class="col s6 m6 x4 xl4 ">
+        <div class="card-panel blue-grey darken-1 ">
+            <div class="card-content white-text grey-ligthen-3">
+                <h4 class="center-align">Programacion</h4>
+            </div>
+            <ul class="white collapsible" id="id">
+                      <li class="">
+                            <div class="collapsible-header hoverable grey lighten-3">
+                               <h5 class=" tooltipped "  data-position="right" data-tooltip=" Click para ver mas" exitDelay="0.1" > Descripción</h5>
+                            </div>
+                            <div class="collapsible-body " >
+                            <h6>
+                               este es un texto de relleno que sirve para ver como quedaria una descripcion en este lugar por lo que este texto no comunica nada realmente util
+                                
+                                </h6>
+                            
+                            </div>
+                        </li>  
+                      <li class="">
+                            <div class="collapsible-header hoverable   grey lighten-3" >
+                                <h5 class=" tooltipped "  data-position="right" data-tooltip=" Click para ver mas" exitDelay="0.1" > Informacion</h5>
+                            </div>
+                            <div class="collapsible-body " >
+                        <table>  
+                            <thead>
+                              <tr>
+                                  <th>Dia</th>
+                                  <th> hora </th>
+                                  <th>duracion </th>
+                                  <th> curso</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>miercoles</td>
+                                <td>9.30 am</td>
+                                <td>30 min </td>
+                                <td>Sala A</td>  
+                              </tr>
+                              <tr>
+                                <td>viernes</td>
+                                <td>8.00 am</td>
+                                <td>30 min </td>
+                                <td>Sala A</td> 
+                            </tr>
+                                 </tbody>
+                        </table>                                
+                        </div>
+                        
+              
+                        </li> 
+            </ul>  
+            <div class="row">
+            <div class="col s12"><button  style="" class="btn-flat waves-effect waves-light col s12  grey-text  blue-grey darken-4 modal-trigger z-depth-5"  href="#modal2"> Matricularse </button></div>
+            </div>
+        </div>
+
+</div>
+    </div>
+
+<div id="modal2" class="modal">
+<div class="modal-content">
+  <h4>Confirmacion</h4>
+  <p>esta seguro que desea matricularse</p>
+</div>
+<div class="modal-footer">
+  <a href="#!" class="modal-close green waves-effect waves-green btn"> <i class="material-icons right">check</i>aceptar</a>
+  <a href="#!" class="modal-close red waves-effect waves-green btn"><i class="material-icons right">clear</i> cancelar</a>
+  
+
+</div>
+</div>
+        
+        
+
+        
+        
+        
+<script>
+
+$(document).ready(function(){
+$('.collapsible').collapsible();
+$('.modal').modal();
+$('.tooltipped').tooltip();
+});
+
+</script>
+
+{% endblock body %}
