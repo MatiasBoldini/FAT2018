@@ -1,6 +1,8 @@
 function load_materialize(){
     $('.timepicker').timepicker({'twelveHour':false, 'defaultTime': '00:00'});
     $('select').formSelect();
+    $('.collapsible').collapsible();
+    $('.dropdown-trigger').dropdown();
 };
 
 function get_data(form){

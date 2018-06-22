@@ -15,10 +15,14 @@ class Person(models.Model):
         elif self.user_type == 1:
             results['work_days'] = Work_day.objects.filter(doctor=self)
         elif self.user_type == 2:
-            results['classrooms'] = Enrolment_teacher.objects.filter(person=self)
+            results['enrolments'] = Enrolment_teacher.objects.filter(person=self)
         else:
-            print("Error: {} has a user type incorrect plase modify it".format(user.first_name))
+            print("Error: {} has a user type incorrect plase modify it".format(self.user.first_name))
         return results
+
+    def delete_duties(self):
+        if self.user_type == 2:
+            Enrolment_teacher.objects.filter(person=self).delete()
 
 class Classroom_place(models.Model):
     room = models.IntegerField()
@@ -94,7 +98,6 @@ class Classroom_day_request(models.Model):
     classroom = models.ForeignKey(Classroom_request, on_delete=models.CASCADE)
     day = models.IntegerField()
     start_hour = models.TimeField()
-    user = models.ForeignKey(Person, on_delete=models.CASCADE)
 
 class Enrolment_teacher_request(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
