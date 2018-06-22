@@ -1,0 +1,97 @@
+{% extends 'mainBase.html' %}
+{% load static %}
+{% block imports %}
+{% endblock imports %}
+{% block title %}
+Perfil profesor
+{% endblock title %}  
+{% block body %}
+
+<div class="row"> 
+    <div class=" card-panel col s2 "> 
+    <div> 
+        <div class="row col s12"> 
+            <label for="filter1"> Fecha </label> 
+            <input id="filter1" type="text" class="datepicker"> 
+        </div>
+        <div class="row col s12">  <a class="waves-effect waves-light btn"><i class="material-icons right">search</i>buscar</a>  </div>
+        
+        </div>
+ </div>
+    <div class="col s10 ">
+        <div class="card-panel blue-grey darken-1 ">
+            <div class="card-content white-text grey-ligthen-3">
+                <h4 class="center-align">turnos</h4>
+            </div>
+            <ul class="whites collapsible" id="id">
+                        
+                      <li class="">
+                            <div class="collapsible-header hoverable   grey lighten-3" >
+                                <h5 class=" tooltipped "  data-position="right" data-tooltip=" Click para ver mas" exitDelay="0.1"> 5/6 </h5>
+                            </div>
+                            <div class="collapsible-body white " >
+                        <table>  
+                            <thead>
+                              <tr>
+                                  <th> Medico</th>
+                                  <th>Dia</th>
+                                  <th> hora </th>
+                                  <th>duracion </th>
+                                  <th> </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                  <td>DR. mengeche</td>
+                                <td>miercoles</td>
+                                <td>9.30 am</td>
+                                <td>30 min </td>
+                                  <td><div class="col s12"><button  style="" class="btn-flat waves-effect waves-light col s12  grey-text  blue-grey darken-4 modal-trigger z-depth-5"  href="#modal2"> solicitar </button></div></td>
+                              </tr>
+                              
+                                 </tbody>
+                        </table>                                
+                        </div>
+                        
+              
+                        </li> 
+            </ul>  
+            
+        </div>
+
+</div>
+    </div>
+
+<div id="modal2" class="modal">
+<div class="modal-content">
+  <h4>Confirmacion</h4>
+  <p>esta seguro que desea solicitar este turno</p>
+</div>
+<div class="modal-footer">
+  <a href="#!" class="modal-close green waves-effect waves-green btn"> <i class="material-icons right">check</i>aceptar</a>
+  <a href="#!" class="modal-close red waves-effect waves-green btn"><i class="material-icons right">clear</i> cancelar</a>
+  
+
+</div>
+</div>
+        
+        
+
+        
+        
+        
+<script>
+
+$(document).ready(function(){
+$('.collapsible').collapsible();
+$('.modal').modal();
+$('.tooltipped').tooltip();
+$('.datepicker').datepicker();
+
+});
+
+</script>
+
+
+
+{% endblock body %}
