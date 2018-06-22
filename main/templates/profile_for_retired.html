@@ -1,0 +1,131 @@
+{% extends 'mainBase.html' %}
+{% load static %}
+{% block imports %}
+{% endblock imports %}
+{% block title %}
+Perfil profesor
+{% endblock title %}  
+{% block body %}
+<div class="row "> 
+    
+    <div class=" col s6 ">
+        <div class="card horizontal grey darken-2  ">
+            <div class="card-stacked">
+              <div class="card-content">
+              <h5 class="white-text"> Turnos </h5>
+              <p class="white-text">previsulizacion de los turnos solicitados .</p>
+              <ul class="collapsible white ">
+                <li>
+                  <div class="collapsible-header"> <h6>5/6</h6></div>
+                  <div class="collapsible-body">
+                        <table>
+                                <thead>
+                                  <tr>
+                                      <th>doctor</th>
+                                      <th>horario</th>
+                                      <th> </th>
+                                  </tr>
+                                </thead>
+                        
+                                <tbody>
+                                  <tr>
+                                    <td> Dr.mengele </td>
+                                    <td> 7:10</td>
+                                    <td>  <a class="waves-effect waves-light red btn modal-trigger "  href="#modaldisappoint"><i class="material-icons right">delete</i> eliminar </a>  </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+
+                  </div>
+                </li>
+                
+              </ul>  
+                 
+              <div id="modaldisappoint" class="modal ">
+                    <div class="modal-content">
+                      <h4>Confirmacion</h4>
+                      <p>Esta seguro que desea cancelar el turno</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class="modal-close waves-effect waves-green btn-flat"> Cancelar</a>
+                        <a href="#!" class="modal-close waves-effect waves-green btn-flat"> Aceptar</a>
+                    </div>
+                  </div>
+              
+              </div>
+              <div class="card-action">
+                <a href="#">Solicitar un turno  </a>
+              </div>
+            </div>
+          </div>
+    </div>
+
+    <div class=" col s6 ">
+            <div class="card horizontal grey darken-2  ">
+                <div class="card-stacked">
+                  <div class="card-content">
+                  <h5 class="white-text"> Clases </h5>
+                  <p class="white-text">previsulizacion de las clases a las que asisto .</p>
+                  <ul class="collapsible white ">
+                    <li>
+                      <div class="collapsible-header"> <h6>Jazz</h6></div>
+                      <div class="collapsible-body">
+                            <table>
+                                    <thead>
+                                      <tr>
+                                          <th>Profesor</th> 
+                                          <th>salon</th>
+                                          <th> horarios </th>
+                                          <th> </th>
+                                        </tr>
+                                    </thead>
+                            
+                                    <tbody>
+                                      <tr>
+                                       <td> luis amnstrong </td>
+                                        <td> 7:10 am</td>
+                                        <td> 15:30 lunes </td>
+                                        <td>  <a class="waves-effect waves-light red btn modal-trigger "  href="#modaldelete"><i class="material-icons right">delete</i> Desmatricular </a>  </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+    
+                      </div>
+                    </li>
+                    
+                  </ul>  
+                     
+                  <div id="modaldelete" class="modal ">
+                        <div class="modal-content">
+                          <h4>Confirmacion</h4>
+                          <p>Esta seguro que desea desmtricularse</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat"> Cancelar</a>
+                            <a href="#!" class="modal-close waves-effect waves-green btn-flat"> Aceptar</a>
+                        </div>
+                      </div>
+                  
+                  </div>
+                  <div class="card-action">
+                    <a href="#"> matriularse a una nueva clase  </a>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<script>
+
+  $(document).ready(function(){
+    $('.collapsible').collapsible();
+    $('.modal').modal();
+});
+        
+</script>
+{% endblock body %}  
