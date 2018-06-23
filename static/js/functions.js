@@ -121,14 +121,16 @@ function load_chain_data(url, element_id, id){
     });
 }
 
-function confirm_request(id, url, approved){
+function confirm_request(id, url, approved, element_id){
     if(confirm("Esta seguro?")){
+        var other_id = $("#"+element_id).val()
         $.ajax({
             method:"POST",
             url:url,
             data:{
                 'id':id,
                 'approved': approved,
+                'other_id': other_id,
                 'csrfmiddlewaretoken': getCookie('csrftoken')
             },
             success:function(){

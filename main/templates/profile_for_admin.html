@@ -95,6 +95,14 @@
 									<p>Descripcion: {{ classroom_request.description }}</p>
 									<p>Duracion: {{ classroom_request.duration }}</p>
 									<p>Profesor solicitante: {{ classroom_request.teacher.user.get_full_name }}</p>
+									<div class="input-field col s12">
+										<select id="select_place">
+											{% for classroom_place in classroom_places %}
+												<option value="{{ classroom_place.id }}">Salon: {{ classroom_place.room }} - capacidad {{ classroom_place.capacity }}</option>
+											{% endfor %}	
+										</select>
+										<label class="black-text">Lugar</label>
+									</div>
 									<div class="row">
 										<table>
 											<thead>
@@ -115,7 +123,7 @@
 									</div>
 									<div class="row">
 										<center>
-											<a class="waves-effect waves-light btn green"><i class="small material-icons right">check</i>Aceptar</a>													
+											<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ classroom_request.id }}', '{% url 'classroom_requests' %}', '1', 'select_place')"><i class="small material-icons right">check</i>Aceptar</a>													
 											<a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Rechazar</a>
 										</center>
 									</div>
