@@ -83,6 +83,9 @@ class Classroom(models.Model):
                 return classroom_day
         return classroom_days.first()
 
+    def get_students(self):
+        results = Enrolment_student.objects.filter(classroom=self)
+        return results
 
 class Classroom_day(models.Model):
     classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)

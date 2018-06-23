@@ -123,11 +123,21 @@ def classroom_requests(request):
 
 def enrolment_teacher_requests(request):
     if request.method == "POST":
-        enrolment_student_request_id = request.POST.get("id")
-        enrolment_student_request = Enrolment_teacher_request.objects.get(id=enrolment_student_request_id)
+        enrolment_teacher_request_id = request.POST.get("id")
+        enrolment_teacher_request = Enrolment_teacher_request.objects.get(id=enrolment_student_request_id)
         if int(request.POST.get('approved')):
-            new_enrolment_student_request, created = Enrolment_teacher.objects.get_or_create(person=enrolment_student_request.person)
-            new_enrolment_student_request.classroom = enrolment_student_request.classroom
+            new_enrolment_teacher_request, created = Enrolment_teacher.objects.get_or_create(person=enrolment_student_request.person)
+            new_enrolment_teacher_request.classroom = enrolment_teacher_request.classroom
+            new_enrolment_teacher_request.save()
+        enrolment_teacher_request.delete()
+    return redirect(profile)
+
+def enrolment_student_requests(request):
+    if request.method == "POST":
+        enrolment_student_request_id = request.POST.get("id")
+        enrolment_student_request = Enrolment_student_request.objects.get(id=enrolment_student_request_id)
+        if int(request.POST.get('approved')):
+            new_enrolment_student_request, created = Enrolment_student.objects.get_or_create(person=enrolment_student_request.person, classroom=enrolment_student_request.classroom)
             new_enrolment_student_request.save()
         enrolment_student_request.delete()
     return redirect(profile)

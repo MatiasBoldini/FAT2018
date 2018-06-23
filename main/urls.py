@@ -13,4 +13,5 @@ urlpatterns = [
     path('person_requests', person_requests, name='person_requests'),
     path('classroom_requests', classroom_requests, name='classroom_requests'),
     path('enrolment_teacher_requests', enrolment_teacher_requests, name='enrolment_teacher_requests'),
+    path('enrolment_student_requests', enrolment_student_requests, name='enrolment_student_requests'),
 ]
