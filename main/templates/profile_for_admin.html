@@ -124,7 +124,7 @@
 									<div class="row">
 										<center>
 											<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ classroom_request.id }}', '{% url 'classroom_requests' %}', '1', 'select_place')"><i class="small material-icons right">check</i>Aceptar</a>													
-											<a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Rechazar</a>
+											<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ classroom_request.id }}', '{% url 'classroom_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
 										</center>
 									</div>
 								</div>
@@ -138,8 +138,8 @@
 								<div class="collapsible-body blue-grey lighten-4">     
 									<p>Profesor solicitante: {{ enrolment_teacher_request.person.user.get_full_name }}</p>
 									<center>
-										<a class="waves-effect waves-light btn green"><i class="small material-icons right">check</i>Aceptar</a>													
-										<a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Rechazar</a>
+										<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ enrolment_teacher_request.id }}', '{% url 'enrolment_teacher_requests' %}', '1')"><i class="small material-icons right">check</i>Aceptar</a>													
+										<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ enrolment_teacher_request.id }}', '{% url 'enrolment_teacher_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
 									</center>
 								</div>
 							</li>		

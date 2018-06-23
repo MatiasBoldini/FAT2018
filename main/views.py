@@ -120,3 +120,14 @@ def classroom_requests(request):
                 new_classroom_day.save()
         classroom_request.delete()
     return redirect(profile)
+
+def enrolment_teacher_requests(request):
+    if request.method == "POST":
+        enrolment_student_request_id = request.POST.get("id")
+        enrolment_student_request = Enrolment_teacher_request.objects.get(id=enrolment_student_request_id)
+        if int(request.POST.get('approved')):
+            new_enrolment_student_request, created = Enrolment_teacher.objects.get_or_create(person=enrolment_student_request.person)
+            new_enrolment_student_request.classroom = enrolment_student_request.classroom
+            new_enrolment_student_request.save()
+        enrolment_student_request.delete()
+    return redirect(profile)
