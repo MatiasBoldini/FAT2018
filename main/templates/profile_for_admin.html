@@ -13,23 +13,52 @@
 			<div id="card" class="card-panel brown darken-2">
 				<ul class="collapsible popout">
 					<span class="white-text"><center><font size="4">Clases</font></center></span>
-					<li>	
-						<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">Clases 1</div>
-						<div class="collapsible-body blue-grey lighten-4" style="font-size: 15px;">
-								content	
-						</div>
-					</li>	
+					{% for classroom in classrooms %}
+						<li>	
+							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">{{ classroom.name }}</div>
+							<div class="collapsible-body blue-grey lighten-4">
+								{% for teacher in classroom.get_teachers %}
+									<p>profesor: {{ teacher.person.user.get_full_name }}</p>
+								{% endfor %}
+								<p>Alumnos inscriptos: {{ classroom.get_students.count }}</p>
+								<table>
+									<thead>
+										<tr>
+											<th>Dia</th>
+											<th>Hora</th>
+											<th>Capacidad</th>
+										</tr>
+									</thead>
+									<tbody>
+									{% for day in classroom.get_classroom_days %}
+										<tr>
+										<td>{{ day.get_day_display }}</td>
+										<td>{{ day.start_hour }}</td>
+										<td>{{ day.classroom_place.capacity }}</td>
+										</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+						</li>	
+					{% endfor %}	
 				</ul>
 			</div>
 			<div id="card" class="card-panel brown darken-2">
 				<ul class="collapsible popout">
 					<span class="white-text"><center><font size="4">Turnos</font></center></span>
-					<li>	
-						<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">Turnos 1</div>
-						<div class="collapsible-body blue-grey lighten-4" style="font-size: 15px;">
-								content	
-						</div>
-					</li>   
+					{% for appointment in appointments %}
+						<li>	
+							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">{{ appointment.work_day.doctor.user.get_full_name }}</div>
+							<div class="collapsible-body blue-grey lighten-4">
+								<p>Dia: {{ appointment.work_day.day }}</p>
+								<p>Hora: {{ appointment.time_attendance }}</p>
+								{% if appointment.person %}
+									<p>Paciente: {{ appointment.person.user.get_full_name }}</p>
+								{% endif %}
+							</div>
+						</li>	
+					{% endfor %}
 				</ul>						    						    													
 			</div>	 			        
 		</div>
@@ -43,18 +72,124 @@
 					</div>
 					<div class="row col s12">
 						<ul class="collapsible popout">
+							{% for person in person_requests %}
 							<li>
 								<div class="collapsible-header blue-grey lighten-4">
-									<font size="5">Titulo</font>
+									<font size="5">Solicitud de creacion de {{ person.get_user_type_display }}</font>
 								</div>
 								<div class="collapsible-body blue-grey lighten-4">     
-									<span>Descripcion</span>
+									<p>Nombre: {{ person.user.get_full_name }}</p>
+									<p>DNI: {{ person.user }}</p>
+									<center>
+										<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ person.id }}', '{% url 'person_requests' %}', '1')"><i class="small material-icons right">check</i>Aceptar</a>													
+										<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ person.id }}', '{% url 'person_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
+									</center>
+								</div>
+							</li>		
+							{% endfor %}
+							{% for classroom_request in classroom_requests %}
+							<li>
+								<div class="collapsible-header blue-grey lighten-4">
+									<font size="5">Solicitud de crear clase: {{ classroom_request.name }}</font>
+								</div>
+								<div class="collapsible-body blue-grey lighten-4">     
+									<p>Descripcion: {{ classroom_request.description }}</p>
+									<p>Duracion: {{ classroom_request.duration }}</p>
+									<p>Profesor solicitante: {{ classroom_request.teacher.user.get_full_name }}</p>
+									<div class="input-field col s12">
+										<select id="select_place">
+											{% for classroom_place in classroom_places %}
+												<option value="{{ classroom_place.id }}">Salon: {{ classroom_place.room }} - capacidad {{ classroom_place.capacity }}</option>
+											{% endfor %}	
+										</select>
+										<label class="black-text">Lugar</label>
+									</div>
+									<div class="row">
+										<table>
+											<thead>
+												<tr>
+													<th>Dias</th>
+													<th>Hora</th>
+												</tr>
+											</thead>
+											<tbody>
+											{% for day in classroom_request.get_days %}
+												<tr>
+												<td>{{ day.get_day_display }}</td>
+												<td>{{ day.start_hour }}</td>
+												</tr>
+											{% endfor %}
+											</tbody>
+										</table>
+									</div>
+									<div class="row">
+										<center>
+											<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ classroom_request.id }}', '{% url 'classroom_requests' %}', '1', 'select_place')"><i class="small material-icons right">check</i>Aceptar</a>													
+											<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ classroom_request.id }}', '{% url 'classroom_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
+										</center>
+									</div>
+								</div>
+							</li>		
+							{% endfor %}
+							{% for enrolment_teacher_request in enrolment_teacher_requests %}
+							<li>
+								<div class="collapsible-header blue-grey lighten-4">
+									<font size="5">Solicitud de ser profesor de la clase {{ enrolment_teacher_request.classroom.name }}</font>
+								</div>
+								<div class="collapsible-body blue-grey lighten-4">     
+									<p>Profesor solicitante: {{ enrolment_teacher_request.person.user.get_full_name }}</p>
+									<center>
+										<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ enrolment_teacher_request.id }}', '{% url 'enrolment_teacher_requests' %}', '1')"><i class="small material-icons right">check</i>Aceptar</a>													
+										<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ enrolment_teacher_request.id }}', '{% url 'enrolment_teacher_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
+									</center>
+								</div>
+							</li>		
+							{% endfor %}
+							{% for enrolment_student_request in enrolment_student_requests %}
+							<li>
+								<div class="collapsible-header blue-grey lighten-4">
+									<font size="5">Solicitud para participar en la clase: {{ enrolment_student_request.classroom.name }}</font>
+								</div>
+								<div class="collapsible-body blue-grey lighten-4">     
+									<p>Persona solicitante: {{ enrolment_student_request.person.user.get_full_name }}</p>
+									<center>
+										<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ enrolment_student_request.id }}', '{% url 'enrolment_student_requests' %}', '1')"><i class="small material-icons right">check</i>Aceptar</a>													
+										<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ enrolment_student_request.id }}', '{% url 'enrolment_student_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
+									</center>
+								</div>
+							</li>		
+							{% endfor %}
+							{% for work_day_request in work_day_requests %}
+							<li>
+								<div class="collapsible-header blue-grey lighten-4">
+									<font size="5">Solicitud de dia de trabajo: {{ work_day_request.day }}</font>
+								</div>
+								<div class="collapsible-body blue-grey lighten-4">     
+									<p>Doctor solicitante: {{ work_day_request.doctor.user.get_full_name }}</p>
 									<center>
 										<a class="waves-effect waves-light btn green"><i class="small material-icons right">check</i>Aceptar</a>													
 										<a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Rechazar</a>
 									</center>
 								</div>
-							</li>																																										
+							</li>		
+							{% endfor %}
+							{% for appointment_request in appointment_requests %}
+							<li>
+								<div class="collapsible-header blue-grey lighten-4">
+									<font size="5">Solicitud de turno con el doctor: {{ appointment_request.work_day.doctor.user.get_full_name }}</font>
+								</div>
+								<div class="collapsible-body blue-grey lighten-4">     
+									<p>Persona solicitante: {{ appointment_request.person.user.get_full_name }}</p>
+									<p>Dia: {{ appointment_request.work_day.day }}</p>
+									<p>Hora: {{ appointment_request.time_attendance }}</p>
+									<center>
+										<a class="waves-effect waves-light btn green"><i class="small material-icons right">check</i>Aceptar</a>													
+										<a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Rechazar</a>
+									</center>
+								</div>
+							</li>		
+							{% endfor %}
+
 						</ul>
 					</div>
 				</div>
@@ -64,26 +199,30 @@
 			<div id="card" class="card-panel brown darken-2">
 				<div class="row">
 					<ul class="collapsible popout">
-							<span class="white-text"><center><font size="4">Profesores</font></center></span>
+						<span class="white-text"><center><font size="4">Profesores</font></center></span>
+						{% for teacher in teachers %}
 						<li>	
-							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">Profesor 1</div>
+							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">{{ teacher.user.get_full_name }}</div>
 							<div class="collapsible-body blue-grey lighten-4">
-									content
+								dni: {{ teacher.user }}
 							</div>
 						</li>	
+						{% endfor %}
 					</ul>
 				</div>
 			</div>
 			<div id="card" class="card-panel brown darken-2">
 				<div class="row">
 					<ul class="collapsible popout">
-							<span class="white-text"><center><font size="4">Jubilados</font></center></span>
+						<span class="white-text"><center><font size="4">Jubilados</font></center></span>
+						{% for retired in retireds %}
 						<li>	
-							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">Jubilado 1</div>
+							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">{{ retired.user.get_full_name }}</div>
 							<div class="collapsible-body blue-grey lighten-4">
-								content
+								dni: {{ retired.user }}
 							</div>
 						</li>	
+						{% endfor %}
 					</ul>
 				</div>
 			</div>
@@ -91,12 +230,14 @@
 				<div class="row">
 					<ul class="collapsible popout">
 						<span class="white-text"><center><font size="4">Doctores</font></center></span>
+						{% for doctor in doctors %}
 						<li>	
-							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">Doctor 1</div>
+							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">{{ doctor.user.get_full_name }}</div>
 							<div class="collapsible-body blue-grey lighten-4">
-									content
+								dni: {{ doctor.user }}
 							</div>
 						</li>	
+						{% endfor %}	
 					</ul>
 				</div>
 			</div>											

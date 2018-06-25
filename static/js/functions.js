@@ -120,3 +120,41 @@ function load_chain_data(url, element_id, id){
         }
     });
 }
+
+function confirm_request(id, url, approved, element_id){
+    if(confirm("Esta seguro?")){
+        var other_id = $("#"+element_id).val()
+        $.ajax({
+            method:"POST",
+            url:url,
+            data:{
+                'id':id,
+                'approved': approved,
+                'other_id': other_id,
+                'csrfmiddlewaretoken': getCookie('csrftoken')
+            },
+            success:function(){
+                window.location.replace(url)
+            },
+            error: function(request, status, error){
+                alert(request.responseText);
+            }
+        })
+    }
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
