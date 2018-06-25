@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
         <script src="{% static 'js/functions.js' %}"></script>
         {% block imports %}
         {% endblock imports %}
@@ -17,10 +18,10 @@
             {% endblock title %}        
         </title>
     </head>
-    <body class="indigo lighten-3">
+    <body class="indigo lighten-4">
         <nav>
             <div class="nav-wrapper indigo lighten-1">
-                <a href="" class="brand-logo"><i class="material-icons">menu</i></a>
+                <a href="" class="brand-logo"><i class="material-icons">home</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     {% block navbar %}
                     {% endblock navbar %}
