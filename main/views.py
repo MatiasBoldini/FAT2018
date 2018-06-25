@@ -141,3 +141,24 @@ def enrolment_student_requests(request):
             new_enrolment_student_request.save()
         enrolment_student_request.delete()
     return redirect(profile)
+
+def my_login(request):
+    if request.user.is_authenticated:
+        return redirect(profile)
+    results={}
+    if request.method == "POST":
+        username = request.POST.get("personal_id")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect(profile)
+        results['error'] = "Usuario o contraseña incorrectos" 
+    return render(request, 'login.html', results)
+
+def my_register(request):
+    return render(request, 'register.html')
+
+def my_logout(request):
+    logout(request)
+    return redirect(my_login)

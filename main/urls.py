@@ -3,6 +3,9 @@ from .views import *
 
 urlpatterns = [
     path('profile', profile, name='profile'),
+    path('my_login', my_login, name='my_login'),
+    path('my_register', my_register, name='my_register'),
+    path('my_logout', my_logout, name='my_logout'),
     path('load_form_classroom', load_form_classroom, name='load_form_classroom'),
     path('load_form_classroom_day', load_form_classroom_day, name='load_form_classroom_day'),
     path('send_form_classroom', send_form_classroom, name='send_form_classroom'),

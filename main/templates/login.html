@@ -3,30 +3,41 @@
 {% block imports %}
 {% endblock imports %}
 {% block title %}
-Log In
+Identificacion
 {% endblock title %}  
 {% block body %}
-
 <img src="{% static 'img/mariposa.jpg' %}" style="position:absolute; width:100%; height:104%;">
-
 <div class="row">
-	<div class="col s5" style="margin-left:30px; margin-top:30px">
-		<div class="card blue-grey darken-1">
-			<div class="card-content white-text">
-				<span class="card-title">Iniciar Sesión</span>
-				<div class="row">
-					<div class="input-field col s12">
-						<input placeholder="" id="name" type="text" class="validate">
-						<label for="first_name">Nombre</label>
-					</div>
+	<br>
+	<div class="col s5">
+		<div class="col s11 offset-s1">
+			<div class="card blue-grey darken-1">
+				<div class="card-content white-text">
+					<span class="card-title">Iniciar Sesión</span>
+					<form action="{% url 'my_login' %}" method="POST">
+						{% csrf_token %}
+						<div class="row">
+							<div class="input-field col s12">
+								<input id="name" type="text" name="personal_id" required>
+								<label class="white-text" for="name">Dni</label>
+							</div>
+						</div>
+						<div class="row">
+							<div class="input-field col s12">
+								<input id="password" type="password" name="password" required>
+								<label class="white-text" for="password">Contraseña</label>
+							</div>
+						</div>
+						{% if error %}
+							<div class="row">
+								<div class="col s12 red-text center">
+									{{ error }}
+								</div>
+							</div>
+						{% endif %}
+						<button class="btn btn-flat white-text" type="submit">Ingresar</button>
+					</form>
 				</div>
-				<div class="row">
-					<div class="input-field col s12">
-						<input placeholder="" id="password" type="text" class="validate">
-						<label for="first_name">Contraseña</label>
-					</div>
-				</div>
-				<a class="waves-effect waves-light btn">Ingresar</a>
 			</div>
 		</div>
 	</div>
