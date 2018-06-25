@@ -12,6 +12,9 @@ from django.utils.dateparse import parse_time
 
 # Create your views here.
 
+def main(request):
+    return render(results, 'main.html')
+
 def profile(request):
     person = Person.objects.get(user=request.user)
     results = person.get_duties()
@@ -157,7 +160,21 @@ def my_login(request):
     return render(request, 'login.html', results)
 
 def my_register(request):
-    return render(request, 'register.html')
+    if request.user.is_authenticated:
+        return redirect(profile)
+    results={}
+    if request.method == "POST":
+        form = RegistroForm(request.POST)
+        if form.is_valid():
+            new_user = User(first_name=request.POST.get('first_name'), last_name=request.POST.get('last_name'), username=request.POST.get('username'), password=request.POST.get('password'), email=request.POST.get('email'))
+            new_user.save()
+            new_person = Person_request(user=new_user, user_type=request.POST.get('user_type'))
+            new_person.save()
+            return redirect(main)
+    else:
+        form = RegistroForm()
+    results['form'] = form
+    return render(request, 'register.html', results)
 
 def my_logout(request):
     logout(request)

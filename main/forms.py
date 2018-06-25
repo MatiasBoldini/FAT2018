@@ -58,12 +58,3 @@ class RegistroForm(forms.Form):
         if password != re_password:
             self.add_error('password', 'las contraseñas no coinciden')
     
-class LoginForm(forms.Form):
-    username = forms.IntegerField(label='Documento')
-    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput())
-
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        username = cleaned_data.get("username")
-        if not User.objects.filter(username=username).exists():
-            self.add_error('username', 'Usuario no registrado')

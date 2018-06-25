@@ -6,7 +6,11 @@
 Identificacion
 {% endblock title %}  
 {% block body %}
-<img src="{% static 'img/mariposa.jpg' %}" style="position:absolute; width:100%; height:104%;">
+<style>
+	body {
+		background-image: url("{% static 'img/mariposa.jpg' %}");6
+	}
+</style>
 <div class="row">
 	<br>
 	<div class="col s5">
@@ -35,7 +39,14 @@ Identificacion
 								</div>
 							</div>
 						{% endif %}
-						<button class="btn btn-flat white-text" type="submit">Ingresar</button>
+						<div class="row">
+							<center>
+									<button class="btn btn-flat white-text" type="submit">Ingresar</button>
+							</center>
+						</div>
+						<div class="row center">
+							Si no esta registrado <a href="{% url 'my_register' %}" class="pink-text">registrese aqui!</a>
+						</div>
 					</form>
 				</div>
 			</div>
