@@ -13,7 +13,7 @@ from django.utils.dateparse import parse_time
 # Create your views here.
 
 def main(request):
-    return render(results, 'main.html')
+    return render(request, 'main.html')
 
 def profile(request):
     person = Person.objects.get(user=request.user)
@@ -179,3 +179,17 @@ def my_register(request):
 def my_logout(request):
     logout(request)
     return redirect(my_login)
+
+def work_day_requests(request):
+    return redirect(main)
+
+def appointment_requests(request):
+    if request.method == "POST":
+        appointment_request_id = request.POST.get("id")
+        appointment_request = Appointment.objects.get(id=appointment_request_id)
+        if int(request.POST.get('approved')):
+            appointment_request.authorized = True
+        else:
+            appointment_request.person = None
+        appointment_request.save()
+    return redirect(profile)
