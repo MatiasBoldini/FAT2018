@@ -13,13 +13,15 @@ from django.utils.dateparse import parse_time
 # Create your views here.
 
 def main(request):
-    return render(results, 'main.html')
+    return render(request, 'main.html')
 
 def profile(request):
+    if not request.user.is_authenticated:
+        return redirect(my_login)
     person = Person.objects.get(user=request.user)
     results = person.get_duties()
     if person.user_type == 0:
-        print("jubilado")
+        return render(request, 'profile_for_retired.html', results)
     elif person.user_type == 1:
         return render(request, 'profile_for_doctor.html', results)
     elif person.user_type == 2:
@@ -166,7 +168,9 @@ def my_register(request):
     if request.method == "POST":
         form = RegistroForm(request.POST)
         if form.is_valid():
-            new_user = User(first_name=request.POST.get('first_name'), last_name=request.POST.get('last_name'), username=request.POST.get('username'), password=request.POST.get('password'), email=request.POST.get('email'))
+            new_user = User.objects.create_user(request.POST.get("username"), request.POST.get("email"), request.POST.get("password"))
+            new_user.first_name = request.POST.get("first_name")
+            new_user.last_name = request.POST.get("last_name")
             new_user.save()
             new_person = Person_request(user=new_user, user_type=request.POST.get('user_type'))
             new_person.save()
@@ -179,3 +183,48 @@ def my_register(request):
 def my_logout(request):
     logout(request)
     return redirect(my_login)
+
+def work_day_requests(request):
+    if request.method == "POST":
+        work_day_request_id = request.POST.get("id")
+        work_day_request = Work_day_request.objects.get(id=work_day_request_id)
+        if int(request.POST.get('approved')):
+            new_work_day = Work_day(doctor=work_day_request.doctor , day=work_day_request.day)
+            new_work_day.save()
+            finish = toMinutes(work_day_request.finish_hour) 
+            turn = toMinutes(work_day_request.interval) + toMinutes(work_day_request.duration)
+            start = toMinutes(work_day_request.start_hour) + toMinutes(work_day_request.interval)
+            while start < finish:
+                if (start + turn) < finish:
+                    new_appointment = Appointment(work_day=new_work_day, time_attendance=toTime(start))
+                    new_appointment.save()
+                start += turn                    
+        work_day_request.delete()
+    return redirect(profile)
+
+def appointment_requests(request):
+    if request.method == "POST":
+        appointment_request_id = request.POST.get("id")
+        appointment_request = Appointment.objects.get(id=appointment_request_id)
+        if int(request.POST.get('approved')):
+            appointment_request.authorized = True
+        else:
+            appointment_request.person = None
+        appointment_request.save()
+    return redirect(profile)
+
+def toMinutes(time):
+    minute = time.minute
+    hours = time.hour
+    while hours > 0:
+        minute += 60
+        hours -= 1
+    return minute
+
+def toTime(time):
+    minute = time
+    hour = 0
+    while minute >= 60:
+        hour += 1
+        minute -= 60
+    return datetime.time(hour, minute)

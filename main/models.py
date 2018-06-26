@@ -58,7 +58,7 @@ class Work_day(models.Model):
         return True 
 
 class Appointment(models.Model):
-    person = models.ForeignKey(Person, on_delete=models.CASCADE, null=True)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, blank=True)
     work_day = models.ForeignKey(Work_day, on_delete=models.CASCADE)
     time_attendance = models.TimeField()
     authorized = models.BooleanField(default=False)
@@ -131,6 +131,10 @@ class Enrolment_student_request(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE)
 
 class Work_day_request(models.Model):
+    start_hour = models.TimeField()
+    finish_hour = models.TimeField()
+    duration = models.TimeField()
+    interval = models.TimeField()
     doctor = models.ForeignKey(Person, on_delete=models.CASCADE)
     day = models.DateField()
 
