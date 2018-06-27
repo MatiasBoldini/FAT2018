@@ -215,7 +215,12 @@ def appointment_requests(request):
 
 def form_work_day(request):
     if request.method == "POST":
-        form = Work_day_request()
+        form = WorkDayForm(request.POST)
+        if form.is_valid():
+            doctor = Person.objects.get(user=request.user)
+            new_work_day = Work_day_request(start_hour=request.POST.get("start_hour"), finish_hour=request.POST.get("finish_hour"),duration=request.POST.get("duration"), interval=request.POST.get("interval"), doctor=doctor, day=request.POST.get("day"))
+            new_work_day.save()
+            redirect(profile)
     results = {}
     results['form'] = WorkDayForm()
     return render(request, 'profile_for_doctor_parts/form_work_day.html', results)
