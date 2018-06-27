@@ -19,26 +19,34 @@
         </title>
     </head>
     <body class="indigo lighten-4">
-        <nav>
-            <div class="nav-wrapper indigo lighten-1">
-                <a href="" class="brand-logo"><i class="material-icons">home</i></a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    {% block navbar %}
-                    {% endblock navbar %}
-                    {% if user.is_anonymous %}
-                    <li><a href="{% url 'my_login' %}">login</a></li>
-                    {% else %}
-                    <li><a href="{% url 'profile' %}">{{ user.get_full_name|default:user.username }}</a></li>
-                    <li><a href="{% url 'my_logout' %}">logout</a></li>
-                    {% endif %}
-                </ul>
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper brown darken-2">
+                    <a href="" class="brand-logo"><i class="material-icons">home</i></a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        {% block navbar %}
+                        {% endblock navbar %}
+                        {% if user.is_anonymous %}
+                        <li><a href="">login</a></li>
+                        {% else %}
+                        <li><a href="{% url 'profile' %}">{{ user.get_full_name|default:user.username }}</a></li>
+                        <li><a href="{% url 'my_logout' %}">logout</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        <div class="parallax-container">
+            <div class="parallax">
+                {% block parallax %}
+                {% endblock parallax %}
             </div>
-        </nav>
-        <main>
+        </div>
+        <main class="grey lighten-2">
             {% block body %}
             {% endblock body %}    
         </main>
-        <footer class="page-footer footer-up indigo lighten-1">
+        <footer class="page-footer footer-up brown">
             <div class="container center-align">
                 <div class="row">
                         <span>
@@ -60,7 +68,7 @@
                 {% block page %}
                 {% endblock page %}
             </div>
-            <div class="footer-copyright footer-down indigo">
+            <div class="footer-copyright footer-down brown darken-2">
                 <div class="container center-align">
                     "Cambiar por frase motivacional"
                 </div>

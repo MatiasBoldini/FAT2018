@@ -3,6 +3,7 @@ function load_materialize(){
     $('select').formSelect();
     $('.collapsible').collapsible();
     $('.dropdown-trigger').dropdown();
+    $('.parallax').parallax();
 };
 
 function get_data(form){
