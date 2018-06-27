@@ -213,6 +213,13 @@ def appointment_requests(request):
         appointment_request.save()
     return redirect(profile)
 
+def form_work_day(request):
+    if request.method == "POST":
+        form = Work_day_request()
+    results = {}
+    results['form'] = WorkDayForm()
+    return render(request, 'profile_for_doctor_parts/form_work_day.html', results)
+
 def toMinutes(time):
     minute = time.minute
     hours = time.hour

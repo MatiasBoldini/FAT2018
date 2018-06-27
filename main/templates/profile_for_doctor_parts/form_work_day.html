@@ -1,26 +1,34 @@
-<form action="" method="POST">
-    {% csrf_token %}
-    <div class="input-field">
-        <input type="text" class="datepicker" name="{{ form.day.html_name }}" required>
-        <label for="{{ form.day.id_for_label }}">{{ form.day.label }}</label>
-    </div>
-    <div class="input-field">
-        <input type="text" class="timepicker" name="{{ form.start_hour.html_name }}" required>
-        <label for="{{ form.start_hour.id_for_label }}">{{ form.start_hour.label }}</label>
-    </div>
-    <div class="input-field">
-        <input type="text" class="timepicker" name="{{ form.finish_hour.html_name }}" required>
-        <label for="{{ form.finish_hour.id_for_label }}">{{ form.finish_hour.label }}</label>
-    </div>
-    <div class="input-field">
-        <input type="text" class="timepicker" name="{{ form.duration.html_name }}" required> 
-        <label for="{{ form.duration.id_for_label }}">{{ form.duration.label }}</label>
-    </div>
-    <div class="input-field">
-        <input type="text" class="timepicker" name="{{ form.interval.html_name }}" required>
-        <label for="{{ form.interval.id_for_label }}">{{ form.interval.label }}</label>
-    </div>
-    <center>
-        <button type="submit" class="btn btn-flat">Agregar</button>
-    </center>
-</form>
+<ul class="collection with-header">
+    <form action="{% url 'form_work_day' %}" method="POST">
+        <li class="collection-header"><h4 class="center">Solicitud de dia de trabajo</h4></li>
+        <li class="collection-item">
+            {% csrf_token %}
+            <div class="input-field">
+                <input type="text" class="datepicker" name="{{ form.day.html_name }}" required>
+                <label for="{{ form.day.id_for_label }}">{{ form.day.label }}</label>
+            </div>
+            <div class="input-field">
+                <input type="text" class="timepicker" name="{{ form.start_hour.html_name }}" required>
+                <label for="{{ form.start_hour.id_for_label }}">{{ form.start_hour.label }}</label>
+            </div>
+            <div class="input-field">
+                <input type="text" class="timepicker" name="{{ form.finish_hour.html_name }}" required>
+                <label for="{{ form.finish_hour.id_for_label }}">{{ form.finish_hour.label }}</label>
+            </div>
+            <div class="input-field">
+                <input type="text" class="timepicker" name="{{ form.duration.html_name }}" required> 
+                <label for="{{ form.duration.id_for_label }}">{{ form.duration.label }}</label>
+            </div>
+            <div class="input-field">
+                <input type="text" class="timepicker" name="{{ form.interval.html_name }}" required>
+                <label for="{{ form.interval.id_for_label }}">{{ form.interval.label }}</label>
+            </div>
+        </li>
+        <li class="collection-item">
+            <center>
+                <button type="submit" class="btn btn-flat waves-effect waves-grey green-text">Enviar<i class="material-icons right">send</i></button>
+                <a class="btn btn-flat waves-effect waves-grey red-text">Cancelar<i class="material-icons right">cancel</i></a>
+            </center>
+        </li>
+    </form>
+</ul>
