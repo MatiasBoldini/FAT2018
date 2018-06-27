@@ -13,6 +13,7 @@ function load_materialize(){
             weekdaysAbbrev: ["D","L", "M", "M", "J", "V", "S"]
         }
     });
+    $('.parallax').parallax();
 };
 
 function get_data(form){
