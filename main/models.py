@@ -24,6 +24,7 @@ class Person(models.Model):
 
     def get_duties(self):
         results = {}
+        results['person'] = self
         if self.user_type == 0:
             results['appointments'] = Appointment.objects.filter(person=self)
             results['enrolments'] = Enrolment_student.objects.filter(person=self)
@@ -48,7 +49,11 @@ class Work_day(models.Model):
     day = models.DateField()
     
     def get_appoiment(self, person_fill):
-        results = Appointment.objets.filter(workday=self, person__isnull=person_fill)
+        results = Appointment.objets.filter(work_day=self, person__isnull=person_fill)
+        return results
+
+    def get_all_appointments(self):
+        results = Appointment.objects.filter(work_day=self)
         return results
 
     def appointment_available(self):

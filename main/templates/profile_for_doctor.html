@@ -1,478 +1,78 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <script
-        src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-        <!-- Freehand, Mate -->
-        <link href='https://fonts.googleapis.com/css?family=Mate' rel='stylesheet'>
-
-
-        <script src="{% static 'js/functions.js' %}"></script>
-        <script src="{% static 'js/functions_ajax.js' %}"></script>
-        <title>       
-        </title>
-    </head>
-    <body class="indigo lighten-3">
-        <nav>
-            <div class="nav-wrapper indigo lighten-1">
-                <a href="{% url 'main' %}" class="brand-logo"><i class="material-icons">menu</i></a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a class="dropdown-trigger" data-target='dropdown1' style="padding: 0px 50px; display: inline-block;"><i class="material-icons" style="font-size:2rem">notifications</i></a></li>
-                    <ul id='dropdown1' class='dropdown-content'>
-                        <li><a>Notificacion 1</a></li>
-                        <li><a>Notificacion 2</a></li>
-                    </ul>
-                    <li><a href="{% url 'mLogIn' %}">login</a></li>
-                    <li><a href="{% url 'mLogOut' %}">logout</a></li>
-                </ul>
-            </div>
-        </nav>
-        <main>
-            <p>
-                <div class="row">
-                    <div class="col s2">
-                        <div id="card" class="card-panel brown darken-2">
-                            <span><font size="4" style="color:#e0f7fa;font-weight: bold;"><center>Perfil</center></font></span>
-                            <p>   
-                                <div>
-                                    <span>
-                                        <font size="3" style="color:#e0f7fa;">
-                                            <span>Nombre:</span>
-                                            <p><span>DNI:</span></p>
-                                            <p></p>
-                                        </font>
-                                    </span>
-                                </div>  
-                            </p>
-                        </div>                
-                        <div id="card" class="card-panel brown darken-2">
-                            <span><font size="4" style="color:#e0f7fa;font-weight: bold;"><center>Agregar Dia de trabajo</center></font></span>
-                            <p>   
-                                <div>
-                                    <span>
-                                        <font size="3">
-                                            <input type="text" class="datepicker" style="color:#e0f7fa;">
-                                        </font>
-                                        <p>
-                                            <center>
-                                                <a class="waves-effect waves-light btn green"><i class="small material-icons right">check</i>Agregar</a>
-                                            </center>  
-                                        </p>
-                                    </span>
-                                </div>  
-                            </p>
-                        </div>                        
-                    </div>
-                    <div class="col s8">
-                       <div class="row">
-                            <div class="card col s10 offset-s1 blue-grey darken-1">
-                                <div class="row ">
-                                    <center>
-                                        <span style="color:#263238;"><h3>Horarios</h3></span>
-                                    </center>
-                                </div>
-                                <div class="row col s12">
-                                    <div class="row">
-                                        <ul class="collapsible popout">
-                                            <p>
-                                                <li>
-                                                    <div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;"><font size="5">Lunes (Fecha)</font></div>
-                                                    <div class="collapsible-body blue-grey lighten-4">
-                                                        <div class="row">
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 1 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                 
-                                                                        </div>                                                                       
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 2 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 3 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                        </div>
-                                                        <center>
-                                                            <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Eliminar dia de trabajo</a>
-                                                        </center>
-                                                    </div>          
-                                                </li>
-                                            </p>
-                                        </ul>
-                                    </div>
-                                    <div class="row">
-                                        <ul class="collapsible popout">
-                                            <p>
-                                                <li>
-                                                    <div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;"><font size="5">Martes (Fecha)</font></div>
-                                                    <div class="collapsible-body blue-grey lighten-4">
-                                                        <div class="row">
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 1 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 2 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 3 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                        </div>
-                                                        <center>
-                                                            <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Eliminar dia de trabajo</a>
-                                                        </center>                                                        
-                                                    </div>
-                                                </li>
-                                            </p>
-                                        </ul>
-                                    </div> 
-                                    <div class="row">
-                                        <ul class="collapsible popout">
-                                            <p>
-                                                <li>
-                                                    <div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;"><font size="5">Miercoles (Fecha)</font></div>
-                                                    <div class="collapsible-body blue-grey lighten-4">
-                                                        <div class="row">
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 1 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 2 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 3 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                        </div>
-                                                        <center>
-                                                            <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Eliminar dia de trabajo</a>
-                                                        </center>                                                        
-                                                    </div>
-                                                </li>
-                                            </p>
-                                        </ul>
-                                    </div>
-                                    <div class="row">
-                                        <ul class="collapsible popout">
-                                            <p>
-                                                <li>
-                                                    <div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;"><font size="5">Jueves (Fecha)</font></div>
-                                                    <div class="collapsible-body blue-grey lighten-4">
-                                                        <div class="row">
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 1 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 2 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 3 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                        </div>
-                                                        <center>
-                                                            <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Eliminar dia de trabajo</a>
-                                                        </center>                                                        
-                                                    </div>
-                                                </li>
-                                            </p>
-                                        </ul>
-                                    </div> 
-                                    <div class="row">
-                                        <ul class="collapsible popout">
-                                            <p>
-                                                <li>
-                                                    <div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;"><font size="5">Viernes (Fecha)</font></div>
-                                                    <div class="collapsible-body blue-grey lighten-4">
-                                                        <div class="row">
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 1 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 2 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                            <ul class="collapsible popout">
-                                                                <p>
-                                                                    <li>
-                                                                        <div class="collapsible-header blue-grey lighten-3" style="font-size: 16px;">Turno 3 (Horario)</div>
-                                                                        <div class="collapsible-body blue-grey lighten-3">
-                                                                            <span style="font-size: 15px;">Nombre:</span>
-                                                                            <p><span style="font-size: 15px;">DNI:</span><p>
-                                                                            <center>
-                                                                                <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Cancelar</a>
-                                                                            </center>                                                                                
-                                                                        </div>
-                                                                    </li>
-                                                                </p>
-                                                            </ul>
-                                                        </div>
-                                                        <center>
-                                                            <a class="waves-effect waves-light btn red"><i class="small material-icons right">clear</i>Eliminar dia de trabajo</a>
-                                                        </center>                                                        
-                                                    </div>
-                                                </li>
-                                            </p>
-                                        </ul>
-                                    </div>                             
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s2">
-                        <div id="card" class="card-panel brown darken-2">
-                            <div class="row">
-                                <ul class="collapsible popout">
-                                    <span><font size="4" style="color:#e0f7fa;font-weight: bold;"><center>Proximos turnos</center></font></span>
-                                    <p>
-                                        <li>
-                                            <div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">Turno 1 (Fecha) (Hora)</div>
-                                            <div class="collapsible-body blue-grey lighten-4">
-                                                <span style="font-size: 15px;">Nombre:</span>
-                                                <p><span style="font-size: 15px;">DNI:</span><p>
-                                            </div>
-                                        </li>
-                                    </p>
-                                </ul>
-                            </div>
-                        </div>                                        
-                    </div>
-                </div>
-            </p>
-            <script> 
-                $(document).ready(function() {
-                $('input#input_text, textarea#textarea2').characterCounter();
-                });
-                $(document).ready(function(){
-                $('.datepicker').datepicker();
-                });
-
-                $(document).ready(function(){
-                $('.timepicker').timepicker();
-                });
-                $(document).ready(function(){
-                $('.collapsible').collapsible();
-                });
-                $('.dropdown-trigger').dropdown();
-            </script>    
-        </main>
-        <footer class="page-footer footer-up indigo lighten-1">
-            <div class="container center-align">
-                <div class="row">
-                    <span>
-                        Integrantes
-                    </span>
+{% extends 'mainBase.html' %}
+{% load static %}
+{% block imports %}
+{% endblock imports %} 
+{% block title %}
+{% endblock title %} 
+{% block navbar %}
+{% endblock navbar %}	
+{% block body %}
+<div class="row">
+    <div class="col s3">
+        <div class="col s12">
+            <ul class="collection with-header">
+                <li class="collection-header"><h4>Perfil</h4></li>
+                <li class="collection-item">
                     <div class="row">
-                        <ul>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/SebastianQuintero">Quintero, Juan [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/MatiasBoldini">Boldini, Matias [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/AbelardoGarcia">Garcia, Abelardo [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/Marcos-Corvalan">Corvalan, marcos [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/tobiasjpalacios">Palacios, tobias [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/francobossio">Bossio, Franco [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/MisaelVasconcelos">Vasconcelos, Misael [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/brunoramosmarino">Ramos, Bruno [GitHub]</a></li>
-                        </ul>
+                        Nombre: {{ person.user.get_full_name |title }}
                     </div>
+                    <div class="row">
+                        Dni: {{ person.user }}
+                    </div>
+                </li>
+                <li class="collection-item">
+                    <div>
+                        <center> 
+                            <button class="btn btn-flat waves-effect waves-grey" onclick="load_solo('{% url 'form_work_day' %}', 'place_form_work_day')">Agregar dia de trabajo</button>
+                        </center>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="col s12" id="place_form_work_day">
+            <!-- new work day request -->
+        </div>
+    </div>
+    <div class="col s7">  
+        <div class="row">
+            <div class="col s12">
+                <div class="card">
+                    <div class="card-content black-text">
+                        <span class="card-title center">Dias de trabajo</span>
+                    </div>  
+                    <ul class="collapsible grey lighten-3">
+                        {% for work_day in work_days %}
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">details</i>{{ work_day.day }}</div>
+                            <div class="collapsible-body">
+                                <span>Turnos</span>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Paciente</th>
+                                            <th>Hora</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for appoinment in work_day.get_all_appointments  %}
+                                        <tr>
+                                            {% if appoinment.person %}
+                                                <td>{{ appoinment.person }}</td>
+                                            {% else %}
+                                                <td>Nadie ha solicitado este turno</td>
+                                            {% endif  %}
+                                            <td>{{ appoinment.time_attendance }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
                 </div>
             </div>
-            <div class="footer-copyright footer-down indigo">
-                <div class="container center-align">
-                    "Cambiar por frase motivacional"
-                </div>
-            </div>
-        </footer>  
-        <style>
-            body {
-                display: flex;
-                min-height: 100vh;
-                flex-direction: column;
-                font-family: 'Mate';
-            }
-            main {
-                flex: 1 0 auto;
-            }    
-        </style>
-        <script>
-            init_Materialize();
-            {% if message %}
-                M.toast({html: "{{ message_text }}", classes: 'rounded'});
-            {% endif %}
-
-
-            document.addEventListener('DOMContentLoaded', function() {
-                var elem = document.querySelector('.collapsible.popout');
-                var instance = M.Collapsible.init(elem, {
-                    accordion: false
-            });
-
-            document.addEventListener('DOMContentLoaded', function() {
-                var elems = document.querySelectorAll('.dropdown-trigger');
-                var instances = M.Dropdown.init(elems, options);
-            });
-
-            document.addEventListener('DOMContentLoaded', function() {
-                var elems = document.querySelector('.collapsible');
-                var instances = M.Collapsible.init(elems, options);
-                var elem = document.querySelector('.collapsible.expandable');
-                var instance = M.Collapsible.init(elem, {
-                accordion: false
-            });
-
-            });
-        </script>
-    </body>
-</html>
+        </div>                          
+    </div>
+</div>
+{% endblock body %}
