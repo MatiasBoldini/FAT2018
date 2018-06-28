@@ -67,7 +67,7 @@ class Classroom(models.Model):
     name = models.CharField(max_length=32)
     description = models.TextField(max_length=256)
     duration = models.TimeField()
-    
+
     def get_teachers(self):
         results = Enrolment_teacher.objects.filter(classroom=self)
         return results

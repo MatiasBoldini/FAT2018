@@ -13,7 +13,9 @@ from django.utils.dateparse import parse_time
 # Create your views here.
 
 def main(request):
-    return render(request, 'main.html')
+    results = {}
+    results['parallax'] = True
+    return render(request, 'main.html', results)
 
 def profile(request):
     if not request.user.is_authenticated:
@@ -211,6 +213,14 @@ def appointment_requests(request):
         else:
             appointment_request.person = None
         appointment_request.save()
+    return redirect(profile)
+
+def unrolment_student(request):
+    if request.method == "POST":
+        enrolment_student_id = request.POST.get("id")
+        print(enrolment_student_id)
+        enrolment_student = Enrolment_student.objects.get(id=enrolment_student_id)
+        enrolment_student.delete()
     return redirect(profile)
 
 def toMinutes(time):
