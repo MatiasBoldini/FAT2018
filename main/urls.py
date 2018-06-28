@@ -23,4 +23,5 @@ urlpatterns = [
     path('unrolment_student', unrolment_student, name='unrolment_student'),
     path('appointments', appointments, name='appointments'),
     path('classrooms', classrooms, name='classrooms'),
+    path('form_work_day', form_work_day, name='form_work_day'),
 ]
