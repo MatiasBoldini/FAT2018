@@ -63,7 +63,7 @@ def send_form_classroom(request):
             form = ClassRoomForm(data=data)
             if form.is_valid():
                 p.delete_duties()
-                cr = Classroom_request(name=data['name'], description=data['description'], duration=data['duration'], user=p)
+                cr = Classroom_request(name=data['name'], description=data['description'], duration=data['duration'], teacher=p)
                 cr.save()
             return JsonResponse({"id" : cr.id})
     return redirect(profile)

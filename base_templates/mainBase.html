@@ -18,19 +18,19 @@
             {% endblock title %}        
         </title>
     </head>
-    <body class="indigo lighten-4">
+    <body>
         <div class="navbar-fixed">
             <nav>
-                <div class="nav-wrapper brown darken-2">
-                    <a href="{% url 'main' %}" class="brand-logo"><i class="material-icons">home</i></a>
+                <div class="nav-wrapper white">
+                    <a href="{% url 'main' %}" class="brand-logo black-text"><i class="material-icons">home</i></a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         {% block navbar %}
                         {% endblock navbar %}
                         {% if user.is_anonymous %}
-                        <li><a href="{% url 'my_login' %}">login</a></li>
+                        <li><a class="black-text" href="{% url 'my_login' %}">login</a></li>
                         {% else %}
-                        <li><a href="{% url 'profile' %}">{{ user.get_full_name|default:user.username }}</a></li>
-                        <li><a href="{% url 'my_logout' %}">logout</a></li>
+                        <li><a class="black-text" href="{% url 'profile' %}">{{ user.get_full_name|default:user.username }}</a></li>
+                        <li><a class="black-text" href="{% url 'my_logout' %}">logout</a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -44,34 +44,34 @@
             </div>
         </div>
         {% endif %}
-        <main class="grey lighten-2">
+        <main class="grey lighten-1">
             {% block body %}
             {% endblock body %}    
         </main>
-        <footer class="page-footer footer-up brown">
+        <footer class="page-footer footer-up grey lighten-2">
             <div class="container center-align">
-                <div class="row">
-                        <span>
+                <div class="row black-text">
+                        <h4>
                             Integrantes
-                        </span>
+                        </h4>
                         <div class="row">
                             <ul>
-                                <li><a class="grey-text text-lighten-3" href="https://github.com/SebastianQuintero">Quintero, Juan [GitHub]</a></li>
-                                <li><a class="grey-text text-lighten-3" href="https://github.com/MatiasBoldini">Boldini, Matias [GitHub]</a></li>
-                                <li><a class="grey-text text-lighten-3" href="https://github.com/AbelardoGarcia">Garcia, Abelardo [GitHub]</a></li>
-                                <li><a class="grey-text text-lighten-3" href="https://github.com/Marcos-Corvalan">Corvalan, marcos [GitHub]</a></li>
-                                <li><a class="grey-text text-lighten-3" href="https://github.com/tobiasjpalacios">Palacios, tobias [GitHub]</a></li>
-                                <li><a class="grey-text text-lighten-3" href="https://github.com/francobossio">Bossio, Franco [GitHub]</a></li>
-                                <li><a class="grey-text text-lighten-3" href="https://github.com/MisaelVasconcelos">Vasconcelos, Misael [GitHub]</a></li>
-                                <li><a class="grey-text text-lighten-3" href="https://github.com/brunoramosmarino">Ramos, Bruno [GitHub]</a></li>
+                                <li><a class="black-text" href="https://github.com/SebastianQuintero">Quintero, Juan [GitHub]</a></li>
+                                <li><a class="black-text" href="https://github.com/MatiasBoldini">Boldini, Matias [GitHub]</a></li>
+                                <li><a class="black-text" href="https://github.com/AbelardoGarcia">Garcia, Abelardo [GitHub]</a></li>
+                                <li><a class="black-text" href="https://github.com/Marcos-Corvalan">Corvalan, marcos [GitHub]</a></li>
+                                <li><a class="black-text" href="https://github.com/tobiasjpalacios">Palacios, tobias [GitHub]</a></li>
+                                <li><a class="black-text" href="https://github.com/francobossio">Bossio, Franco [GitHub]</a></li>
+                                <li><a class="black-text" href="https://github.com/MisaelVasconcelos">Vasconcelos, Misael [GitHub]</a></li>
+                                <li><a class="black-text" href="https://github.com/brunoramosmarino">Ramos, Bruno [GitHub]</a></li>
                             </ul>
                         </div>
                 </div>
                 {% block page %}
                 {% endblock page %}
             </div>
-            <div class="footer-copyright footer-down brown darken-2">
-                <div class="container center-align">
+            <div class="footer-copyright footer-down white">
+                <div class="container center-align black-text">
                     "Cambiar por frase motivacional"
                 </div>
             </div>
