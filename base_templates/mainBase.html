@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en">
     <head>
+        {% load static %}
         <script
         src="https://code.jquery.com/jquery-3.3.1.min.js"
         integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -8,7 +9,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        {% load static %}
+
+        <script src="{% static 'js/functions.js' %}"></script>
         {% block imports %}
         {% endblock imports %}
         <title>
@@ -16,25 +18,37 @@
             {% endblock title %}        
         </title>
     </head>
-    <body class="indigo lighten-3">
-        <nav>
-            <div class="nav-wrapper indigo lighten-1">
-                <a href="" class="brand-logo"><i class="material-icons">menu</i></a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    {% if user.is_anonymous %}
-                    <li><a href="">login</a></li>
-                    {% else %}
-                    <li><a href="">{{ user.get_full_name|default:user.username }}</a></li>
-                    <li><a href="">logout</a></li>
-                    {% endif %}
-                </ul>
+    <body class="indigo lighten-4">
+        <div class="navbar-fixed">
+            <nav>
+                <div class="nav-wrapper brown darken-2">
+                    <a href="{% url 'main' %}" class="brand-logo"><i class="material-icons">home</i></a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        {% block navbar %}
+                        {% endblock navbar %}
+                        {% if user.is_anonymous %}
+                        <li><a href="{% url 'my_login' %}">login</a></li>
+                        {% else %}
+                        <li><a href="{% url 'profile' %}">{{ user.get_full_name|default:user.username }}</a></li>
+                        <li><a href="{% url 'my_logout' %}">logout</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </div>
+        {% if parallax %}
+        <div class="parallax-container">
+            <div class="parallax">
+                {% block parallax %}
+                {% endblock parallax %}
             </div>
-        </nav>
-        <main>
+        </div>
+        {% endif %}
+        <main class="grey lighten-2">
             {% block body %}
             {% endblock body %}    
         </main>
-        <footer class="page-footer footer-up indigo lighten-1">
+        <footer class="page-footer footer-up brown">
             <div class="container center-align">
                 <div class="row">
                         <span>
@@ -56,7 +70,7 @@
                 {% block page %}
                 {% endblock page %}
             </div>
-            <div class="footer-copyright footer-down indigo">
+            <div class="footer-copyright footer-down brown darken-2">
                 <div class="container center-align">
                     "Cambiar por frase motivacional"
                 </div>
@@ -72,5 +86,10 @@
             flex: 1 0 auto;
         }
         </style>
+        <script>
+            $(document).ready(function(){
+                load_materialize();
+            });
+        </script>
     </body>
 </html>

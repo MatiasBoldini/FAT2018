@@ -1,0 +1,33 @@
+{% extends 'mainBase.html' %}
+{% load static %}
+{% block imports %}
+{% endblock imports %}
+{% block title %}
+Identificacion
+{% endblock title %}  
+{% block body %}
+<div class="row">
+    {% for classroom in classrooms %}
+    <div class="col s6 m6">
+        <div class="card grey lighten-3">
+            <div class="card-content">
+                <span class="card-title">{{ classroom.name }}</span>
+            </div>
+            <ul class="collection">
+                <li class="collection-item">
+                    {{ classroom.description }}
+                </li>
+                <li class="collection-item">
+                    Duracion: {{ classroom.duration }}
+                </li>
+                <li class="collection-item">
+                    <center>
+                        <button class="btn btn-flat" onclick="confirm_request('{{ classroom.id }}', '{% url 'classrooms' %}')">Unirse</button>
+                    </center>
+                </li>
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

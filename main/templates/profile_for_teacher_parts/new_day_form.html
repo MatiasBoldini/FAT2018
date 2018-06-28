@@ -1,0 +1,11 @@
+<form>
+    {% csrf_token %}
+    <div class="input-field col s6">
+        {{ form_day.day }}
+        <label>{{ form_day.day.label }}</label>
+    </div>
+    <div class="input-field col s6">
+        <input id="{{ form_day.start_hour.id_for_label }}" name="{{ form_day.start_hour.html_name }}" type="text" class="timepicker"{% if form_day.start_hour.value %}value="{{ form_day.start_hour.value }}"{% endif %}>
+        <label class="active" for="{{ form_day.start_hour.id_for_label }}">{{ form_day.start_hour.label }}</label>
+    </div>
+</form>

@@ -29,22 +29,24 @@ class WorkDayForm(forms.Form):
 
 
 class ClassRoomForm(forms.Form):
-    name = forms.CharField(label ='Tu nombre', max_length=20)
-    description = forms.CharField(label='descripcion',max_length=256)
-    capacity = forms.IntegerField()
+    name = forms.CharField(label ='Nombre de la clase', max_length=20)
+    description = forms.CharField(label='Descripcion',max_length=256)
+    duration = forms.TimeField(label='Duracion de cada clase Aprox.')
 
 class ClassDayForm(forms.Form):
-    day = forms.ChoiceField(choices=DAYS_CHOICES)
-    start_hour =forms.IntegerField(label='hora de inicio')
+    day = forms.ChoiceField(choices=DAYS_CHOICES, label='Dia')
+    start_hour = forms.TimeField(label='Hora de inicio')
+
+    # falta funcion de clean
 
 class RegistroForm(forms.Form):
-    first_name = forms.CharField(label='nombre')
-    last_name = forms.CharField(label='apellido')
+    first_name = forms.CharField(label='Nombre')
+    last_name = forms.CharField(label='Apellido')
     username = forms.IntegerField(label='Documento')
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput())
     re_password = forms.CharField(label='Repita la contraseña', widget=forms.PasswordInput())
     email = forms.CharField(label='Correo electronico', required=False)
-    user_type = forms.ChoiceField(choices=USER_TYPE_CHOICES, label='tipo de usuario')
+    user_type = forms.ChoiceField(choices=USER_TYPE_CHOICES, label='Tipo de usuario')
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -56,12 +58,3 @@ class RegistroForm(forms.Form):
         if password != re_password:
             self.add_error('password', 'las contraseñas no coinciden')
     
-class LoginForm(forms.Form):
-    username = forms.IntegerField(label='Documento')
-    password = forms.CharField(label='Contraseña', widget=forms.PasswordInput())
-
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        username = cleaned_data.get("username")
-        if not User.objects.filter(username=username).exists():
-            self.add_error('username', 'Usuario no registrado')
