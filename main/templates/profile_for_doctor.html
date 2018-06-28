@@ -1,39 +1,11 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <script
-        src="https://code.jquery.com/jquery-3.3.1.min.js"
-        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-        crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/css/materialize.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-beta/js/materialize.min.js"></script>
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-        <!-- Freehand, Mate -->
-        <link href='https://fonts.googleapis.com/css?family=Mate' rel='stylesheet'>
-
-
-        <script src="{% static 'js/functions.js' %}"></script>
-        <script src="{% static 'js/functions_ajax.js' %}"></script>
-        <title>       
-        </title>
-    </head>
-    <body class="indigo lighten-3">
-        <nav>
-            <div class="nav-wrapper indigo lighten-1">
-                <a href="{% url 'main' %}" class="brand-logo"><i class="material-icons">menu</i></a>
-                <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a class="dropdown-trigger" data-target='dropdown1' style="padding: 0px 50px; display: inline-block;"><i class="material-icons" style="font-size:2rem">notifications</i></a></li>
-                    <ul id='dropdown1' class='dropdown-content'>
-                        <li><a>Notificacion 1</a></li>
-                        <li><a>Notificacion 2</a></li>
-                    </ul>
-                    <li><a href="{% url 'mLogIn' %}">login</a></li>
-                    <li><a href="{% url 'mLogOut' %}">logout</a></li>
-                </ul>
-            </div>
-        </nav>
-        <main>
+{% extends 'mainBase.html' %}
+{% load static %}
+{% block imports %}
+{% endblock imports %}
+{% block title %}
+Identificacion
+{% endblock title %}  
+{% block body %}
             <p>
                 <div class="row">
                     <div class="col s2">
@@ -392,87 +364,4 @@
                     </div>
                 </div>
             </p>
-            <script> 
-                $(document).ready(function() {
-                $('input#input_text, textarea#textarea2').characterCounter();
-                });
-                $(document).ready(function(){
-                $('.datepicker').datepicker();
-                });
-
-                $(document).ready(function(){
-                $('.timepicker').timepicker();
-                });
-                $(document).ready(function(){
-                $('.collapsible').collapsible();
-                });
-                $('.dropdown-trigger').dropdown();
-            </script>    
-        </main>
-        <footer class="page-footer footer-up indigo lighten-1">
-            <div class="container center-align">
-                <div class="row">
-                    <span>
-                        Integrantes
-                    </span>
-                    <div class="row">
-                        <ul>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/SebastianQuintero">Quintero, Juan [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/MatiasBoldini">Boldini, Matias [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/AbelardoGarcia">Garcia, Abelardo [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/Marcos-Corvalan">Corvalan, marcos [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/tobiasjpalacios">Palacios, tobias [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/francobossio">Bossio, Franco [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/MisaelVasconcelos">Vasconcelos, Misael [GitHub]</a></li>
-                            <li><a class="grey-text text-lighten-3" href="https://github.com/brunoramosmarino">Ramos, Bruno [GitHub]</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-copyright footer-down indigo">
-                <div class="container center-align">
-                    "Cambiar por frase motivacional"
-                </div>
-            </div>
-        </footer>  
-        <style>
-            body {
-                display: flex;
-                min-height: 100vh;
-                flex-direction: column;
-                font-family: 'Mate';
-            }
-            main {
-                flex: 1 0 auto;
-            }    
-        </style>
-        <script>
-            init_Materialize();
-            {% if message %}
-                M.toast({html: "{{ message_text }}", classes: 'rounded'});
-            {% endif %}
-
-
-            document.addEventListener('DOMContentLoaded', function() {
-                var elem = document.querySelector('.collapsible.popout');
-                var instance = M.Collapsible.init(elem, {
-                    accordion: false
-            });
-
-            document.addEventListener('DOMContentLoaded', function() {
-                var elems = document.querySelectorAll('.dropdown-trigger');
-                var instances = M.Dropdown.init(elems, options);
-            });
-
-            document.addEventListener('DOMContentLoaded', function() {
-                var elems = document.querySelector('.collapsible');
-                var instances = M.Collapsible.init(elems, options);
-                var elem = document.querySelector('.collapsible.expandable');
-                var instance = M.Collapsible.init(elem, {
-                accordion: false
-            });
-
-            });
-        </script>
-    </body>
-</html>
+            {% endblock body %}

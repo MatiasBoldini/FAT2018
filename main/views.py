@@ -223,6 +223,18 @@ def unrolment_student(request):
         enrolment_student.delete()
     return redirect(profile)
 
+def appointments(request):
+    if request.method == "POST":
+        classroom_id = request.POST.get("id")
+        classroom = Classroom.objects.get(id=classroom_id)
+        person = Person.objects.get(user=request.user)
+        enrolment_student_request = Enrolment_student_request(classroom=classroom, person=person)
+        enrolment_student_request.save()
+    results = {}
+    results['work_days'] = Work_day.objects.filter(day__gte=datetime.datetime.now())
+    print(results['work_days'])
+    return render(request, 'appointments.html', results)
+
 def toMinutes(time):
     minute = time.minute
     hours = time.hour

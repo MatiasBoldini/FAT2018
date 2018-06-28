@@ -32,7 +32,7 @@ Perfil profesor
                                   <tr>
                                     <td>{{ appointment.work_day.doctor.user.get_full_name }}</td>
                                     <td>{{ appointment.time_attendance }}</td>
-                                    <td>  <a class="waves-effect waves-light red btn modal-trigger" onclick="confirm_request('{{ appointment.id }}', '{% url 'appointment_requests' %}', '0')"><i class="material-icons right">delete</i> eliminar </a>  </td>
+                                    <td>  <a class="waves-effect waves-light red btn " onclick="confirm_request('{{ appointment.id }}', '{% url 'appointment_requests' %}', '0')"><i class="material-icons right">delete</i> eliminar </a>  </td>
                                   </tr>
                                 </tbody>
                               </table>
@@ -45,7 +45,7 @@ Perfil profesor
               {% endif %}        
               </div>
               <div class="card-action">
-                <a href="# " class="btn-flat  red white-text col s12 center-align" >Solicitar un turno  </a>
+                <a href="{% url 'appointments' %}" class="btn-flat  red white-text col s12 center-align">Solicitar un turno</a>
               </div>
             </div>
           </div>
@@ -78,7 +78,7 @@ Perfil profesor
                               <td> {% for teacher in enrolment.classroom.get_teachers %} {{ teacher.person.user.get_full_name }} {% endfor %}</td>
                               <td>{{ enrolment.classroom.get_next_day.classroom_place.room }} </td>
                               <td>{{ enrolment.classroom.get_next_day.get_day_display }} - {{ enrolment.classroom.get_next_day.start_hour }} </td>
-                              <td><a class="waves-effect waves-light red btn modal-trigger" onclick="confirm_request('{{ enrolment.id }}', '{% url 'unrolment_student' %}')"><i class="material-icons right">delete</i> Desmatricular </a>  </td>
+                              <td><a class="waves-effect waves-light red btn " onclick="confirm_request('{{ enrolment.id }}', '{% url 'unrolment_student' %}')"><i class="material-icons right">delete</i> Desmatricular </a>  </td>
                             </tr>
                           </tbody>
                         </table>
@@ -91,7 +91,7 @@ Perfil profesor
                   {% endif %}
                   </div>
                   <div class="card-action white-text col s12"  >
-                    <a href="#" class="btn-flat  red white-text col s12 center-align"> matricularse a una nueva clase  </a>
+                    <a href="#" class="btn-flat  red white-text col s12 center-align"> matricularse a una nueva clase</a>
                   </div>
                 </div>
               </div>
