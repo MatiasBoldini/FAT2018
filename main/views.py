@@ -211,6 +211,7 @@ def appointment_requests(request):
         if int(request.POST.get('approved')):
             appointment_request.authorized = True
         else:
+            appointment_request.authorized = False
             appointment_request.person = None
         appointment_request.save()
     return redirect(profile)
@@ -218,22 +219,42 @@ def appointment_requests(request):
 def unrolment_student(request):
     if request.method == "POST":
         enrolment_student_id = request.POST.get("id")
-        print(enrolment_student_id)
         enrolment_student = Enrolment_student.objects.get(id=enrolment_student_id)
         enrolment_student.delete()
     return redirect(profile)
 
 def appointments(request):
     if request.method == "POST":
-        classroom_id = request.POST.get("id")
-        classroom = Classroom.objects.get(id=classroom_id)
+        appointment_id = request.POST.get("id")
+        print(appointment_id)
+        appointment = Appointment.objects.get(id=appointment_id)
         person = Person.objects.get(user=request.user)
-        enrolment_student_request = Enrolment_student_request(classroom=classroom, person=person)
-        enrolment_student_request.save()
+        appointment.person = person
+        appointment.save()
     results = {}
     results['work_days'] = Work_day.objects.filter(day__gte=datetime.datetime.now())
     print(results['work_days'])
     return render(request, 'appointments.html', results)
+
+def classrooms(request):
+    person = Person.objects.get(user=request.user)
+    if request.method == "POST":
+        classroom_id = request.POST.get("id")
+        classroom = Classroom.objects.get(id=classroom_id)
+        new_enrolment = Enrolment_student_request(classroom=classroom, person=person)
+        new_enrolment.save()
+        print("DONE \n")
+    classrooms = Classroom.objects.all()
+    wanted_items = set()
+    for classroom in classrooms:
+        try:
+            Enrolment_student.objects.get(classroom=classroom, person=person)
+        except Enrolment_student.DoesNotExist:
+            wanted_items.add(classroom.id)
+    results = {}
+    results['classrooms'] = Classroom.objects.filter(id__in=wanted_items)
+
+    return render(request, 'classrooms.html', results)
 
 def toMinutes(time):
     minute = time.minute

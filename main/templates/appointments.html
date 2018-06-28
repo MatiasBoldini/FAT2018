@@ -8,24 +8,24 @@ Identificacion
 {% block body %}
 <div class="row">
     {% for work_day in work_days %}
+    {% if work_day.appointment_available %}
     <div class="col s6 m6">
         <div class="card grey lighten-3">
             <div class="card-content">
                 <span class="card-title">{{ work_day.day }}</span>
             </div>
             <ul class="collection">
-                {% if work_day.appointment_available %}
                     {% for appointment in work_day.get_appoiments %}
                         {% if not appointment.person %}
                         <li class="collection-item">
-                            {{ appointment.time_attendance }} <button class=""> Solicitar</button>
+                            {{ appointment.time_attendance }} <button class="btn btn-flat" onclick="confirm_request('{{ appointment.id }}', '{% url 'appointments' %}')"> Solicitar</button>
                         </li>
                         {% endif %}
                     {% endfor %}
-                {% endif %}
-            </ul>
+                </ul>
+            </div>
         </div>
-        </div>
+        {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

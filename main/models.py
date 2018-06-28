@@ -57,6 +57,7 @@ class Work_day(models.Model):
 
     def appointment_available(self):
         availables = self.get_appoiment(True).count()
+        print(availables)
         if availables == 0:
             return False
         return True 
