@@ -48,8 +48,12 @@ class Work_day(models.Model):
     doctor = models.ForeignKey(Person, on_delete=models.CASCADE)
     day = models.DateField()
     
+    def get_appoiments(self):
+        results = Appointment.objects.filter(work_day=self)
+        return results
+
     def get_appoiment(self, person_fill):
-        results = Appointment.objets.filter(work_day=self, person__isnull=person_fill)
+        results = Appointment.objects.filter(work_day=self, person__isnull=person_fill)
         return results
 
     def get_all_appointments(self):
@@ -57,7 +61,8 @@ class Work_day(models.Model):
         return results
 
     def appointment_available(self):
-        availables = self.getappoiment(True).count()
+        availables = self.get_appoiment(True).count()
+        print(availables)
         if availables == 0:
             return False
         return True 
@@ -72,7 +77,7 @@ class Classroom(models.Model):
     name = models.CharField(max_length=32)
     description = models.TextField(max_length=256)
     duration = models.TimeField()
-    
+
     def get_teachers(self):
         results = Enrolment_teacher.objects.filter(classroom=self)
         return results
