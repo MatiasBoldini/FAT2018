@@ -24,4 +24,6 @@ urlpatterns = [
     path('appointments', appointments, name='appointments'),
     path('classrooms', classrooms, name='classrooms'),
     path('form_work_day', form_work_day, name='form_work_day'),
+    path('delete_object', delete_object, name='delete_object'),
+    path('new_enrolment_classroom', new_enrolment_classroom, name='new_enrolment_classroom'),
 ]

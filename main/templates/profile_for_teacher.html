@@ -5,103 +5,72 @@
 {% block title %}
 Perfil profesor
 {% endblock title %}  
-
 {% block body %}
-
-
-
-
 <div class="row">
-
-    <div class="col s3">
-        <div class="row">
-            <div id="classroom_form" class="col s12">
-                <div class="card-panel pink lighten-3">
-                  
-                    <div class="row"><button class="btn waves-effect waves-light col s12 green accent-4 text-darken-2" onclick="load_solo('{% url 'load_form_classroom' %}', 'classroom_form')">  <i class=" small material-icons right">add</i> Nueva clase</button>
-                   </div>
-                   <div  class="row"><button class="btn waves-effect waves-light col s12 green accent-4 text-darken-2" onclick="')">  <i class=" small material-icons right">add</i> unirse a una clase</button>
-                   </div>
-                </div>
-            </div>
+    <div class="col s4">
+        <div class="col s12">
+            <ul class="collection with-header">
+                <li class="collection-header"><h4>Perfil</h4></li>
+                <li class="collection-item">
+                    <div>
+                        Nombre: {{ person.user.get_full_name |title }}
+                    </div>
+                    <div>
+                        Dni: {{ person.user }}
+                    </div>
+                </li>
+                <li class="collection-item">
+                    <center>    
+                        <button class="btn btn-flat waves-effect waves-grey" onclick="load_solo('{% url 'load_form_classroom' %}', 'classroom_form')">Crear nueva clase</button>
+                        <button class="btn btn-flat waves-effect waves-grey" onclick="load_solo('{% url 'new_enrolment_classroom' %}', 'classroom_form')">Unirse a una clase</button>
+                    </center>
+                </li>
+            </ul>
+        </div>
+        <div class="col s12" id="classroom_form">
+            <!-- create/modify classroom -->
         </div>
     </div>
-    <div class="col s9">
-    {% for enrolment in enrolments %}
-        <div id="{{ enrolment.classroom.id }}" class="row">
-            <div class="card col s10 offset-s1 blue-grey darken-1">
-                <div class="row">
-                    <div class=" card-panel grey col s12">
-                        <div class=" col s8">
-                            <span class=" card-title center">{{ enrolment.classroom.name }}</span>
-                        </div>
-                    </div>
+    <div class="col s8">
+        {% for enrolment in enrolments %}
+        <ul class="collection with-header">
+            <li class="collection-header"><h4>{{ enrolment.classroom.name }}</h4></li>
+            <li class="collection-item">
+                <div>
+                    Descripcion: {{ enrolment.classroom.description }}
                 </div>
-                <div class="row col s12  m12 l12 xl12 offset-s1 ">
-                        <div class="card-panel blue-grey lighten-3" >
-                            <p>
-                                    {{ enrolment.classroom.description }}
-                            </p>
-                        
-                        </div>
-                        </div>    
-                        <div class="row "></div>
-                <div class="row">
-                    <div class="card-panel red"> 
-                        <span>{{ enrolment.classroom.get_next_day.get_day_display }}</span>
-                        <span>{{ enrolment.classroom.get_next_day.start_hour}}</span>
-                        </div>
-                        <div class="row">
-                            <div class="col s12 m12 l12 xl12 ">
-                                     
-                                         <button style=""  class="btn-flat waves-effect waves-light  modal-trigger col s12 blue-grey  text-darken-2"  href="#modal1"> modificar clase</button>
-                                     
-                             </div>
-                            </div>
-                                     <div class="row">
-                            <div class="col s12 m12 l12 xl12 center-align">
-                                     
-                                 <button  style="" class="btn-flat waves-effect waves-light col s12  text-darken-2 blue-grey modal-trigger z-depth-5"  href="#modal2"> Eliminar clase   </button>
-                             </div>
-                            </div>
-                    </div>
-            </div>
-        </div>
-    
-        <div id="modal1" class="modal ">
-            <div class="modal-content">
-              <h4>Confirmacion</h4>
-              <p>Esta seguro que desea modificar  la clase {{enrolment.classroom.name}} si hace esto la clase no volvera a estar disponible nucna mas 
-                  y todos los alumnos seran desmatriculados</p>
-            </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat"> Cancelar</a>
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat "  onclick="load_form_data('{% url 'load_classroom_data' %}', 'classroom_form', '{{ enrolment.classroom.id }}')" >  Aceptar</a>
-            </div>
-        </div>
-                 
-        <div id="modal2" class="modal ">
-            <div class="modal-content">
-              <h4>Confirmacion</h4>
-              <p>Esta seguro que desea eliminar la clase {{enrolment.classroom.name}} si hace esto la clase no volvera a estar disponible nucna mas 
-                  y todos los alumnos seran desmatriculados</p>
-            </div>
-            <div class="modal-footer">
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat" >Cancelar</a>
-                <a href="#!" class="modal-close waves-effect waves-green btn-flat"  onclick="remove('{% url 'remove_classroom' %}', '{{ enrolment.classroom.id }}')"> Aceptar</a>
-            </div>
-        </div>
-    
-    {% endfor %}
+                <div>
+                    Duracion: {{ enrolment.classroom.duration }}
+                </div>
+                <div>                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Dia</th>
+                                <th>Salon</th>
+                                <th>Hora de inicio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for day in enrolment.classroom.get_classroom_days %}
+                            <tr>
+                                <td>{{ day.get_day_display }}</td>
+                                <td>{{ day.classroom_place.room }}</td>
+                                <td>{{ day.start_hour }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </li>
+            <li class="collection-item">
+                <center>    
+                    <button class="btn btn-flat waves-effect waves-grey" onclick="my_ajax('{{ enrolment.id }}', '{% url 'delete_object' %}', 'enrolment_teacher', '{% url 'profile' %}')">Eliminar clase</button>
+                    <button class="btn btn-flat waves-effect waves-grey" onclick="load_form_data('{% url 'load_classroom_data' %}', 'classroom_form', '{{ enrolment.classroom.id }}')">Modificar clase</button>
+                </center>
+            </li>
+        </ul>
+        {% endfor %}
     </div>
 </div>
-
-<script>
-
-  $(document).ready(function(){
-    $('.modal').modal();
-  });
-     
-
-</script>
 {% endblock body %}  

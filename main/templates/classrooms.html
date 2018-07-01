@@ -15,14 +15,34 @@ Identificacion
             </div>
             <ul class="collection">
                 <li class="collection-item">
-                    {{ classroom.description }}
+                    Descripcion: {{ classroom.description }}
                 </li>
                 <li class="collection-item">
                     Duracion: {{ classroom.duration }}
                 </li>
                 <li class="collection-item">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Dia</th>
+                                <th>Salon</th>
+                                <th>Hora de inicio</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for day in classroom.get_classroom_days %}
+                            <tr>
+                                <td>{{ day.get_day_display }}</td>
+                                <td>{{ day.classroom_place.room }}</td>
+                                <td>{{ day.start_hour }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>    
+                </li>
+                <li class="collection-item">
                     <center>
-                        <button class="btn btn-flat" onclick="confirm_request('{{ classroom.id }}', '{% url 'classrooms' %}')">Unirse</button>
+                        <button class="btn btn-flat red white-text" onclick="confirm_request('{{ classroom.id }}', '{% url 'classrooms' %}')">Unirse</button>
                     </center>
                 </li>
             </ul>
