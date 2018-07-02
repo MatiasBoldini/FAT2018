@@ -40,6 +40,9 @@ class Person(models.Model):
         if self.user_type == 2:
             Enrolment_teacher.objects.filter(person=self).delete()
 
+    def __str__(self):
+        return "{} - {}".format(self.user.get_full_name(), self.get_user_type_display())
+
 class Classroom_place(models.Model):
     room = models.IntegerField()
     capacity = models.IntegerField()
@@ -48,24 +51,17 @@ class Work_day(models.Model):
     doctor = models.ForeignKey(Person, on_delete=models.CASCADE)
     day = models.DateField()
     
-    def get_appoiments(self):
-        results = Appointment.objects.filter(work_day=self)
+    def get_unfill_appoiments(self):
+        results = Appointment.objects.filter(work_day=self, person__isnull=True)
         return results
 
-    def get_appoiment(self, person_fill):
-        results = Appointment.objects.filter(work_day=self, person__isnull=person_fill)
+    def get_fill_appoiment(self):
+        results = Appointment.objects.filter(work_day=self, person__isnull=False)
         return results
 
     def get_all_appointments(self):
         results = Appointment.objects.filter(work_day=self)
         return results
-
-    def appointment_available(self):
-        availables = self.get_appoiment(True).count()
-        print(availables)
-        if availables == 0:
-            return False
-        return True 
 
 class Appointment(models.Model):
     person = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, blank=True)
@@ -78,7 +74,7 @@ class Classroom(models.Model):
     description = models.TextField(max_length=256)
     duration = models.TimeField()
 
-    def get_teachers(self):
+    def get_enrolment_teachers(self):
         results = Enrolment_teacher.objects.filter(classroom=self)
         return results
 
@@ -93,7 +89,7 @@ class Classroom(models.Model):
                 return classroom_day
         return classroom_days.first()
 
-    def get_students(self):
+    def get_enrolment_students(self):
         results = Enrolment_student.objects.filter(classroom=self)
         return results
 
@@ -104,7 +100,7 @@ class Classroom_day(models.Model):
     start_hour = models.TimeField()
 
 class Enrolment_teacher(models.Model):
-    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+    classroom = models.ForeignKey(Classroom, on_delete=models.CASCADE, null=True)
     person = models.OneToOneField(Person, on_delete=models.CASCADE)
 
 class Enrolment_student(models.Model):
@@ -114,7 +110,11 @@ class Enrolment_student(models.Model):
 # request (necesitan autorizarse por el admin)
 
 class Person_request(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=128)
+    last_name = models.CharField(max_length=128)
+    personal_id = models.IntegerField()
+    password = models.CharField(max_length=128)
+    email = models.EmailField(max_length=254)
     user_type = models.IntegerField(choices=USER_TYPE_CHOICES)
 
 class Classroom_request(models.Model):

@@ -9,8 +9,14 @@ from django.views.decorators.http import require_POST, require_GET
 from django.utils import six
 from django.utils.dateparse import parse_time
 
+my_objects = {
+    "person": Person,
+    "classroom": Classroom,
+    "appointment": Appointment,
+    "enrolment_student": Enrolment_student,
+    "enrolment_teacher": Enrolment_teacher
+}
 
-# Create your views here.
 
 def main(request):
     results = {}
@@ -38,9 +44,9 @@ def profile(request):
         results['classroom_requests'] = Classroom_request.objects.all()
         results['enrolment_teacher_requests'] = Enrolment_teacher_request.objects.all()
         results['enrolment_student_requests'] = Enrolment_student_request.objects.all()
-        results['work_day_requests'] = Work_day_request.objects.all()
-        results['classroom_places'] = Classroom_place.objects.all()
+        results['work_day_request'] = Work_day_request.objects.all()
         results['appointment_requests'] = Appointment.objects.filter(person__isnull=False, authorized=False)
+        results['classroom_places'] = Classroom_place.objects.all()
         return render(request, 'profile_for_admin.html', results)
     else:
         print("hacker")
@@ -63,7 +69,7 @@ def send_form_classroom(request):
             form = ClassRoomForm(data=data)
             if form.is_valid():
                 p.delete_duties()
-                cr = Classroom_request(name=data['name'], description=data['description'], duration=data['duration'], user=p)
+                cr = Classroom_request(name=data['name'], description=data['description'], duration=data['duration'], teacher=p)
                 cr.save()
             return JsonResponse({"id" : cr.id})
     return redirect(profile)
@@ -102,10 +108,12 @@ def person_requests(request):
         person_id = request.POST.get("id")
         person_request = Person_request.objects.get(id=person_id)
         if int(request.POST.get('approved')):
-            new_person = Person(user=person_request.user, user_type=person_request.user_type)
+            new_user = User.objects.create_user(person_request.personal_id, person_request.email, person_request.password)
+            new_user.first_name = person_request.first_name
+            new_user.last_name = person_request.last_name
+            new_user.save()
+            new_person = Person(user=new_user, user_type=person_request.user_type)
             new_person.save()
-        else:
-            person_request.user.delete()
         person_request.delete()
     return redirect(profile)
 
@@ -116,12 +124,14 @@ def classroom_requests(request):
         classroom_request = Classroom_request.objects.get(id=classroom_id)
         classroom_place = Classroom_place.objects.get(id=classroom_place_id)
         classroom_day_requests = Classroom_day_request.objects.filter(classroom=classroom_request)
+        print(classroom_request)
+        print(classroom_place)
         if int(request.POST.get('approved')):
             new_classroom = Classroom(name=classroom_request.name, description=classroom_request.description, duration=classroom_request.duration)
             new_classroom.save()
-            new_enrolment_teacher, created = Enrolment_teacher.objects.get_or_create(person=classroom_request.teacher)
-            new_enrolment_teacher.classroom = new_classroom
-            new_enrolment_teacher.save()
+            new_enrolment, created = Enrolment_teacher.objects.get_or_create(person=classroom_request.teacher)
+            new_enrolment.classroom = new_classroom
+            new_enrolment.save() 
             for classroom_day_request in classroom_day_requests:
                 new_classroom_day = Classroom_day(classroom=new_classroom, classroom_place=classroom_place, day=classroom_day_request.day, start_hour=classroom_day_request.start_hour)
                 new_classroom_day.save()
@@ -131,9 +141,9 @@ def classroom_requests(request):
 def enrolment_teacher_requests(request):
     if request.method == "POST":
         enrolment_teacher_request_id = request.POST.get("id")
-        enrolment_teacher_request = Enrolment_teacher_request.objects.get(id=enrolment_student_request_id)
+        enrolment_teacher_request = Enrolment_teacher_request.objects.get(id=enrolment_teacher_request_id)
         if int(request.POST.get('approved')):
-            new_enrolment_teacher_request, created = Enrolment_teacher.objects.get_or_create(person=enrolment_student_request.person)
+            new_enrolment_teacher_request, created = Enrolment_teacher.objects.get_or_create(person=enrolment_teacher_request.person)
             new_enrolment_teacher_request.classroom = enrolment_teacher_request.classroom
             new_enrolment_teacher_request.save()
         enrolment_teacher_request.delete()
@@ -170,11 +180,14 @@ def my_register(request):
     if request.method == "POST":
         form = RegistroForm(request.POST)
         if form.is_valid():
-            new_user = User.objects.create_user(request.POST.get("username"), request.POST.get("email"), request.POST.get("password"))
-            new_user.first_name = request.POST.get("first_name")
-            new_user.last_name = request.POST.get("last_name")
-            new_user.save()
-            new_person = Person_request(user=new_user, user_type=request.POST.get('user_type'))
+            new_person = Person_request(
+                first_name=request.POST.get("first_name"), 
+                last_name=request.POST.get("last_name"), 
+                personal_id=request.POST.get("username"), 
+                password=request.POST.get("password"), 
+                email=request.POST.get("email"), 
+                user_type=request.POST.get("user_type")
+            )
             new_person.save()
             return redirect(main)
     else:
@@ -261,12 +274,38 @@ def form_work_day(request):
         form = WorkDayForm(request.POST)
         if form.is_valid():
             doctor = Person.objects.get(user=request.user)
-            new_work_day = Work_day_request(start_hour=request.POST.get("start_hour"), finish_hour=request.POST.get("finish_hour"),duration=request.POST.get("duration"), interval=request.POST.get("interval"), doctor=doctor, day=request.POST.get("day"))
+            new_work_day = Work_day_request(
+                start_hour=request.POST.get("start_hour"), 
+                finish_hour=request.POST.get("finish_hour"),
+                duration=request.POST.get("duration"), 
+                interval=request.POST.get("interval"), 
+                doctor=doctor, day=request.POST.get("day")
+            )
             new_work_day.save()
-            redirect(profile)
+            return redirect(profile)
     results = {}
     results['form'] = WorkDayForm()
     return render(request, 'profile_for_doctor_parts/form_work_day.html', results)
+
+def delete_object(request):
+    if request.method == "POST":
+        object_id = request.POST.get("id")
+        object_name = request.POST.get("name")
+        my_object = my_objects[object_name].objects.get(id=object_id)
+        my_object.delete()
+    return HttpResponse("OK")
+
+def new_enrolment_classroom(request):
+    if request.method == "POST":
+        classroom_id = request.POST.get("classroom_id")
+        classroom = Classroom.objects.get(id=classroom_id)
+        person = Person.objects.get(user=request.user)
+        new_enrolment = Enrolment_teacher_request(classroom=classroom, person=person)
+        new_enrolment.save()
+        return redirect(profile)
+    results = {}
+    results['classrooms'] = Classroom.objects.all()
+    return render(request, 'profile_for_teacher_parts/new_enrolment_classroom.html', results)
 
 def toMinutes(time):
     minute = time.minute

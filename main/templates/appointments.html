@@ -8,20 +8,36 @@ Identificacion
 {% block body %}
 <div class="row">
     {% for work_day in work_days %}
-    {% if work_day.appointment_available %}
-    <div class="col s6 m6">
-        <div class="card grey lighten-3">
-            <div class="card-content">
-                <span class="card-title">{{ work_day.day }}</span>
-            </div>
-            <ul class="collection">
-                    {% for appointment in work_day.get_appoiments %}
-                        {% if not appointment.person %}
-                        <li class="collection-item">
-                            {{ appointment.time_attendance }} <button class="btn btn-flat" onclick="confirm_request('{{ appointment.id }}', '{% url 'appointments' %}')"> Solicitar</button>
-                        </li>
-                        {% endif %}
-                    {% endfor %}
+        {% if work_day.get_unfill_appoiments %}
+        <div class="col s12 xl6">
+            <div class="card grey lighten-3">
+                <div class="card-content">
+                    <span class="card-title">{{ work_day.day }}</span>
+                </div>
+                <ul class="collection">
+                    <li class="collection-item">
+                        Doctor: {{ work_day.doctor.user.get_full_name }}
+                    </li>
+                    <li class="collection-item">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Hora</th>
+                                    <th>Solicitar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in work_day.get_unfill_appoiments %}
+                                <tr>
+                                    <td>{{ appointment.time_attendance }}</td>
+                                    <td>
+                                        <button class="btn btn-flat" onclick="confirm_request('{{ appointment.id }}', '{% url 'appointments' %}')"><i class="material-icons">chevron_right</i></button>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </li>
                 </ul>
             </div>
         </div>

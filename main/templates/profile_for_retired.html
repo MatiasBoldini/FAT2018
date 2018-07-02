@@ -6,97 +6,86 @@
 Perfil retirado
 {% endblock title %}  
 {% block body %}
-<div class="row"> 
-    <div class="col s6">
-        <div class="card horizontal grey darken-2">
-            <div class="card-stacked">
-              <div class="card-content">
-              <h5 class="white-text"> Turnos </h5>
-              <p class="white-text">previsulizacion de los turnos solicitados .</p>
-              {% if appointments %}
-              <ul class="collapsible white ">
-                {% for appointment in appointments %}
-                <li>
-                  <div class="collapsible-header"> <h6>{{ appointment.work_day.day }}</h6></div>
-                  <div class="collapsible-body">
-                        <table>
-                                <thead>
-                                  <tr>
-                                      <th>doctor</th>
-                                      <th>horario</th>
-                                      <th> </th>
-                                  </tr>
-                                </thead>
-                        
-                                <tbody>
-                                  <tr>
-                                    <td>{{ appointment.work_day.doctor.user.get_full_name }}</td>
-                                    <td>{{ appointment.time_attendance }}</td>
-                                    <td>  <a class="waves-effect waves-light red btn " onclick="confirm_request('{{ appointment.id }}', '{% url 'appointment_requests' %}', '0')"><i class="material-icons right">delete</i> eliminar </a>  </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                  </div>
-                </li>
-                {% endfor %}
-              </ul>  
-              {% else %}
-              No tienes turnos pendientes
-              {% endif %}        
-              </div>
-              <div class="card-action">
-                <a href="{% url 'appointments' %}" class="btn-flat  red white-text col s12 center-align">Solicitar un turno</a>
-              </div>
-            </div>
-          </div>
+<div class="row">   
+    <div class="col s12 xl6">
+        <ul class="collection with-header">
+            <li class="collection-header grey lighten-3"><h4>Turnos</h4></li>
+            <li class="collection-item">
+                {% if appointments %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Doctor</th>
+                            <th>Hora de atencion</th>
+                            <th>Cancelar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.work_day.doctor.user.get_full_name }}</td>
+                            <td>{{ appointment.time_attendance }}</td>
+                            <td><button class="btn btn-flat red-text" onclick="confirm_request('{{ appointment.id }}', '{% url 'appointment_requests' %}', '0')"><i class="material-icons">clear</i></button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                No tienes turnos pendientes
+                {% endif %}
+            </li>
+            <li class="collection-item center-align">
+                <a href="{% url 'appointments' %}" class="btn btn-flat red white-text">Solicitar nuevos turnos</a>
+            </li>
+        </ul>
     </div>
-
-    <div class=" col s6 ">
-            <div class="card horizontal grey darken-2  ">
-                <div class="card-stacked">
-                  <div class="card-content">
-                  <h5 class="white-text"> Clases </h5>
-                  <p class="white-text">previsulizacion de las clases a las que asisto .</p>
-                  {% if enrolments %}
-                  <ul class="collapsible white ">
-                    {% for enrolment in enrolments %}
-                    <li>
-                      <div class="collapsible-header"> <h6>{{ enrolment.classroom.name }}</h6></div>
-                      <div class="collapsible-body">
-                        <table>
-                          <thead>
-                            <tr>
-                                <th>Profesor</th> 
-                                <th>salon</th>
-                                <th>proximo dia </th>
-                                <th> </th>
-                              </tr>
-                          </thead>
-                  
-                          <tbody>
-                            <tr>
-                              <td> {% for teacher in enrolment.classroom.get_teachers %} {{ teacher.person.user.get_full_name }} {% endfor %}</td>
-                              <td>{{ enrolment.classroom.get_next_day.classroom_place.room }} </td>
-                              <td>{{ enrolment.classroom.get_next_day.get_day_display }} - {{ enrolment.classroom.get_next_day.start_hour }} </td>
-                              <td><a class="waves-effect waves-light red btn " onclick="confirm_request('{{ enrolment.id }}', '{% url 'unrolment_student' %}')"><i class="material-icons right">delete</i> Desmatricular </a>  </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </li>
-                    {% endfor %}
-                  </ul>  
-                  {% else %}
-                  no hay turnos pendientes
-                  {% endif %}
-                  </div>
-                  <div class="card-action white-text col s12"  >
-                    <a href="{% url 'classrooms' %}" class="btn-flat  red white-text col s12 center-align"> matricularse a una nueva clase</a>
-                  </div>
-                </div>
-              </div>
-        </div>
+    <div class="col s12 xl6">
+        <ul class="collection with-header">
+            <li class="collection-header grey lighten-3"><h4>Clases</h4></li>
+            <li class="collection-item">
+                {% if enrolments %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Profesores</th>
+                            <th>Dias</th>
+                            <th>Duracion</th>
+                            <th>Salon</th>
+                            <th>Cancelar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for enrolment in enrolments %}
+                        <tr>
+                            <td>
+                                {% for teacher in enrolment.classroom.get_teachers %} 
+                                    <div>
+                                        {{ teacher.person.user.get_full_name }} 
+                                    </div>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for day in enrolment.classroom.get_classroom_days %} 
+                                    <div>
+                                        {{ day.get_day_display }} - {{ day.start_hour }}
+                                    </div>
+                                {% endfor %}
+                            </td>
+                            <td>{{ enrolment.classroom.duration }}</td>
+                            <td>{{ enrolment.classroom.get_next_day.classroom_place.room }}</td>
+                            <td><button class="btn btn-flat red-text" onclick="my_ajax('{{ enrolment.id }}', '{% url 'delete_object' %}', 'enrolment_student', '{% url 'profile' %}')"><i class="material-icons">clear</i></button></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                No estas matriculado a ninguna clase
+                {% endif %}
+            </li>
+            <li class="collection-item center-align">
+                <a href="{% url 'classrooms' %}" class="btn btn-flat red white-text">Solicitar unirse a nuevas clases</a>
+            </li>
+        </ul>
     </div>
-
 </div>
 {% endblock body %}  

@@ -7,241 +7,456 @@
 {% block navbar %}
 {% endblock navbar %}	
 {% block body %}
-<p>
-	<div class="row">
-		<div class="col s2">
-			<div id="card" class="card-panel brown darken-2">
-				<ul class="collapsible popout">
-					<span class="white-text"><center><font size="4">Clases</font></center></span>
+<div class="row">
+	<div class="col s3">
+		<div class="col s12">
+			<div class="card">
+				<div class="card-content white-text">
+					<span class="card-title black-text">Clases</span>
+				</div>
+				{% if classrooms %}
+				<ul class="collapsible">
 					{% for classroom in classrooms %}
-						<li>	
-							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">{{ classroom.name }}</div>
-							<div class="collapsible-body blue-grey lighten-4">
-								{% for teacher in classroom.get_teachers %}
-									<p>profesor: {{ teacher.person.user.get_full_name }}</p>
-								{% endfor %}
-								<p>Alumnos inscriptos: {{ classroom.get_students.count }}</p>
+					<li>
+						<div class="collapsible-header">{{ classroom.name }}</div>
+						<div class="collapsible-body">
+							<div class="row">Descripcion: {{ classroom.description }}</div>
+							<div class="row">Duracion: {{ classroom.duration }}</div>
+							<div class="row">
 								<table>
 									<thead>
-										<tr>
-											<th>Dia</th>
-											<th>Hora</th>
-											<th>Capacidad</th>
-										</tr>
+									<tr>
+										<th>Profesor</th>
+										<th>Desmatricular</th>
+									</tr>
 									</thead>
 									<tbody>
-									{% for day in classroom.get_classroom_days %}
-										<tr>
-										<td>{{ day.get_day_display }}</td>
-										<td>{{ day.start_hour }}</td>
-										<td>{{ day.classroom_place.capacity }}</td>
-										</tr>
+									{% for enrolment_teacher in classroom.get_enrolment_teachers %}
+									<tr>
+										<td>{{ enrolment_teacher.person.user.get_full_name }}</td>
+										<td>
+											<button class="btn btn-flat waves-effect waves-grey" onclick="my_ajax('{{ enrolment_teacher.id }}', '{% url 'delete_object' %}', 'enrolment_teacher', '{% url 'profile' %}')"><i class="material-icons">clear</i></button>
+										</td>
+									</tr>
 									{% endfor %}
 									</tbody>
 								</table>
 							</div>
-						</li>	
-					{% endfor %}	
+							<table>
+								<thead>
+									<tr>
+										<th>Dia</th>
+										<th>Hora</th>
+										<th>Lugar</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for classroom_day in classroom.get_classroom_days %}
+									<tr>
+										<td>{{ classroom_day.get_day_display }}</td>
+										<td>{{ classroom_day.start_hour }}</td>
+										<td>{{ classroom_day.classroom_place.room }}</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+							<ul class="collapsible">
+								<li>
+									<div class="collapsible-header">Alumnos</div>
+									<div class="collapsible-body">
+										{% if classroom.get_enrolment_students %}
+											<table>
+												<thead>
+												  <tr>
+													  <th>Nombre</th>
+													  <th>Eliminar</th>
+												  </tr>
+												</thead>
+												<tbody>
+													{% for enrolment_student in classroom.get_enrolment_students %}
+													<tr>
+														<td>{{ enrolment_student.person.user.get_full_name }}</td>
+														<td><button class="btn btn-flat red-text" onclick="my_ajax('{{ enrolment_student.id }}', '{% url 'delete_object' %}', 'enrolment_student', '{% url 'profile' %}')"><i class="material-icons">clear</i></button></td>
+													</tr>
+													{% endfor %}
+												</tbody>
+											</table>
+										{% else %}
+										No hay alumnos inscriptos
+										{% endif %}
+									</div>
+								</li>
+							</ul>
+							<center><button class="waves-effect waves-light red btn" onclick="my_ajax('{{ classroom.id }}', '{% url 'delete_object' %}', 'classroom', '{% url 'profile' %}')"><i class="material-icons right">delete</i>Eliminar</button></center>
+						</div>
+					</li>
+					{% endfor %}		
 				</ul>
+				{% else %}
+				<div class="card-panel teal lighten-3">
+						<span>No hay clases actualmente<span>
+				</div>
+				{% endif %}
 			</div>
-			<div id="card" class="card-panel brown darken-2">
-				<ul class="collapsible popout">
-					<span class="white-text"><center><font size="4">Turnos</font></center></span>
+		</div>
+		<div class="col s12">
+			<div class="card">
+				<div class="card-content white-text">
+					<span class="card-title black-text">Turnos</span>
+				</div>
+				{% if appointments %}
+				<ul class="collapsible">
 					{% for appointment in appointments %}
-						<li>	
-							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">{{ appointment.work_day.doctor.user.get_full_name }}</div>
-							<div class="collapsible-body blue-grey lighten-4">
-								<p>Dia: {{ appointment.work_day.day }}</p>
-								<p>Hora: {{ appointment.time_attendance }}</p>
-								{% if appointment.person %}
-									<p>Paciente: {{ appointment.person.user.get_full_name }}</p>
-								{% endif %}
+						<li>
+						  <div class="collapsible-header">{{ appointment.person.user.get_full_name }}-{{ appointment.work_day.day }}</div>
+						  <div class="collapsible-body">
+							<div class="row">
+								Doctor: {{ appointment.work_day.doctor.user.get_full_name }}
 							</div>
-						</li>	
-					{% endfor %}
-				</ul>						    						    													
-			</div>	 			        
-		</div>
-		<div class="col s8">
-		   <div class="row">
-				<div class="card col s10 offset-s1 blue-grey darken-1">
-					<div class="row ">
-						<center>
-							<span class="black-text"><h3>Peticiones</h3></span>
-						</center>
-					</div>
-					<div class="row col s12">
-						<ul class="collapsible popout">
-							{% for person in person_requests %}
-							<li>
-								<div class="collapsible-header blue-grey lighten-4">
-									<font size="5">Solicitud de creacion de {{ person.get_user_type_display }}</font>
-								</div>
-								<div class="collapsible-body blue-grey lighten-4">     
-									<p>Nombre: {{ person.user.get_full_name }}</p>
-									<p>DNI: {{ person.user }}</p>
-									<center>
-										<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ person.id }}', '{% url 'person_requests' %}', '1')"><i class="small material-icons right">check</i>Aceptar</a>													
-										<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ person.id }}', '{% url 'person_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
-									</center>
-								</div>
-							</li>		
-							{% endfor %}
-							{% for classroom_request in classroom_requests %}
-							<li>
-								<div class="collapsible-header blue-grey lighten-4">
-									<font size="5">Solicitud de crear clase: {{ classroom_request.name }}</font>
-								</div>
-								<div class="collapsible-body blue-grey lighten-4">     
-									<p>Descripcion: {{ classroom_request.description }}</p>
-									<p>Duracion: {{ classroom_request.duration }}</p>
-									<p>Profesor solicitante: {{ classroom_request.teacher.user.get_full_name }}</p>
-									<div class="input-field col s12">
-										<select id="select_place">
-											{% for classroom_place in classroom_places %}
-												<option value="{{ classroom_place.id }}">Salon: {{ classroom_place.room }} - capacidad {{ classroom_place.capacity }}</option>
-											{% endfor %}	
-										</select>
-										<label class="black-text">Lugar</label>
-									</div>
-									<div class="row">
-										<table>
-											<thead>
-												<tr>
-													<th>Dias</th>
-													<th>Hora</th>
-												</tr>
-											</thead>
-											<tbody>
-											{% for day in classroom_request.get_days %}
-												<tr>
-												<td>{{ day.get_day_display }}</td>
-												<td>{{ day.start_hour }}</td>
-												</tr>
-											{% endfor %}
-											</tbody>
-										</table>
-									</div>
-									<div class="row">
-										<center>
-											<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ classroom_request.id }}', '{% url 'classroom_requests' %}', '1', 'select_place')"><i class="small material-icons right">check</i>Aceptar</a>													
-											<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ classroom_request.id }}', '{% url 'classroom_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
-										</center>
-									</div>
-								</div>
-							</li>		
-							{% endfor %}
-							{% for enrolment_teacher_request in enrolment_teacher_requests %}
-							<li>
-								<div class="collapsible-header blue-grey lighten-4">
-									<font size="5">Solicitud de ser profesor de la clase {{ enrolment_teacher_request.classroom.name }}</font>
-								</div>
-								<div class="collapsible-body blue-grey lighten-4">     
-									<p>Profesor solicitante: {{ enrolment_teacher_request.person.user.get_full_name }}</p>
-									<center>
-										<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ enrolment_teacher_request.id }}', '{% url 'enrolment_teacher_requests' %}', '1')"><i class="small material-icons right">check</i>Aceptar</a>													
-										<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ enrolment_teacher_request.id }}', '{% url 'enrolment_teacher_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
-									</center>
-								</div>
-							</li>		
-							{% endfor %}
-							{% for enrolment_student_request in enrolment_student_requests %}
-							<li>
-								<div class="collapsible-header blue-grey lighten-4">
-									<font size="5">Solicitud para participar en la clase: {{ enrolment_student_request.classroom.name }}</font>
-								</div>
-								<div class="collapsible-body blue-grey lighten-4">     
-									<p>Persona solicitante: {{ enrolment_student_request.person.user.get_full_name }}</p>
-									<center>
-										<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ enrolment_student_request.id }}', '{% url 'enrolment_student_requests' %}', '1')"><i class="small material-icons right">check</i>Aceptar</a>													
-										<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ enrolment_student_request.id }}', '{% url 'enrolment_student_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
-									</center>
-								</div>
-							</li>		
-							{% endfor %}
-							{% for work_day_request in work_day_requests %}
-							<li>
-								<div class="collapsible-header blue-grey lighten-4">
-									<font size="5">Solicitud de dia de trabajo: {{ work_day_request.day }}</font>
-								</div>
-								<div class="collapsible-body blue-grey lighten-4">     
-									<p>Doctor solicitante: {{ work_day_request.doctor.user.get_full_name }}</p>
-									<center>
-										<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ work_day_request.id }}', '{% url 'work_day_requests' %}', '1')"><i class="small material-icons right">check</i>Aceptar</a>													
-										<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ work_day_request.id }}', '{% url 'work_day_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
-									</center>
-								</div>
-							</li>		
-							{% endfor %}
-							{% for appointment_request in appointment_requests %}
-							<li>
-								<div class="collapsible-header blue-grey lighten-4">
-									<font size="5">Solicitud de turno con el doctor: {{ appointment_request.work_day.doctor.user.get_full_name }}</font>
-								</div>
-								<div class="collapsible-body blue-grey lighten-4">     
-									<p>Persona solicitante: {{ appointment_request.person.user.get_full_name }}</p>
-									<p>Dia: {{ appointment_request.work_day.day }}</p>
-									<p>Hora: {{ appointment_request.time_attendance }}</p>
-									<center>
-										<a class="waves-effect waves-light btn green" onclick="confirm_request('{{ appointment_request.id }}', '{% url 'appointment_requests' %}', '1')"><i class="small material-icons right">check</i>Aceptar</a>													
-										<a class="waves-effect waves-light btn red" onclick="confirm_request('{{ appointment_request.id }}', '{% url 'appointment_requests' %}', '0')"><i class="small material-icons right">clear</i>Rechazar</a>
-									</center>
-								</div>
-							</li>		
-							{% endfor %}
-
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col s2">
-			<div id="card" class="card-panel brown darken-2">
-				<div class="row">
-					<ul class="collapsible popout">
-						<span class="white-text"><center><font size="4">Profesores</font></center></span>
-						{% for teacher in teachers %}
-						<li>	
-							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">{{ teacher.user.get_full_name }}</div>
-							<div class="collapsible-body blue-grey lighten-4">
-								dni: {{ teacher.user }}
+							<div class="row">
+								Horario: {{ appointment.time_attendance }}
 							</div>
-						</li>	
+							<center><button class="waves-effect waves-light red btn" onclick="confirm_request('{{ appointment_request.id }}', '{% url 'appointment_requests' %}', '0')"><i class="material-icons right">delete</i>Eliminar</button></center>
+						  </div>
+						</li>
 						{% endfor %}
 					</ul>
+				{% else %}
+				<div class="card-panel teal lighten-3">
+					<span>No hay Turnos actualmente<span>
 				</div>
+				{% endif %}
 			</div>
-			<div id="card" class="card-panel brown darken-2">
-				<div class="row">
-					<ul class="collapsible popout">
-						<span class="white-text"><center><font size="4">Jubilados</font></center></span>
-						{% for retired in retireds %}
-						<li>	
-							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">{{ retired.user.get_full_name }}</div>
-							<div class="collapsible-body blue-grey lighten-4">
-								dni: {{ retired.user }}
-							</div>
-						</li>	
-						{% endfor %}
-					</ul>
-				</div>
-			</div>
-			<div id="card" class="card-panel brown darken-2">
-				<div class="row">
-					<ul class="collapsible popout">
-						<span class="white-text"><center><font size="4">Doctores</font></center></span>
-						{% for doctor in doctors %}
-						<li>	
-							<div class="collapsible-header blue-grey lighten-4" style="font-size: 16px;">{{ doctor.user.get_full_name }}</div>
-							<div class="collapsible-body blue-grey lighten-4">
-								dni: {{ doctor.user }}
-							</div>
-						</li>	
-						{% endfor %}	
-					</ul>
-				</div>
-			</div>											
 		</div>
 	</div>
-</p>
+	<div class="col s6">
+		<div class="card">
+			<div class="card-content">
+				<span class="card-title center">Solicitudes</span>
+			</div>
+			<ul class="collapsible">
+			{% if person_requests %}
+				<li>
+					<div class="collapsible-header">Solicitudes de cuentas</div>
+					<div class="collapsible-body">
+							<table>
+								<thead>
+									<tr>
+										<th>Nombre</th>
+										<th>Dni</th>
+										<th>email</th>
+										<th>tipo de usuario</th>
+										<th>Aceptar/Rechazar</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for person_request in person_requests %}
+									<tr>
+										<td>{{ person_request.first_name }} {{ person_request.last_name }}</td>
+										<td>{{ person_request.personal_id }}</td>
+										<td>{{ person_request.email }}</td>
+										<td>{{ person_request.get_user_type_display }}</td>
+										<td>
+											<button class="btn btn-flat green-text" onclick="confirm_request('{{ person_request.id }}', '{% url 'person_requests' %}', '1')"><i class="material-icons">check</i></button>
+											<button class="btn btn-flat red-text" onclick="confirm_request('{{ person_request.id }}', '{% url 'person_requests' %}', '0')"><i class="material-icons">clear</i></button>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+					</div>
+				</li>
+			{% endif %}
+			{% if classroom_requests %}
+				{% for classroom_request in classroom_requests %}
+				<li>
+					<div class="collapsible-header">{{ classroom_request.teacher.user.get_full_name }} ha solicitado una clase</div>
+					<div class="collapsible-body">
+						<div class="row">	
+							<div class="col s12">
+								Nombre: {{ classroom_request.name }}
+							</div>
+							<div class="col s12">
+								Descripcion: {{ classroom_request.description }}
+							</div>
+							<div class="col s12">
+								duracion: {{ classroom_request.duration }}
+							</div>
+							<div class="col s12">
+								<table>
+									<thead>
+									<tr>
+										<th>Dia</th>
+										<th>Hora</th>
+									</tr>
+									</thead>
+									<tbody>
+									{% for classroom_day_request in classroom_request.get_days %}
+									<tr>
+										<td>{{ classroom_day_request.get_day_display }}</td>
+										<td>{{ classroom_day_request.start_hour }}</td>
+									</tr>
+									{% endfor %}
+									</tbody>
+								</table>
+							</div>
+							<div class="col s12">
+								<div class="input-field col s12">
+									<select id="select_place">
+										{% for classroom_place in classroom_places %}
+											<option value="{{ classroom_place.id }}">Salon: {{ classroom_place.room }} - capacidad {{ classroom_place.capacity }}</option>
+										{% endfor %}	
+									</select>
+									<label class="black-text">Lugar</label>
+								</div>
+							</div>
+						</div>
+						<center>
+							<button class="btn btn-flat green-text" onclick="confirm_request('{{ classroom_request.id }}', '{% url 'classroom_requests' %}', '1', 'select_place')"><i class="material-icons">check</i>Aceptar</button>
+							<button class="btn btn-flat red-text" onclick="confirm_request('{{ classroom_request.id }}', '{% url 'classroom_requests' %}', '0', 'select_place')"><i class="material-icons">clear</i>Rechazar</button>
+						</center>
+					</div>
+				</li>
+				{% endfor %}
+			{% endif %}
+			{% if enrolment_teacher_requests %}
+			<li>
+				<div class="collapsible-header">Solicitudes de unirse a una clase como profesor</div>
+				<div class="collapsible-body">
+					<table>
+						<thead>
+							<tr>
+								<th>Profesor</th>
+								<th>Clase</th>
+								<th>Aceptar/Rechazar</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for enrolment_teacher_request in enrolment_teacher_requests %}
+							<tr>
+								<td>{{ enrolment_teacher_request.person.user.get_full_name }}</td>
+								<td>{{ enrolment_teacher_request.classroom.name }}</td>
+								<td>
+									<button class="btn btn-flat green-text" onclick="confirm_request('{{ enrolment_teacher_request.id }}', '{% url 'enrolment_teacher_requests' %}', '1')"><i class="material-icons">check</i></button>
+									<button class="btn btn-flat red-text" onclick="confirm_request('{{ enrolment_teacher_request.id }}', '{% url 'enrolment_teacher_requests' %}', '0')"><i class="material-icons">clear</i></button>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</li>
+			{% endif %}
+			{% if enrolment_student_requests %}
+			<li>
+				<div class="collapsible-header">Solicitudes de unirse a una clase como alumno</div>
+				<div class="collapsible-body">
+					<table>
+						<thead>
+							<tr>
+								<th>Alumno</th>
+								<th>Clase</th>
+								<th>Aceptar/Rechazar</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for enrolment_student_request in enrolment_student_requests %}
+							<tr>
+								<td>{{ enrolment_student_request.person.user.get_full_name }}</td>
+								<td>{{ enrolment_student_request.classroom.name }}</td>
+								<td>
+									<button class="btn btn-flat green-text" onclick="confirm_request('{{ enrolment_student_request.id }}', '{% url 'enrolment_student_requests' %}', '1')"><i class="material-icons">check</i></button>
+									<button class="btn btn-flat red-text" onclick="confirm_request('{{ enrolment_student_request.id }}', '{% url 'enrolment_student_requests' %}', '0')"><i class="material-icons">clear</i></button>	
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</li>
+			{% endif %}
+			{% if work_day_request %}
+			<li>
+				<div class="collapsible-header">Solicitudes de dias de trabajo</div>
+				<div class="collapsible-body">
+					<table>
+						<thead>
+							<tr>
+								<th>Doctor</th>
+								<th>Hora de inicio</th>
+								<th>Hora de finalizacion</th>
+								<th>Fecha</th>
+								<th>Aceptar/Rechazar</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for work_day_request in work_day_request %}
+							<tr>
+								<td>{{ work_day_request.doctor.user.get_full_name }}</td>
+								<td>{{ work_day_request.start_hour }}</td>
+								<td>{{ work_day_request.finish_hour }}</td>
+								<td>{{ work_day_request.day }}</td>
+								<td>
+									<button class="btn btn-flat green-text" onclick="confirm_request('{{ work_day_request.id }}', '{% url 'work_day_requests' %}', '1')"><i class="material-icons">check</i></button>
+									<button class="btn btn-flat red-text" onclick="confirm_request('{{ work_day_request.id }}', '{% url 'work_day_requests' %}', '0')"><i class="material-icons">clear</i></button>
+								</td>
+							</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</li>
+			{% endif %}
+			{% if appointment_requests %}
+				<li>
+					<div class="collapsible-header">Solicitudes de turnos</div>
+					<div class="collapsible-body">
+						<table>
+							<thead>
+								<tr>
+									<th>Paciente</th>
+									<th>Dia</th>
+									<th>Hora de atencion</th>
+									<th>Doctor</th>
+									<th>Aceptar/Rechazar</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for appointment_request in appointment_requests %}
+								<tr>
+									<td>{{ appointment_request.person.user.get_full_name }}</td>
+									<td>{{ appointment_request.work_day.day }}</td>
+									<td>{{ appointment_request.time_attendance }}</td>
+									<td>{{ appointment_request.work_day.doctor.user.get_full_name }}</td>
+									<td>
+										<button class="btn btn-flat green-text" onclick="confirm_request('{{ appointment_request.id }}', '{% url 'appointment_requests' %}', '1')"><i class="material-icons">check</i></button>
+										<button class="btn btn-flat red-text" onclick="confirm_request('{{ appointment_request.id }}', '{% url 'appointment_requests' %}', '0')"><i class="material-icons">clear</i></button>
+									</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</li>
+			{% endif %}
+			</ul>
+		</div>
+	</div>
+	<div class="col s3">
+		<div class="col s12">
+			<div class="card">
+				<div class="card-content white-text">
+					<span class="card-title black-text">Profesores</span>
+				</div>
+				{% if teachers %}
+				<ul class="collapsible">
+					<li>
+						<div class="collapsible-header">Lista</div>
+						<div class="collapsible-body">
+							<table>
+								<thead>
+									<tr>
+										<th>Nombre</th>
+										<th>Dni</th>
+										<th>Eliminar</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for teacher in teachers %}
+									<tr>
+										<td>{{ teacher.user.get_full_name }}</td>
+										<td>{{ teacher.user.username }}</td>
+										<td><button class="btn btn-flat red-text" onclick="my_ajax('{{ teacher.id }}', '{% url 'delete_object' %}', 'person', '{% url 'profile' %}')"><i class="material-icons">clear</i></button></td>
+									</tr>
+									{% endfor %}		
+								</tbody>
+							</table>
+						</div>
+					</li>
+				</ul>
+				{% else %}
+				<div class="card-panel teal lighten-3">
+						<span>No hay doctores registrados<span>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+		<div class="col s12">
+			<div class="card">
+				<div class="card-content white-text">
+					<span class="card-title black-text">Jubilados</span>
+				</div>
+				{% if retireds %}
+				<ul class="collapsible">
+					<li>
+						<div class="collapsible-header">Lista</div>
+						<div class="collapsible-body">
+							<table>
+								<thead>
+									<tr>
+										<th>Nombre</th>
+										<th>Dni</th>
+										<th>Eliminar</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for retired in retireds %}
+									<tr>
+										<td>{{ retired.user.get_full_name }}</td>
+										<td>{{ retired.user.username }}</td>
+										<td><button class="btn btn-flat red-text" onclick="my_ajax('{{ retired.id }}', '{% url 'delete_object' %}', 'person', '{% url 'profile' %}')"><i class="material-icons">clear</i></button></td>
+									</tr>
+									{% endfor %}		
+								</tbody>
+							</table>
+						</div>
+					</li>
+				</ul>
+				{% else %}
+				<div class="card-panel teal lighten-3">
+						<span>No hay jubilados registrados<span>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+		<div class="col s12">
+			<div class="card">
+				<div class="card-content white-text">
+					<span class="card-title black-text">Doctores</span>
+				</div>
+				{% if doctors %}
+				<ul class="collapsible">
+					<li>
+						<div class="collapsible-header">Lista</div>
+						<div class="collapsible-body">
+							<table>
+								<thead>
+									<tr>
+										<th>Nombre</th>
+										<th>Dni</th>
+										<th>Eliminar</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for doctor in doctors %}
+									<tr>
+										<td>{{ doctor.user.get_full_name }}</td>
+										<td>{{ doctor.user.username }}</td>
+										<td><button class="btn btn-flat red-text" onclick="my_ajax('{{ doctor.id }}', '{% url 'delete_object' %}', 'person', '{% url 'profile' %}')"><i class="material-icons">clear</i></button></td>
+									</tr>
+									{% endfor %}		
+								</tbody>
+							</table>
+						</div>
+					</li>
+				</ul>
+				{% else %}
+				<div class="card-panel teal lighten-3">
+						<span>No hay doctores registrados<span>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock body %}

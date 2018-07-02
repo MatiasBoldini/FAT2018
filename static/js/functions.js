@@ -154,6 +154,24 @@ function confirm_request(id, url, approved, element_id){
     }
 }
 
+function my_ajax(id, url, name, redirect){
+    $.ajax({
+        method:"POST",
+        url:url,
+        data:{
+            'id':id,
+            'name': name,
+            'csrfmiddlewaretoken': getCookie('csrftoken')
+        },
+        success:function(){
+            window.location.replace(redirect)
+        },
+        error: function(request, status, error){
+            alert(request.responseText);
+        }
+    });
+}
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
