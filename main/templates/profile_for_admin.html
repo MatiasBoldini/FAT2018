@@ -64,7 +64,7 @@
 								<li>
 									<div class="collapsible-header">Alumnos</div>
 									<div class="collapsible-body">
-										{% if classroom.get_students %}
+										{% if classroom.get_enrolment_students %}
 											<table>
 												<thead>
 												  <tr>
@@ -348,7 +348,7 @@
 				<div class="card-content white-text">
 					<span class="card-title black-text">Profesores</span>
 				</div>
-				{% if doctors %}
+				{% if teachers %}
 				<ul class="collapsible">
 					<li>
 						<div class="collapsible-header">Lista</div>
@@ -362,11 +362,11 @@
 									</tr>
 								</thead>
 								<tbody>
-									{% for doctor in doctors %}
+									{% for teacher in teachers %}
 									<tr>
-										<td>{{ doctor.user.get_full_name }}</td>
-										<td>{{ doctor.user.username }}</td>
-										<td><button class="btn btn-flat red-text" onclick="my_ajax('{{ doctor.id }}', '{% url 'delete_object' %}', 'person', '{% url 'profile' %}')"><i class="material-icons">clear</i></button></td>
+										<td>{{ teacher.user.get_full_name }}</td>
+										<td>{{ teacher.user.username }}</td>
+										<td><button class="btn btn-flat red-text" onclick="my_ajax('{{ teacher.id }}', '{% url 'delete_object' %}', 'person', '{% url 'profile' %}')"><i class="material-icons">clear</i></button></td>
 									</tr>
 									{% endfor %}		
 								</tbody>
@@ -376,7 +376,7 @@
 				</ul>
 				{% else %}
 				<div class="card-panel teal lighten-3">
-						<span>No hay clases actualmente<span>
+						<span>No hay doctores registrados<span>
 				</div>
 				{% endif %}
 			</div>
@@ -386,7 +386,7 @@
 				<div class="card-content white-text">
 					<span class="card-title black-text">Jubilados</span>
 				</div>
-				{% if doctors %}
+				{% if retireds %}
 				<ul class="collapsible">
 					<li>
 						<div class="collapsible-header">Lista</div>
@@ -414,7 +414,7 @@
 				</ul>
 				{% else %}
 				<div class="card-panel teal lighten-3">
-						<span>No hay clases actualmente<span>
+						<span>No hay jubilados registrados<span>
 				</div>
 				{% endif %}
 			</div>
@@ -452,7 +452,7 @@
 				</ul>
 				{% else %}
 				<div class="card-panel teal lighten-3">
-						<span>No hay clases actualmente<span>
+						<span>No hay doctores registrados<span>
 				</div>
 				{% endif %}
 			</div>
