@@ -50,6 +50,7 @@
                                     <tr>
                                         <th>Paciente</th>
                                         <th>Hora</th>
+                                        <th>Rechazar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -60,7 +61,10 @@
                                         {% else %}
                                             <td>Nadie ha solicitado este turno</td>
                                         {% endif  %}
-                                        <td>{{ appoinment.time_attendance }}</td>
+                                            <td>{{ appoinment.time_attendance }}</td>
+                                            <td>
+                                                <button class="btn btn-flat red-text"><i class="material-icons">clear</i></button>
+                                            </td>                                            
                                     </tr>
                                     {% endfor %}
                                 </tbody>
