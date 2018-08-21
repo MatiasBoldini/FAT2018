@@ -40,11 +40,19 @@ Identificacion
                         </tbody>
                     </table>    
                 </li>
+                {% if 1 == 2 %}
                 <li class="collection-item">
                     <center>
                         <button class="btn btn-flat red white-text" onclick="confirm_request('{{ classroom.id }}', '{% url 'classrooms' %}')">Unirse</button>
                     </center>
                 </li>
+                {% else %}
+                <li class="collection-item">
+                    <center>
+                        <h6 class="red-text" >Usted ya esta registrado en una clase en este horario</h6>
+                    </center>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
