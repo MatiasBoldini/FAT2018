@@ -32,6 +32,19 @@ class Person(models.Model):
             results['work_days'] = Work_day.objects.filter(doctor=self)
         elif self.user_type == 2:
             results['enrolments'] = Enrolment_teacher.objects.filter(person=self)
+        elif self.user_type == 3:
+            results['retireds'] = Person.objects.filter(user_type=0)
+            results['doctors'] = Person.objects.filter(user_type=1)
+            results['teachers'] = Person.objects.filter(user_type=2)
+            results['classrooms'] = Classroom.objects.all()
+            results['appointments'] = Appointment.objects.filter(person__isnull=False, authorized=True)
+            results['person_requests'] = Person_request.objects.all()
+            results['classroom_requests'] = Classroom_request.objects.all()
+            results['enrolment_teacher_requests'] = Enrolment_teacher_request.objects.all()
+            results['enrolment_student_requests'] = Enrolment_student_request.objects.all()
+            results['work_day_request'] = Work_day_request.objects.all()
+            results['appointment_requests'] = Appointment.objects.filter(person__isnull=False, authorized=False)
+            results['classroom_places'] = Classroom_place.objects.all()
         else:
             print("Error: {} has a user type incorrect plase modify it".format(self.user.first_name))
         return results
