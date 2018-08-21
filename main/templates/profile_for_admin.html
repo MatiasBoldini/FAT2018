@@ -131,18 +131,19 @@
 		<div class="col s12">
 			<div class="card">
 				<div class="card-content white-text">
-					<span class="card-title black-text">Salones</span>
+					<span class="card-title black-text">Crear salon</span>
 				</div>
-				<div class="card-panel">
-					<div class="input-field">
-						<input type="text"></input>
-						<label>Nombre del salon</label>
-						<center>
-							<button class="btn btn-flat waves-effect waves-grey">Crear salon</button>
-						</center>
-					</div>
-				</div>
-			</div>
+				<ul class="collapsible">
+					<li>
+						<div class="collapsible-header">Salon</div>
+						<div class="collapsible-body">
+							<input placeholder="Nombre del salon" type="text" class="validate"></input>
+							<input placeholder="Capacidad" type="number" class="validate" min="1" max="50"></input>
+							<center><button class="btn btn-flat waves-effect waves-grey">Crear</button></center>
+						</div>
+					</li>
+				</ul>				
+			</div>			
 		</div>
 	</div>
 	<div class="col s6">
@@ -472,6 +473,36 @@
 				</div>
 				{% endif %}
 			</div>
+		</div>
+		<div class="col s12">
+			<div class="card">
+				<div class="card-content white-text">
+					<span class="card-title black-text">Salones</span>
+				</div>
+				<ul class="collapsible">
+					<li>
+						<div class="collapsible-header">Salones</div>
+						<div class="collapsible-body">
+							<table>
+								<thead>
+									<tr>
+										<th>Nombre</th>
+										<th>Capacidad</th>
+										<th>Eliminar</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td></td>
+										<td></td>
+										<td><button class="btn btn-flat red-text"><i class="material-icons">clear</i></button></td>
+									</tr>		
+								</tbody>
+							</table>
+						</div>
+					</li>
+				</ul>				
+			</div>			
 		</div>
 	</div>
 </div>
