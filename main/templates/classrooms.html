@@ -8,6 +8,7 @@ Identificacion
 {% block body %}
 <div class="row">
     {% for classroom in classrooms %}
+    {% if  1 == 1 %}
     <div class="col s12 xl6">
         <div class="card grey lighten-3">
             <div class="card-content">
@@ -36,7 +37,7 @@ Identificacion
                                 <td>{{ day.classroom_place.room }}</td>
                                 <td>{{ day.start_hour }}</td>
                             </tr>
-                            {% endfor %}
+                            {% endfor %}                            
                         </tbody>
                     </table>    
                 </li>
@@ -56,6 +57,7 @@ Identificacion
             </ul>
         </div>
     </div>
+    {% endif %}
     {% endfor %}
 </div>
 {% endblock %}
