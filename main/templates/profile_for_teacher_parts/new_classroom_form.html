@@ -34,8 +34,8 @@
     </li>
     <li class="collection-item">
         <center>
-            <button class="btn btn-flat" onclick="load_chain('{% url 'load_form_classroom_day' %}', 'days_data')">Nuevo dia</button>
-            <button class="btn btn-flat" onclick="send_chain('classroom_data', '{% url 'send_form_classroom' %}', 'days_data', '{% url 'send_form_classroom_day' %}')">Enviar</button>            
+            <button class="btn btn-flat" onclick="load_chain('{% url 'form_classroom_day' %}', 'days_data')">Nuevo dia</button>
+            <button class="btn btn-flat" onclick="send_chain('classroom_data', '{% url 'form_classroom' %}', 'days_data', '{% url 'form_classroom_day' %}', '{% url 'profile' %}')">Enviar</button>            
         </center>
     </li>
 </ul>
@@ -45,6 +45,6 @@
             load_chain_data('{% url 'load_classroom_day_data' %}', 'days_data', '{{ day.id }}');
         {% endfor %}
     {% else %}
-        load_chain('{% url 'load_form_classroom_day' %}', 'days_data')
+        load_chain('{% url 'form_classroom_day' %}', 'days_data')
     {% endif %} 
 </script>

@@ -60,7 +60,7 @@ function remove(url, id){
     });
 };
 
-function send_chain(first_element_id, first_url, chain_element_id, chain_url){
+function send_chain(first_element_id, first_url, chain_element_id, chain_url, redirect){
     var data_classroom = get_data($("#"+first_element_id)[0]);
     var classroom_id = send_form(first_url, data_classroom, false)["responseJSON"]["id"];
     var vector = $("#"+chain_element_id).find("form");
@@ -69,7 +69,7 @@ function send_chain(first_element_id, first_url, chain_element_id, chain_url){
         data["id"] = classroom_id;
         send_form(chain_url, data, true);
     }
-    window.location.replace(first_url)
+    window.location.replace(redirect)
 };
 
 function load_part(url, place){

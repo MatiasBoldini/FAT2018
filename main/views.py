@@ -11,12 +11,28 @@ from django.utils.dateparse import parse_time
 
 my_objects = {
     "person": Person,
-    "classroom": Classroom,
+    "classroom_place": Classroom_place,
+    "work_day": Work_day,
     "appointment": Appointment,
+    "classroom": Classroom,
+    "classroom_day": Classroom_day,
+    "enrolment_teacher": Enrolment_teacher,
     "enrolment_student": Enrolment_student,
-    "enrolment_teacher": Enrolment_teacher
+    "person_request": Person_request,
+    "classroom_request": Classroom_request,
+    "classroom_day_request": Classroom_day_request,
+    "enrolment_teacher_request": Enrolment_teacher_request,
+    "enrolment_student_request": Enrolment_student_request,
+    "work_day_request": Work_day_request,
+    "person_record": Person_record,
+    "work_day_record": Work_day_record,
+    "appointment_record": Appointment_record,
+    "classroom_record": Classroom_record,
+    "classroom_day_record": Classroom_day_record,
+    "enrolment_teacher_record": Enrolment_teacher_record,
+    "enrolment_student_record": Enrolment_student_record,
+    "notification": Notification
 }
-
 
 def main(request):
     results = {}
@@ -24,44 +40,22 @@ def main(request):
     return render(request, 'main.html', results)
 
 def profile(request):
-    if not request.user.is_authenticated:
-        return redirect(my_login)
-    person = Person.objects.get(user=request.user)
-    results = person.get_duties()
-    if person.user_type == 0:
-        return render(request, 'profile_for_retired.html', results)
-    elif person.user_type == 1:
-        return render(request, 'profile_for_doctor.html', results)
-    elif person.user_type == 2:
-        return render(request, 'profile_for_teacher.html', results)
-    elif person.user_type == 3:
-        results['retireds'] = Person.objects.filter(user_type=0)
-        results['doctors'] = Person.objects.filter(user_type=1)
-        results['teachers'] = Person.objects.filter(user_type=2)
-        results['classrooms'] = Classroom.objects.all()
-        results['appointments'] = Appointment.objects.filter(person__isnull=False, authorized=True)
-        results['person_requests'] = Person_request.objects.all()
-        results['classroom_requests'] = Classroom_request.objects.all()
-        results['enrolment_teacher_requests'] = Enrolment_teacher_request.objects.all()
-        results['enrolment_student_requests'] = Enrolment_student_request.objects.all()
-        results['work_day_request'] = Work_day_request.objects.all()
-        results['appointment_requests'] = Appointment.objects.filter(person__isnull=False, authorized=False)
-        results['classroom_places'] = Classroom_place.objects.all()
-        return render(request, 'profile_for_admin.html', results)
-    else:
-        print("hacker")
-
-def load_form_classroom(request):
-    results = {}
-    results['form'] = ClassRoomForm()
-    return render(request, 'profile_for_teacher_parts/new_classroom_form.html', results)
-
-def load_form_classroom_day(request):
-    results = {}
-    results['form_day'] = ClassDayForm()
-    return render(request, 'profile_for_teacher_parts/new_day_form.html', results)
-
-def send_form_classroom(request):
+    if request.user.is_authenticated:
+        person = Person.objects.get(user=request.user)
+        results = person.get_duties()
+        if person.user_type == 0:
+            return render(request, 'profile_for_retired.html', results)
+        elif person.user_type == 1:
+            return render(request, 'profile_for_doctor.html', results)
+        elif person.user_type == 2:
+            return render(request, 'profile_for_teacher.html', results)
+        elif person.user_type == 3:
+            return render(request, 'profile_for_admin.html', results)
+        else:
+            print("hacker")
+    return redirect(my_login)
+    
+def form_classroom(request):
     if request.method == "POST":
         p = Person.objects.get(user=request.user)
         if p.user_type == 2 or 3:
@@ -72,9 +66,12 @@ def send_form_classroom(request):
                 cr = Classroom_request(name=data['name'], description=data['description'], duration=data['duration'], teacher=p)
                 cr.save()
             return JsonResponse({"id" : cr.id})
-    return redirect(profile)
+    results = {}
+    results['form'] = ClassRoomForm()
+    return render(request, 'profile_for_teacher_parts/new_classroom_form.html', results)
 
-def send_form_classroom_day(request):
+
+def form_classroom_day(request):
     if request.method == "POST":
         data = {'day': request.POST.get('day'), 'start_hour': request.POST.get('start_hour')}
         form = ClassDayForm(data=data)
@@ -82,12 +79,9 @@ def send_form_classroom_day(request):
             classroom = Classroom_request.objects.get(id=request.POST.get('id'))
             cd = Classroom_day_request(day=data['day'], start_hour=data['start_hour'], classroom=classroom)
             cd.save()
-        return HttpResponse("well done!")
-    return redirect(profile)
-
-def remove_classroom(request):
-    Classroom.objects.get(id=request.GET.get('id')).delete()
-    return HttpResponse("borrado")
+    results = {}
+    results['form_day'] = ClassDayForm()
+    return render(request, 'profile_for_teacher_parts/new_day_form.html', results)
     
 def load_classroom_data(request):
     results={}
