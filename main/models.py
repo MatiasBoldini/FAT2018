@@ -32,6 +32,7 @@ class Person(models.Model):
             results['work_days'] = Work_day.objects.filter(doctor=self)
         elif self.user_type == 2:
             results['enrolments'] = Enrolment_teacher.objects.filter(person=self)
+            results['enrolments2'] = Enrolment_teacher.objects.filter(person=self).count()
         elif self.user_type == 3:
             results['retireds'] = Person.objects.filter(user_type=0)
             results['doctors'] = Person.objects.filter(user_type=1)

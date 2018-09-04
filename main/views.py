@@ -48,6 +48,10 @@ def profile(request):
         elif person.user_type == 1:
             return render(request, 'profile_for_doctor.html', results)
         elif person.user_type == 2:
+            if results['enrolments2'] != 0 :
+                results['boolean']= False
+            else:
+                results['boolean']= True
             return render(request, 'profile_for_teacher.html', results)
         elif person.user_type == 3:
             return render(request, 'profile_for_admin.html', results)
