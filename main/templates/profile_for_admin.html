@@ -8,6 +8,7 @@
 {% endblock navbar %}	
 {% block body %}
 <div class="row">
+		<br>
 	<div class="col s3">
 		<div class="col s12">
 			<div class="card">
@@ -139,6 +140,9 @@
 						<div class="collapsible-body">
 							<input placeholder="Nombre del salon" type="text" class="validate"></input>
 							<input placeholder="Capacidad" type="number" class="validate" min="1" max="50"></input>
+							<h4>
+								
+							</h4>
 							<center><button class="btn btn-flat waves-effect waves-grey">Crear</button></center>
 						</div>
 					</li>
@@ -200,7 +204,10 @@
 								Descripcion: {{ classroom_request.description }}
 							</div>
 							<div class="col s12">
-								duracion: {{ classroom_request.duration }}
+								Duracion: {{ classroom_request.duration }}
+								<h4>
+								
+								</h4>
 							</div>
 							<div class="col s12">
 								<table>
@@ -221,6 +228,7 @@
 								</table>
 							</div>
 							<div class="col s12">
+									<br>
 								<div class="input-field col s12">
 									<select id="select_place">
 										{% for classroom_place in classroom_places %}
