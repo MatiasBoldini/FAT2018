@@ -14,7 +14,7 @@ Identificacion
 <div class="row">
 	<div class="col s12 m8 offset-m2 x8 xl6 offset-xl2">
 		<ul class="collection with-header">
-			<form action="{% url 'my_login' %}" method="POST">
+			<form action="{% url 'route' 'nose' %}" method="POST">
 				<li class="collection-header center"><h4>Iniciar Sesión</h4></li>
 				<li class="collection-item">
 					{% csrf_token %}
@@ -45,7 +45,7 @@ Identificacion
 						</center>
 					</div>
 					<div class="row center">
-						Si no esta registrado <a href="{% url 'my_register' %}" class="pink-text">registrese aqui!</a>
+						Si no esta registrado <a href="{% url 'route' 'register' %}" class="pink-text">registrese aqui!</a>
 					</div>
 				</li>
 			</form>
