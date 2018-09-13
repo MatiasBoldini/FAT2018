@@ -302,7 +302,16 @@ def new_enrolment_classroom(request):
         new_enrolment.save()
         return redirect(profile)
     results = {}
-    results['classrooms'] = Classroom.objects.all()
+    b=[]
+    
+    for a in Classroom.objects.all():
+        enrolment= Enrolment_teacher.objects.filter(classroom=a)
+        contador = 0
+        for x in enrolment:
+            contador = contador+1
+        if contador <=1:
+            b.append(a)
+    results['classrooms'] = b
     return render(request, 'profile_for_teacher_parts/new_enrolment_classroom.html', results)
 
 def toMinutes(time):
