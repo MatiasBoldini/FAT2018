@@ -181,7 +181,7 @@
 										<td>{{ person_request.email }}</td>
 										<td>{{ person_request.get_user_type_display }}</td>
 										<td>
-											<button class="btn btn-flat green-text"><i class="material-icons">check</i></button>
+											<button class="btn btn-flat green-text" onclick="model_and_id('{% url 'approve' %}', 'Person_request', '{{ person_request.id }}')"><i class="material-icons">check</i></button>
 											<button class="btn btn-flat red-text"><i class="material-icons">clear</i></button>
 										</td>
 									</tr>

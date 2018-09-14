@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.contrib.auth.models import User
 
 USER_TYPE_CHOICES = (
     (0, 'Jubilado'),
@@ -40,6 +41,8 @@ class Person(models.Model):
             results['persons'] = Person.objects.all()
             results['classrooms'] = Classroom.objects.all()
             results['appointments'] = Appointment.objects.all()
+            results['rooms'] = Room.objects.all()
+            results['person_requests'] = Person_request.objects.all()
         return results
 
 class Room(models.Model):
@@ -94,3 +97,21 @@ class Appointment(models.Model):
 
     def __str__(self):
         return "{} {} {}".format(self.hour, self.authorized, self.person)
+
+class Person_request(models.Model):
+    first_name= models.CharField(max_length=30)
+    last_name= models.CharField(max_length=30)
+    personal_id= models.CharField(max_length=30)
+    password= models.CharField(max_length=30)
+    email= models.CharField(max_length=30)
+
+    def approved(self):
+        new_user = User.objects.create_user(
+            first_name=self.first_name,
+            last_name=self.last_name,
+            username=self.personal_id,
+            password=self.password,
+            email=self.email
+        )
+        Person.objects.create(user=new_user, user_type=0)
+        self.delete()

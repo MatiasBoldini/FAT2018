@@ -6,4 +6,6 @@ urlpatterns = [
     path('page/<page>', goTo, name="route"),
     path('delete/<object>/<object_id>', delete, name="delete"),
     path('logSystem', logSystem, name="logSystem"),
+    path('createModel', createModel, name="create"),
+    path('aproveRequest', aproveRequest, name="approve"),
 ]
