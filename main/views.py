@@ -39,8 +39,14 @@ def delete(request, object, object_id):
     return HttpResponse("1")
 
 def logSystem(request):
-    if User.is_authenticated:
-        logout(request)
-        return goTo(request, 'login')
-    else:
-        pass
+    if request.method == "POST":
+        print("ENTRO POST")
+        username = request.POST.get("personal_id")
+        password = request.POST.get("password")
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            print("user es no none")
+            login(request, user)
+            return main(request)
+    logout(request)
+    return goTo(request, 'login')
