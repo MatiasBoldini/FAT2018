@@ -8,7 +8,6 @@
 {% endblock navbar %}	
 {% block body %}
 <div class="row">
-		<br>
 	<div class="col s3">
 		<div class="col s12">
 			<div class="card">
@@ -19,7 +18,7 @@
 				<ul class="collapsible">
 					{% for classroom in classrooms %}
 					<li>
-						<div class="collapsible-header">{{ classroom.name }}</div>
+						<div class="collapsible-header">{{ classroom.id }}</div>
 						<div class="collapsible-body">
 							<div class="row">Descripcion: {{ classroom.description }}</div>
 							<div class="row">Duracion: {{ classroom.duration }}</div>
@@ -36,7 +35,7 @@
 									<tr>
 										<td>{{ enrolment_teacher.person.user.get_full_name }}</td>
 										<td>
-											<button class="btn btn-flat waves-effect waves-grey" onclick="my_ajax('{{ enrolment_teacher.id }}', '{% url 'delete_object' %}', 'enrolment_teacher', '{% url 'profile' %}')"><i class="material-icons">clear</i></button>
+											<button class="btn btn-flat waves-effect waves-grey">clear</i></button>
 										</td>
 									</tr>
 									{% endfor %}
@@ -77,7 +76,7 @@
 													{% for enrolment_student in classroom.get_enrolment_students %}
 													<tr>
 														<td>{{ enrolment_student.person.user.get_full_name }}</td>
-														<td><button class="btn btn-flat red-text" onclick="my_ajax('{{ enrolment_student.id }}', '{% url 'delete_object' %}', 'enrolment_student', '{% url 'profile' %}')"><i class="material-icons">clear</i></button></td>
+														<td><button class="btn btn-flat red-text"><i class="material-icons">clear</i></button></td>
 													</tr>
 													{% endfor %}
 												</tbody>
@@ -88,7 +87,7 @@
 									</div>
 								</li>
 							</ul>
-							<center><button class="waves-effect waves-light red btn" onclick="my_ajax('{{ classroom.id }}', '{% url 'delete_object' %}', 'classroom', '{% url 'profile' %}')"><i class="material-icons right">delete</i>Eliminar</button></center>
+							<center><a class="waves-effect waves-light red btn" href="{% url 'delete' 'Classroom' classroom.id %}"><i class="material-icons right">delete</i>Eliminar</a></center>
 						</div>
 					</li>
 					{% endfor %}		
@@ -117,7 +116,7 @@
 							<div class="row">
 								Horario: {{ appointment.time_attendance }}
 							</div>
-							<center><button class="waves-effect waves-light red btn" onclick="confirm_request('{{ appointment_request.id }}', '{% url 'appointment_requests' %}', '0')"><i class="material-icons right">delete</i>Eliminar</button></center>
+							<center><button class="waves-effect waves-light red btn"><i class="material-icons right">delete</i>Eliminar</button></center>
 						  </div>
 						</li>
 						{% endfor %}
@@ -181,8 +180,8 @@
 										<td>{{ person_request.email }}</td>
 										<td>{{ person_request.get_user_type_display }}</td>
 										<td>
-											<button class="btn btn-flat green-text" onclick="confirm_request('{{ person_request.id }}', '{% url 'person_requests' %}', '1')"><i class="material-icons">check</i></button>
-											<button class="btn btn-flat red-text" onclick="confirm_request('{{ person_request.id }}', '{% url 'person_requests' %}', '0')"><i class="material-icons">clear</i></button>
+											<button class="btn btn-flat green-text" onclick="model_and_id('{% url 'approve' %}', 'Person_request', '{{ person_request.id }}')"><i class="material-icons">check</i></button>
+											<button class="btn btn-flat red-text"><i class="material-icons">clear</i></button>
 										</td>
 									</tr>
 									{% endfor %}
@@ -228,7 +227,6 @@
 								</table>
 							</div>
 							<div class="col s12">
-									<br>
 								<div class="input-field col s12">
 									<select id="select_place">
 										{% for classroom_place in classroom_places %}
@@ -240,8 +238,8 @@
 							</div>
 						</div>
 						<center>
-							<button class="btn btn-flat green-text" onclick="confirm_request('{{ classroom_request.id }}', '{% url 'classroom_requests' %}', '1', 'select_place')"><i class="material-icons">check</i>Aceptar</button>
-							<button class="btn btn-flat red-text" onclick="confirm_request('{{ classroom_request.id }}', '{% url 'classroom_requests' %}', '0', 'select_place')"><i class="material-icons">clear</i>Rechazar</button>
+							<button class="btn btn-flat green-text"><i class="material-icons">check</i>Aceptar</button>
+							<button class="btn btn-flat red-text"><i class="material-icons">clear</i>Rechazar</button>
 						</center>
 					</div>
 				</li>
@@ -265,8 +263,8 @@
 								<td>{{ enrolment_teacher_request.person.user.get_full_name }}</td>
 								<td>{{ enrolment_teacher_request.classroom.name }}</td>
 								<td>
-									<button class="btn btn-flat green-text" onclick="confirm_request('{{ enrolment_teacher_request.id }}', '{% url 'enrolment_teacher_requests' %}', '1')"><i class="material-icons">check</i></button>
-									<button class="btn btn-flat red-text" onclick="confirm_request('{{ enrolment_teacher_request.id }}', '{% url 'enrolment_teacher_requests' %}', '0')"><i class="material-icons">clear</i></button>
+									<button class="btn btn-flat green-text"><i class="material-icons">check</i></button>
+									<button class="btn btn-flat red-text"><i class="material-icons">clear</i></button>
 								</td>
 							</tr>
 							{% endfor %}
@@ -293,8 +291,8 @@
 								<td>{{ enrolment_student_request.person.user.get_full_name }}</td>
 								<td>{{ enrolment_student_request.classroom.name }}</td>
 								<td>
-									<button class="btn btn-flat green-text" onclick="confirm_request('{{ enrolment_student_request.id }}', '{% url 'enrolment_student_requests' %}', '1')"><i class="material-icons">check</i></button>
-									<button class="btn btn-flat red-text" onclick="confirm_request('{{ enrolment_student_request.id }}', '{% url 'enrolment_student_requests' %}', '0')"><i class="material-icons">clear</i></button>	
+									<button class="btn btn-flat green-text"><i class="material-icons">check</i></button>
+									<button class="btn btn-flat red-text"><i class="material-icons">clear</i></button>	
 								</td>
 							</tr>
 							{% endfor %}
@@ -325,8 +323,8 @@
 								<td>{{ work_day_request.finish_hour }}</td>
 								<td>{{ work_day_request.day }}</td>
 								<td>
-									<button class="btn btn-flat green-text" onclick="confirm_request('{{ work_day_request.id }}', '{% url 'work_day_requests' %}', '1')"><i class="material-icons">check</i></button>
-									<button class="btn btn-flat red-text" onclick="confirm_request('{{ work_day_request.id }}', '{% url 'work_day_requests' %}', '0')"><i class="material-icons">clear</i></button>
+									<button class="btn btn-flat green-text"><i class="material-icons">check</i></button>
+									<button class="btn btn-flat red-text"><i class="material-icons">clear</i></button>
 								</td>
 							</tr>
 							{% endfor %}
@@ -357,8 +355,8 @@
 									<td>{{ appointment_request.time_attendance }}</td>
 									<td>{{ appointment_request.work_day.doctor.user.get_full_name }}</td>
 									<td>
-										<button class="btn btn-flat green-text" onclick="confirm_request('{{ appointment_request.id }}', '{% url 'appointment_requests' %}', '1')"><i class="material-icons">check</i></button>
-										<button class="btn btn-flat red-text" onclick="confirm_request('{{ appointment_request.id }}', '{% url 'appointment_requests' %}', '0')"><i class="material-icons">clear</i></button>
+										<button class="btn btn-flat green-text"><i class="material-icons">check</i></button>
+										<button class="btn btn-flat red-text"><i class="material-icons">clear</i></button>
 									</td>
 								</tr>
 								{% endfor %}
@@ -394,7 +392,7 @@
 									<tr>
 										<td>{{ teacher.user.get_full_name }}</td>
 										<td>{{ teacher.user.username }}</td>
-										<td><button class="btn btn-flat red-text" onclick="my_ajax('{{ teacher.id }}', '{% url 'delete_object' %}', 'person', '{% url 'profile' %}')"><i class="material-icons">clear</i></button></td>
+										<td><button class="btn btn-flat red-text"><i class="material-icons">clear</i></button></td>
 									</tr>
 									{% endfor %}		
 								</tbody>
@@ -432,7 +430,7 @@
 									<tr>
 										<td>{{ retired.user.get_full_name }}</td>
 										<td>{{ retired.user.username }}</td>
-										<td><button class="btn btn-flat red-text" onclick="my_ajax('{{ retired.id }}', '{% url 'delete_object' %}', 'person', '{% url 'profile' %}')"><i class="material-icons">clear</i></button></td>
+										<td><button class="btn btn-flat red-text"><i class="material-icons">clear</i></button></td>
 									</tr>
 									{% endfor %}		
 								</tbody>
@@ -470,7 +468,7 @@
 									<tr>
 										<td>{{ doctor.user.get_full_name }}</td>
 										<td>{{ doctor.user.username }}</td>
-										<td><button class="btn btn-flat red-text" onclick="my_ajax('{{ doctor.id }}', '{% url 'delete_object' %}', 'person', '{% url 'profile' %}')"><i class="material-icons">clear</i></button></td>
+										<td><button class="btn btn-flat red-text"><i class="material-icons">clear</i></button></td>
 									</tr>
 									{% endfor %}		
 								</tbody>

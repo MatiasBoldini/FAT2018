@@ -26,7 +26,7 @@
                     {% if user.is_anonymous %}
                    
                     {% else %}
-                    <li><a class="black-text" href="{% url 'profile' %}">{{ user.get_full_name|default:user.username }}</a></li>
+                    <li><a class="black-text" href="{% url 'route' 'profile' %}">{{ user.get_full_name|default:user.username }}</a></li>
                     {% endif %}
                     </ul>
                     <a href="{% url 'main' %}" class="brand-logo center   offset-s4 black-text ">  <img src="/static/img/logo1.png" style="padding-top: 6px" >   </a>
@@ -34,9 +34,9 @@
                         {% block navbar %}
                         {% endblock navbar %}
                         {% if user.is_anonymous %}
-                        <li><a class="black-text" href="{% url 'my_login' %}">login</a></li>
+                        <li><a class="black-text" href="{% url 'route' 'login' %}">login</a></li>
                         {% else %}
-                        <li><a class="black-text" href="{% url 'my_logout' %}">logout</a></li>
+                        <li><a class="black-text" href="{% url 'logSystem' %}">logout</a></li>
                         <li> <a href="{% url 'main' %}" class="black-text "> <span class="new badge right-">4</span> <i class="material-icons left"> notifications</i>  </a></li>
                         {% endif %}
                     </ul>
