@@ -52,25 +52,28 @@ def logSystem(request):
 
 def createModel(request):
     if request.method == "POST":
-        model = getModel(request.POST['model'])
-        if model:
-            dic ={}
-            for a in request.POST.keys():
-                if hasattr(model, a):
-                    dic[a]=request.POST[a]
-            model.objects.create(**dic)
-        else:
-            return HttpResponse(status=400)
-    return HttpResponse(model)
+        if request.POST['model'].endswith("_request"):
+            model = getModel(request.POST['model'])
+            if model:
+                dic ={}
+                for a in request.POST.keys():
+                    if hasattr(model, a):
+                        dic[a]=request.POST[a]
+                model.objects.create(**dic)
+                return JsonResponse({'acceptable':True})
+        return HttpResponse(status=400)
+    return HttpResponse(status=405)
 
 def aproveRequest(request):
+    print("entro")
     if request.method == "POST":
-        request_id = request.POST['model_id']
-        model = getModel(request.POST['model'])
-        if model:
-            request_obj = model.objects.get(id=request_id)
-            request_obj.approved()
-            return HttpResponse("1")
+        if models.Person.objects.get(user=request.user).user_type == 3:
+            request_id = request.POST['model_id']
+            model = getModel(request.POST['model'])
+            if model:
+                request_obj = model.objects.get(id=request_id)
+                request_obj.approved()
+                return HttpResponse({'acceptable':True})
     return HttpResponse(status=405)
 
 def getModel(model_name):
