@@ -1,0 +1,25 @@
+<div class="card-content white-text">
+    <span class="card-title black-text">Turnos</span>
+</div>
+{% if appointments %}
+<ul class="collapsible">
+    {% for appointment in appointments %}
+        <li>
+          <div class="collapsible-header">{{ appointment.person.user.get_full_name }}-{{ appointment.work_day.day }}</div>
+          <div class="collapsible-body">
+            <div class="row">
+                Doctor: {{ appointment.work_day.doctor.user.get_full_name }}
+            </div>
+            <div class="row">
+                Horario: {{ appointment.time_attendance }}
+            </div>
+            <center><button class="waves-effect waves-light red btn"><i class="material-icons right">delete</i>Eliminar</button></center>
+          </div>
+        </li>
+        {% endfor %}
+    </ul>
+{% else %}
+<div class="card-panel teal lighten-3">
+    <span>No hay Turnos actualmente<span>
+</div>
+{% endif %}

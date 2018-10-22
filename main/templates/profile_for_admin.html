@@ -10,143 +10,13 @@
 <div class="row">
 	<div class="col s3">
 		<div class="col s12">
-			<div class="card">
-				<div class="card-content white-text">
-					<span class="card-title black-text">Clases</span>
-				</div>
-				{% if classrooms %}
-				<ul class="collapsible">
-					{% for classroom in classrooms %}
-					<li>
-						<div class="collapsible-header">{{ classroom.id }}</div>
-						<div class="collapsible-body">
-							<div class="row">Descripcion: {{ classroom.description }}</div>
-							<div class="row">Duracion: {{ classroom.duration }}</div>
-							<div class="row">
-								<table>
-									<thead>
-									<tr>
-										<th>Profesor</th>
-										<th>Desmatricular</th>
-									</tr>
-									</thead>
-									<tbody>
-									{% for enrolment_teacher in classroom.get_enrolment_teachers %}
-									<tr>
-										<td>{{ enrolment_teacher.person.user.get_full_name }}</td>
-										<td>
-											<button class="btn btn-flat waves-effect waves-grey">clear</i></button>
-										</td>
-									</tr>
-									{% endfor %}
-									</tbody>
-								</table>
-							</div>
-							<table>
-								<thead>
-									<tr>
-										<th>Dia</th>
-										<th>Hora</th>
-										<th>Lugar</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for classroom_day in classroom.get_classroom_days %}
-									<tr>
-										<td>{{ classroom_day.get_day_display }}</td>
-										<td>{{ classroom_day.start_hour }}</td>
-										<td>{{ classroom_day.classroom_place.room }}</td>
-									</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-							<ul class="collapsible">
-								<li>
-									<div class="collapsible-header">Alumnos</div>
-									<div class="collapsible-body">
-										{% if classroom.get_enrolment_students %}
-											<table>
-												<thead>
-												  <tr>
-													  <th>Nombre</th>
-													  <th>Eliminar</th>
-												  </tr>
-												</thead>
-												<tbody>
-													{% for enrolment_student in classroom.get_enrolment_students %}
-													<tr>
-														<td>{{ enrolment_student.person.user.get_full_name }}</td>
-														<td><button class="btn btn-flat red-text"><i class="material-icons">clear</i></button></td>
-													</tr>
-													{% endfor %}
-												</tbody>
-											</table>
-										{% else %}
-										No hay alumnos inscriptos
-										{% endif %}
-									</div>
-								</li>
-							</ul>
-							<center><a class="waves-effect waves-light red btn" href="{% url 'delete' 'Classroom' classroom.id %}"><i class="material-icons right">delete</i>Eliminar</a></center>
-						</div>
-					</li>
-					{% endfor %}		
-				</ul>
-				{% else %}
-				<div class="card-panel teal lighten-3">
-						<span>No hay clases actualmente<span>
-				</div>
-				{% endif %}
-			</div>
+			<div class="card" id="card_classrooms"></div>
 		</div>
 		<div class="col s12">
-			<div class="card">
-				<div class="card-content white-text">
-					<span class="card-title black-text">Turnos</span>
-				</div>
-				{% if appointments %}
-				<ul class="collapsible">
-					{% for appointment in appointments %}
-						<li>
-						  <div class="collapsible-header">{{ appointment.person.user.get_full_name }}-{{ appointment.work_day.day }}</div>
-						  <div class="collapsible-body">
-							<div class="row">
-								Doctor: {{ appointment.work_day.doctor.user.get_full_name }}
-							</div>
-							<div class="row">
-								Horario: {{ appointment.time_attendance }}
-							</div>
-							<center><button class="waves-effect waves-light red btn"><i class="material-icons right">delete</i>Eliminar</button></center>
-						  </div>
-						</li>
-						{% endfor %}
-					</ul>
-				{% else %}
-				<div class="card-panel teal lighten-3">
-					<span>No hay Turnos actualmente<span>
-				</div>
-				{% endif %}
-			</div>
+			<div class="card" id="card_appointment"></div>
 		</div>
 		<div class="col s12">
-			<div class="card">
-				<div class="card-content white-text">
-					<span class="card-title black-text">Crear salon</span>
-				</div>
-				<ul class="collapsible">
-					<li>
-						<div class="collapsible-header">Salon</div>
-						<div class="collapsible-body">
-							<input placeholder="Nombre del salon" type="text" class="validate"></input>
-							<input placeholder="Capacidad" type="number" class="validate" min="1" max="50"></input>
-							<h4>
-								
-							</h4>
-							<center><button class="btn btn-flat waves-effect waves-grey">Crear</button></center>
-						</div>
-					</li>
-				</ul>				
-			</div>			
+			<div class="card" id="card_rooms"></div>			
 		</div>
 	</div>
 	<div class="col s6">
@@ -370,149 +240,42 @@
 	</div>
 	<div class="col s3">
 		<div class="col s12">
-			<div class="card">
-				<div class="card-content white-text">
-					<span class="card-title black-text">Profesores</span>
-				</div>
-				{% if teachers %}
-				<ul class="collapsible">
-					<li>
-						<div class="collapsible-header">Lista</div>
-						<div class="collapsible-body">
-							<table>
-								<thead>
-									<tr>
-										<th>Nombre</th>
-										<th>Dni</th>
-										<th>Eliminar</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for teacher in teachers %}
-									<tr>
-										<td>{{ teacher.user.get_full_name }}</td>
-										<td>{{ teacher.user.username }}</td>
-										<td><button class="btn btn-flat red-text"><i class="material-icons">clear</i></button></td>
-									</tr>
-									{% endfor %}		
-								</tbody>
-							</table>
-						</div>
-					</li>
-				</ul>
-				{% else %}
-				<div class="card-panel teal lighten-3">
-						<span>No hay doctores registrados<span>
-				</div>
-				{% endif %}
-			</div>
+			<div class="card" id="card_teachers"></div>
 		</div>
 		<div class="col s12">
-			<div class="card">
-				<div class="card-content white-text">
-					<span class="card-title black-text">Jubilados</span>
-				</div>
-				{% if retireds %}
-				<ul class="collapsible">
-					<li>
-						<div class="collapsible-header">Lista</div>
-						<div class="collapsible-body">
-							<table>
-								<thead>
-									<tr>
-										<th>Nombre</th>
-										<th>Dni</th>
-										<th>Eliminar</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for retired in retireds %}
-									<tr>
-										<td>{{ retired.user.get_full_name }}</td>
-										<td>{{ retired.user.username }}</td>
-										<td><button class="btn btn-flat red-text"><i class="material-icons">clear</i></button></td>
-									</tr>
-									{% endfor %}		
-								</tbody>
-							</table>
-						</div>
-					</li>
-				</ul>
-				{% else %}
-				<div class="card-panel teal lighten-3">
-						<span>No hay jubilados registrados<span>
-				</div>
-				{% endif %}
-			</div>
+			<div class="card" id="card_retireds"></div>
 		</div>
 		<div class="col s12">
-			<div class="card">
-				<div class="card-content white-text">
-					<span class="card-title black-text">Doctores</span>
-				</div>
-				{% if doctors %}
-				<ul class="collapsible">
-					<li>
-						<div class="collapsible-header">Lista</div>
-						<div class="collapsible-body">
-							<table>
-								<thead>
-									<tr>
-										<th>Nombre</th>
-										<th>Dni</th>
-										<th>Eliminar</th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for doctor in doctors %}
-									<tr>
-										<td>{{ doctor.user.get_full_name }}</td>
-										<td>{{ doctor.user.username }}</td>
-										<td><button class="btn btn-flat red-text"><i class="material-icons">clear</i></button></td>
-									</tr>
-									{% endfor %}		
-								</tbody>
-							</table>
-						</div>
-					</li>
-				</ul>
-				{% else %}
-				<div class="card-panel teal lighten-3">
-						<span>No hay doctores registrados<span>
-				</div>
-				{% endif %}
-			</div>
-		</div>
-		<div class="col s12">
-			<div class="card">
-				<div class="card-content white-text">
-					<span class="card-title black-text">Salones</span>
-				</div>
-				<ul class="collapsible">
-					<li>
-						<div class="collapsible-header">Salones</div>
-						<div class="collapsible-body">
-							<table>
-								<thead>
-									<tr>
-										<th>Nombre</th>
-										<th>Capacidad</th>
-										<th>Eliminar</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-										<td></td>
-										<td></td>
-										<td><button class="btn btn-flat red-text"><i class="material-icons">clear</i></button></td>
-									</tr>		
-								</tbody>
-							</table>
-						</div>
-					</li>
-				</ul>				
-			</div>			
+			<div class="card" id="card_doctors"></div>
 		</div>
 	</div>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+	load_classrooms();
+	load_appointments();
+	load_rooms();
+	load_teachers();
+	load_retireds();
+	load_doctors();
+});
+function load_classrooms(){
+	load('{% url 'data' 'profile_for_admin_parts%2Fclassrooms' 'Classroom' '0' %}', 'card_classrooms');
+}
+function load_appointments(){
+	load('{% url 'data' 'profile_for_admin_parts%2Fappointments' 'Appointment' '0' %}', 'card_appointment');
+}
+function load_rooms(){
+	load('{% url 'data' 'profile_for_admin_parts%2Frooms' 'Room' '0' %}', 'card_rooms');
+}
+function load_teachers(){
+	load('{% url 'data' 'profile_for_admin_parts%2Fteachers' 'Person' '1' %}', 'card_teachers');
+}
+function load_retireds(){
+	load('{% url 'data' 'profile_for_admin_parts%2Fretireds' 'Person' '0' %}', 'card_retireds');
+}
+function load_doctors(){
+	load('{% url 'data' 'profile_for_admin_parts%2Fdoctors' 'Person' '1' %}', 'card_doctors');
+}
+</script>
 {% endblock body %}

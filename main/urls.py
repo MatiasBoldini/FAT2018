@@ -8,4 +8,5 @@ urlpatterns = [
     path('logSystem', logSystem, name="logSystem"),
     path('createModel', createModel, name="create"),
     path('aproveRequest', aproveRequest, name="approve"),
+    path('load/<page>/<model_name>/<person_type>', loadData, name="data"),
 ]

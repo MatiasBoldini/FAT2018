@@ -2,6 +2,7 @@ function load_materialize(){
     $('.timepicker').timepicker({'twelveHour':false, 'defaultTime': '00:00'});
     $('select').formSelect();
     $('.collapsible').collapsible();
+    $('.tooltipped').tooltip();
     $('.dropdown-trigger').dropdown();
     $('.datepicker').datepicker({
         format: 'yyyy-mm-dd',
@@ -16,51 +17,13 @@ function load_materialize(){
     $('.parallax').parallax();
 };
 
-function get_data(form, model_name){
-    var form_data = new FormData(form);
-    var results = {'model':model_name};
-    for(var data of form_data.entries()){
-        results[data[0]] = data[1];
-    }
-    return results;
-}
-
-function create_model(form_id, url, model_name){
-    var form = $("#"+form_id).get(0)
-    $.ajax({
-        method: "POST",
-        url:url,
-        data:get_data(form, model_name),
-        success: function(results){
-            alert(results)
-        },
-        error: function(request){
-            switch(request.status) {
-                case 400:
-                alert("Error interno contactar con administradores")
-            }
-        }
-    });
-}
-
-function model_and_id(url, model_name, model_id){
-    $.ajax({
-        method: "POST",
-        url:url,
-        data:{
-            'model':model_name,
-            'model_id':model_id,
-            'csrfmiddlewaretoken':getCookie('csrftoken')
-        },
-        success: function(results){
-            alert(results)
-        },
-        error: function(request){
-            switch(request.status) {
-                case 405:
-                alert("Error interno contactar con administradores")
-            }
-        }
+function load(url, place_id){
+    fetch(url).then(function(response){
+        response.text().then(function(text){
+            var part = document.querySelector('#'+place_id)
+            part.innerHTML = text;
+            load_materialize();
+        });
     });
 }
 

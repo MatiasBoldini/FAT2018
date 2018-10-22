@@ -31,13 +31,13 @@ def goTo(request, page):
     return render(request, '{}.html'.format(page), results)
 
 def delete(request, object, object_id):
-    model = getModel(object)
-    if model:
-        obj = model.objects.get(id=object_id)
-        obj.delete()
-        return HttpResponse("1")
-    else: 
-        return HttpResponse(status=400)
+    if request.user.is_authenticated:
+        model = getModel(object)
+        if model:
+            obj = model.objects.get(id=object_id)
+            obj.delete()
+            return HttpResponse("1") 
+    return HttpResponse(status=400)
 
 def logSystem(request):
     if request.method == "POST":
@@ -52,20 +52,22 @@ def logSystem(request):
 
 def createModel(request):
     if request.method == "POST":
-        if request.POST['model'].endswith("_request"):
-            model = getModel(request.POST['model'])
-            if model:
-                dic ={}
-                for a in request.POST.keys():
-                    if hasattr(model, a):
-                        dic[a]=request.POST[a]
-                model.objects.create(**dic)
-                return JsonResponse({'acceptable':True})
-        return HttpResponse(status=400)
+        if request.user.is_authenticated:
+            if request.POST['model'].endswith("_request"):
+                model = getModel(request.POST['model'])
+                if model:
+                    dic ={}
+                    for a in request.POST.keys():
+                        if hasattr(model, a):
+                            dic[a]=request.POST[a]
+                    obj_created = model.objects.create(**dic)
+                    return JsonResponse({
+                        'acceptable':True,
+                        'object_id': obj_created.id
+                    })
     return HttpResponse(status=405)
 
 def aproveRequest(request):
-    print("entro")
     if request.method == "POST":
         if models.Person.objects.get(user=request.user).user_type == 3:
             request_id = request.POST['model_id']
@@ -75,6 +77,20 @@ def aproveRequest(request):
                 request_obj.approved()
                 return HttpResponse({'acceptable':True})
     return HttpResponse(status=405)
+
+def loadData(request, page, model_name, person_type):
+    if request.user.is_authenticated:
+        model = getModel(model_name)
+        print(model)
+        if model:
+            data = {}
+            page = page.replace('%2F', '/')
+            if model_name == "Person":
+                data['{}s'.format(model_name.lower())] = model.objects.filter(user_type=person_type)
+            else: 
+                data['{}s'.format(model_name.lower())] = model.objects.all()
+            return render(request, '{}.html'.format(page), data)
+    return HttpResponse(status=400)
 
 def getModel(model_name):
     if hasattr(models, model_name):
