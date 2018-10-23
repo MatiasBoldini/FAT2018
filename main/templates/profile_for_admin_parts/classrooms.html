@@ -4,7 +4,7 @@
 {% if classrooms %}
 <ul class="collapsible">
     {% for classroom in classrooms %}
-    <li>
+    <li id="classroom{{ classroom.id }}">
         <div class="collapsible-header">{{ classroom.id }}</div>
         <div class="collapsible-body">
             <div class="row">Descripcion: {{ classroom.description }}</div>
@@ -74,7 +74,7 @@
                     </div>
                 </li>
             </ul>
-            <center><a class="waves-effect waves-light red btn" href="{% url 'delete' 'Classroom' classroom.id %}"><i class="material-icons right">delete</i>Eliminar</a></center>
+            <center><a class="waves-effect waves-light red btn" onclick="remove('{% url 'delete' 'Classroom' classroom.id %}', 'classroom{{ classroom.id }}')"><i class="material-icons right">delete</i>Eliminar</a></center>
         </div>
     </li>
     {% endfor %}		

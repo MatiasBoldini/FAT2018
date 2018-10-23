@@ -27,6 +27,13 @@ function load(url, place_id){
     });
 }
 
+function remove(url, element_id){
+    fetch(url).then(function(){
+        var element = document.querySelector("#"+element_id) 
+        element.parentNode.removeChild(element);
+    })
+}
+
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
